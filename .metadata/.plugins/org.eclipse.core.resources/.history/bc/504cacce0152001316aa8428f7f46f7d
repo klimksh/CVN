@@ -1,0 +1,67 @@
+package Model;
+
+import java.util.ArrayList;
+
+import javax.persistence.ManyToMany;
+
+import play.db.jpa.Model;
+
+public class User extends Model{
+	public String email;
+	public String password;
+	public String name;
+	public String googleUserId;
+	@ManyToMany
+	public ArrayList<Video>watchedVideos;
+	public User(String email, String password, String name)
+			 {
+		super();
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.googleUserId = "";
+		this.watchedVideos =new ArrayList<Video>();
+		create();
+	}
+	public User(String email, String password, String name,String googleUserId)
+	 {
+		super();
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.googleUserId = googleUserId;
+		this.watchedVideos =new ArrayList<Video>();
+		create();
+}
+	public static User findByEmail(String email) {
+	    return find("email", email).first();
+	}
+	public static User findBygoogleID(String googleUserId) {
+	    return find("googleUserId", googleUserId).first();
+	}
+	public boolean checkPassword(String password) {
+	    return this.password.equals(password);
+	}
+	/*
+	   public static void authenticate(String email, String password) {
+	        User user = User.findByEmail(email);
+	       if (user == null || !user.checkPassword(password)) {
+	        	System.out.println("not successfully");
+	            flash.error("Bad email or bad password");
+	            flash.put("email", email);
+	     
+	        } 
+	     //   System.out.println("Successfully");
+	        connect(user);
+	        
+	        flash.success("Welcome %s !", user.name);	      
+	    }
+	      static void connect(User user) {
+	        session.put("logged", user.id);
+	    }
+	 
+	 
+	 */
+	
+
+}

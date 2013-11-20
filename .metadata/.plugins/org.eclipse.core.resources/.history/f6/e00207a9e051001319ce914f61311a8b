@@ -1,0 +1,15 @@
+package Model;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import play.db.jpa.Model;
+
+public class Video extends Model{
+    public String title;
+    public String description;
+    public String URL;
+    public Date uploadDate;
+    public ArrayList<Tag>tags;
+    
+}

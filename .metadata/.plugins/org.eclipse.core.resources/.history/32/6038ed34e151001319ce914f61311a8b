@@ -1,0 +1,13 @@
+package Model;
+
+import java.util.Date;
+
+import com.sun.org.apache.xpath.internal.operations.Mod;
+
+public class Note extends Model {
+    public String title;
+    public String content;
+    public Date startTime;
+    public Video video;
+    
+}

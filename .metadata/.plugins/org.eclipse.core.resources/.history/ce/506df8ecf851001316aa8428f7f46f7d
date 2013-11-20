@@ -1,0 +1,23 @@
+package Model;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+
+import play.db.jpa.Model;
+
+public class Video extends Model{
+    public String title;
+    public String description;
+    public String URL;
+    public Date uploadDate;
+    @ManyToMany
+    public ArrayList<Tag>videoTags;
+    @ManyToOne
+    public User owner;
+    @ManyToMany(mappedBy="watchedVideo");
+    ArrayList<User>Whatchers;
+    
+}

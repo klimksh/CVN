@@ -1,0 +1,25 @@
+package Model;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import play.db.jpa.Model;
+
+
+public class Note extends Model {
+    public String title; // title of the note
+    public String content; // content will be around 140 charac
+    public Date startTime; // start time in the video in which will be shown the note
+    @ManyToOne
+    public Video video; // the video in which is the note
+    public User user; // user who has wrote it
+    public long visited; // number of visitors who have visited this noe
+    @ManyToMany
+    public ArrayList<Tag>noteTags;
+  
+    
+}

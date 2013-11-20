@@ -1,0 +1,8 @@
+package Model;
+
+import play.db.jpa.Model;
+
+public class Tag extends Model{
+	String title;
+
+}

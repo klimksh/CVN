@@ -1,0 +1,30 @@
+package Model;
+
+import java.util.ArrayList;
+
+import javax.persistence.ManyToMany;
+
+import play.db.jpa.Model;
+
+public class Tag extends Model{
+	
+	// because of many to many relationship
+	@ManyToMany (mappedBy="noteTags")
+	public ArrayList<Note>notes;
+	@ManyToMany (mappedBy="videoTags")
+	public ArrayList<Video>videos;
+	public String title;
+	public Tag()
+	{
+		notes= new ArrayList<Note>();
+		videos= new ArrayList<Video>();
+	}
+	public Tag(String title)
+	{
+		this.title=title;
+	}
+	public static User findBygoogleID(String googleUserId) {
+	    return find("googleUserId", googleUserId).first();
+	}
+
+}

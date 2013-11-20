@@ -1,0 +1,14 @@
+package Model;
+
+import java.util.Date;
+
+import play.db.jpa.Model;
+
+
+public class Note extends Model {
+    public String title;
+    public String content;
+    public Date startTime;
+    public Video video;
+    
+}

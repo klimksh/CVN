@@ -1,0 +1,15 @@
+package Model;
+
+import java.util.ArrayList;
+
+import javax.persistence.ManyToMany;
+
+public class User {
+	public String email;
+	public String password;
+	public String name;
+	public String googleUserId;
+	@ManyToMany
+	public ArrayList<Video>watchedVideos;
+
+}

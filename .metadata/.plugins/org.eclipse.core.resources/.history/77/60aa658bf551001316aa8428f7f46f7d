@@ -1,0 +1,16 @@
+package Model;
+
+import java.util.ArrayList;
+
+import play.db.jpa.Model;
+
+public class Tag extends Model{
+	public String title;
+	public ArrayList<Note>notes;
+	public Tag(){}
+	public Tag(String title)
+	{
+		this.title=title;
+	}
+
+}
