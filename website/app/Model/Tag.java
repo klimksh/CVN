@@ -19,7 +19,7 @@ public class Tag extends Model{
 	{
         notes = new ArrayList<Note>();
         videos = new ArrayList<Video>();
-		this.title=title;
+		this.title = title;
 		create();
 	}
 
