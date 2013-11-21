@@ -11,7 +11,7 @@ import play.db.jpa.Model;
 public class Video extends Model{
     public String title;
     public String description;
-    public String URLink;
+    public String url;
     public Date uploadDate;
     @ManyToMany
     public ArrayList<Tag>videoTags;
@@ -19,12 +19,13 @@ public class Video extends Model{
     public User owner;
     @ManyToMany(mappedBy="watchedVideo")
     ArrayList<User>Whatchers;
-	public Video(String title, String description, String uRL, Date uploadDate,
+
+	public Video(String title, String description, String url, Date uploadDate,
 			ArrayList<Tag> videoTags, User owner) {
 		super();
 		this.title = title;
 		this.description = description;
-		URLink = uRL;
+		this.url = url;
 		this.uploadDate = uploadDate;
 		this.videoTags = videoTags;
 		this.owner = owner;

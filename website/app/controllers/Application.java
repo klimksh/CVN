@@ -17,6 +17,7 @@ public class Application extends Controller {
     public static void index() {
         render();
     }
+
     // checking if email and password are OK
     public static void authenticate(String email, String password) {
         User user = User.findByEmail(email);
@@ -30,10 +31,12 @@ public class Application extends Controller {
         flash.success("Welcome %s !", user.name);
         //redirect somewhere
     }
-      // creating a session 
+
+      // creating a session
       static void connect(User user) {
         session.put("logged", user.id);
     }
+
       // get the user which is logged ON
       static User connectedUser() {
 	        String userId = session.get("logged");
@@ -42,6 +45,7 @@ public class Application extends Controller {
       public static void login() {
 	      	  //render();
 	    }
+
       //logout
       public static void logout() {
 
@@ -49,6 +53,7 @@ public class Application extends Controller {
 	        session.clear();
 	       //redirect to main page or to logout page
       }
+
       //register  ( we jhave two password fields  password and verify password
       public static void register(@Required String name, @Required @Email String email, @Required String password , @Equals("password") String password2) {
 	        if (validation.hasErrors() || User.findByEmail(email)!=null) {

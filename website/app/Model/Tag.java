@@ -14,18 +14,16 @@ public class Tag extends Model{
 	@ManyToMany (mappedBy="videoTags")
 	public ArrayList<Video>videos;
 	public String title;
-	public Tag()
-	{
-		notes= new ArrayList<Note>();
-		videos= new ArrayList<Video>();
-		create();
-	}
+
 	public Tag(String title)
 	{
+        notes = new ArrayList<Note>();
+        videos = new ArrayList<Video>();
 		this.title=title;
 		create();
 	}
-	public static Tag findBygoogleID(String title) {
+
+    public static Tag findByGoogleID(String title) {
 	    return find("title", title).first();
 	}
 
