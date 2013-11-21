@@ -9,3 +9,12 @@
 .project
 .settings/
 tmp
+/website/tmp
+/RemoteSystemsTempFiles
+/.settings
+/website/.idea
+/wesite/.settings
+/website/.classpath
+/website/MasterLabProject09_2013.iml
+/.metadata
+
