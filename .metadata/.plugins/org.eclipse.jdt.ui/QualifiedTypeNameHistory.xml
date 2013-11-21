@@ -2,9 +2,14 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="com.sun.org.apache.xpath.internal.operations.Mod"/>
+<fullyQualifiedTypeName name="javax.persistence.OneToMany"/>
+<fullyQualifiedTypeName name="javax.persistence.ManyToOne"/>
+<fullyQualifiedTypeName name="javax.persistence.ManyToMany"/>
 <fullyQualifiedTypeName name="play.db.jpa.Model"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="javax.persistence.ManyToOne"/>
-<fullyQualifiedTypeName name="javax.persistence.OneToMany"/>
-<fullyQualifiedTypeName name="javax.persistence.ManyToMany"/>
+<fullyQualifiedTypeName name="Model.Video"/>
+<fullyQualifiedTypeName name="play.data.validation.Email"/>
+<fullyQualifiedTypeName name="play.data.validation.Required"/>
+<fullyQualifiedTypeName name="play.data.validation.Equals"/>
+<fullyQualifiedTypeName name="Model.User"/>
 </qualifiedTypeNameHistroy>
