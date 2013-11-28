@@ -1,4 +1,39 @@
-.friend {
-	margin-bottom: 15px;
-	min-height: 70px;
+#timeline {
+    width: 100%;
+    height: 290px;
+    background-color: lightgrey;
+    overflow-x: scroll;
+    white-space: nowrap;
+    margin: 50px 5px;
+    padding: 5px;
+}
+
+#timeline .note {
+    width: 200px;
+    height: 280px;
+    border: 1px solid black;
+    padding: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: normal;
+    margin-bottom: 0px !important;
+}
+
+#timer, #buttons {
+    margin: 0 auto;
+    font-weight: bold;
+    text-align: center;
+}
+
+#timer {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    font-size: 25px;
+    border-bottom: 2px dotted darkgray ;
+}
+
+button {
+    font-size: 20px;
+
 }
