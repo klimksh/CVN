@@ -2,14 +2,15 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.List;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Entity;
 
 import play.db.jpa.Model;
 
-
+@Entity(name="Notes")
 public class Note extends Model {
     public String title; // title of the note
     public String content; // content will be around 140 charac
@@ -19,7 +20,7 @@ public class Note extends Model {
     public User user; // user who has wrote it
     public long visited; // number of visitors who have visited this note
     @ManyToMany
-    public ArrayList<Tag>noteTags;// tags of the note
+    public List<Tag>noteTags;// tags of the note
 
 	public Note(String title, String content, Date startTime, Video video,
 			User user,  ArrayList<Tag> noteTags) {

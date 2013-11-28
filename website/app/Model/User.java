@@ -1,18 +1,18 @@
 package Model;
 
 import java.util.ArrayList;
-
+import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-
+import java.util.List;
 import play.db.jpa.Model;
-
+@Entity(name="Users")
 public class User extends Model{
 	public String email;
 	public String password;
 	public String name;
 	public String googleUserId;
 	@ManyToMany
-	public ArrayList<Video>watchedVideos;
+	public List<Video>watchedVideos;
 
 	public User(String email, String password, String name) {
 		super();

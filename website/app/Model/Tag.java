@@ -1,18 +1,19 @@
 package Model;
 
 import java.util.ArrayList;
-
+import java.util.List;
+import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
 import play.db.jpa.Model;
-
+@Entity(name="Tags") 
 public class Tag extends Model{
 	
 	// because of many to many relationship
 	@ManyToMany (mappedBy="noteTags")
-	public ArrayList<Note>notes;
+	public List<Note>notes;
 	@ManyToMany (mappedBy="videoTags")
-	public ArrayList<Video>videos;
+	public List<Video>videos;
 	public String title;
 
 	public Tag(String title)
