@@ -1,9 +1,0 @@
-package Model;
-
-public class User {
-	public String email;
-	public String password;
-	public String name;
-	public String googleUserId;
-
-}
