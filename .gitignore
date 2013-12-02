@@ -7,14 +7,13 @@
 /eclipse
 .classpath
 .project
-.settings/
+.settings
 tmp
-/website/tmp
+website/tmp
 /RemoteSystemsTempFiles
-/.settings
 /website/.idea
 /website/.settings
 /website/.classpath
 /website/MasterLabProject09_2013.iml
-/.metadata
+.metadata
 
