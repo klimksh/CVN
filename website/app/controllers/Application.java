@@ -5,17 +5,24 @@ import play.data.validation.Email;
 import play.data.validation.Equals;
 import play.data.validation.Required;
 import play.mvc.*;
-import controllers.securesocial.SecureSocial;
 
+//import controllers.securesocial.SecureSocial;
+//import com.*;
 import java.util.*;
+
+import com.google.*;
+//import com.google.gdata.data.youtube.VideoEntry;
+
+
 
 import Model.User;
 
 //import models.*;
-@With( SecureSocial.class )
+
 public class Application extends Controller {
 
     public static void index() {
+    	
         render();
     }
 
@@ -34,8 +41,22 @@ public class Application extends Controller {
     }
 
       // creating a session
-      static void connect(User user) {
+     public  static void connect(User user) {
         session.put("logged", user.id);
+    }
+    public static void example(String email, String id,String displayName)
+     {
+    	
+    	System.out.println(email+"  "+id+" "+displayName);
+ //  VideoEntry php= new VideoEntry();
+ //  VideoEntry pp= new VideoEntry();
+    //	VideoEntry a= new VideoEntry("http://www.youtube.com/watch?v=zhhABsA_WdM");
+    //	System.out.println(a.getTitle().getPlainText());
+    	
+     }
+    public static void example1(String a)
+    {
+    	System.out.println(a);
     }
 
       // get the user which is logged ON
@@ -82,4 +103,9 @@ public class Application extends Controller {
 	        }
 	       
 	    }
+
+public static void add_video()
+{
+	render();
+}
 }

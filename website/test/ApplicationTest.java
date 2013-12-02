@@ -2,7 +2,6 @@ import org.junit.*;
 import play.test.*;
 import play.mvc.*;
 import play.mvc.Http.*;
-import models.*;
 
 public class ApplicationTest extends FunctionalTest {
 
@@ -12,6 +11,10 @@ public class ApplicationTest extends FunctionalTest {
         assertIsOk(response);
         assertContentType("text/html", response);
         assertCharset(play.Play.defaultWebEncoding, response);
+    }
+    public void  test(Object o)
+    {
+    	System.out.print(o.toString());
     }
     
 }

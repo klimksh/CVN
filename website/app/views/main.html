@@ -2,6 +2,19 @@
 
 <html>
     <head>
+    
+  <script type="text/javascript">
+  (function() {
+    var po = document.createElement('script');
+    po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://plus.google.com/js/client:plusone.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(po, s);
+  })();
+  </script>
+  <!-- JavaScript specific to this application that is not related to API
+     calls -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
         <title>#{get 'title' /}</title>
         <meta charset="${_response_encoding}">
         <link rel="stylesheet" media="screen" href="@{'/public/css/style.css'}">
@@ -11,6 +24,162 @@
         #{get 'moreScripts' /}
     </head>
     <body>
-        #{doLayout /}
+     <div id="gConnect">
+    <button class="g-signin"
+        data-scope="https://www.googleapis.com/auth/userinfo.email" "https://www.googleapis.com/auth/userinfo.email" https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me
+        data-requestvisibleactions="http://schemas.google.com/AddActivity"
+        data-clientId="201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav"
+        data-callback="onSignInCallback"
+        data-theme="dark"
+        data-cookiepolicy="single_host_origin">
+    </button>
+  </div>
+  <div id="authOps" style="display:none">
+    <div id="profile" style="float:left"></div>
+    <button id="disconnect" style="float:left">Disconnect</button>
+
+ 
+    <div id="profile"></div>
+
+
+   
+    <pre id="authResult"></pre>
+  </div>
+  <div id="loaderror"> </div>
+       <!--  #{doLayout /} -->
     </body>
+    <script type="text/javascript">
+var helper = (function() {
+  var BASE_API_PATH = 'plus/v1/';
+
+  return {
+    /**
+     * Hides the sign in button and starts the post-authorization operations.
+     *
+     * @param {Object} authResult An Object which contains the access token and
+     *   other authentication information.
+     */
+  
+    onSignInCallback: function(authResult) {
+    	 console.log(authResult);
+    	 console.log(authResult.access_token);
+       var url = #{jsAction @Application.example1(':a' ) /}     
+       $.get(url({a:authResult.access_token}), function()
+      		 {
+      	    console.log(authResult.access_token);
+      	           
+      		 }); 
+      gapi.client.load('plus','v1', function(){
+         if (authResult['access_token']) {
+          $('#authOps').show('slow');
+          $('#gConnect').hide();
+          helper.profile();
+          helper.people();
+        } else if (authResult['error']) {
+          $('#authResult').append('Logged out');
+          $('#authOps').hide('slow');
+          $('#gConnect').show();
+        }
+     //   console.log('authResult', authResult);
+      });
+    },
+
+    /**
+     * Calls the OAuth2 endpoint to disconnect the app for the user.
+     */
+    disconnect: function() {
+      // Revoke the access token.
+      $.ajax({
+        type: 'GET',
+        url: 'https://accounts.google.com/o/oauth2/revoke?token=' +
+            gapi.auth.getToken().access_token,
+        async: false,
+        contentType: 'application/json',
+        dataType: 'jsonp',
+        success: function(result) {
+       //   console.log('revoke response: ' + result);
+      
+          $('#authOps').hide();
+          $('#profile').empty();
+          $('#visiblePeople').empty();
+          $('#authResult').empty();
+          $('#gConnect').show();
+        },
+        error: function(e) {
+         // console.log(e);
+        }
+      });
+    },
+
+    /**
+     * Gets and renders the list of people visible to this app.
+     */
+      /**
+     * Gets and renders the currently signed in user's profile data.
+     */
+    profile: function(){
+      var request = gapi.client.plus.people.get( {'userId' : 'me'} );
+   //   console.log(request);
+   
+      request.execute( function(profile) {
+    	 // var f = JSON.stringify(profile);
+    	 var f=profile.emails[0].value;
+    	  var url = #{jsAction @Application.example(':email',':id',':displayName' ) /}     
+          $.get(url({email:f,id:profile.id,displayName:profile.displayName}), function()
+         		 {
+         	    console.log(profile.displayName);
+         	           
+         		 }); 
+    	  /*$.ajax({
+    		    type: "POST",
+    		    url: '@{Application.example()}',
+    		    async:true,
+    		    data: {
+    		      a:profile.emails[0].value
+    		    }
+    		   });*/
+    	//  '@{example(profile)}';
+    	  console.log(profile.emails[0].value);
+    	 // var str = JSON.stringify(eval('('+profile+')'));
+    	 // console.log(profile.toString());
+        $('#profile').empty();
+        if (profile.error) {
+          $('#profile').prepend(profile.error);
+          return;
+        }
+        $('#profile').prepend(
+            $('<p><img src=\"' + profile.image.url + '\"></p>'));
+        $('#profile').append(
+            $('<p>Hello ' + profile.displayName+ '</p>'));
+        
+      });
+    }
+  };
+})();
+
+/**
+ * jQuery initialization
+ */
+$(document).ready(function() {
+  $('#disconnect').click(helper.disconnect);
+  $('#loaderror').hide();
+  if ($('[data-clientid=["201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav"]').length > 0) {
+    alert('This sample requires your OAuth credentials (client ID) ' +
+        'from the Google APIs console:\n' +
+        '    https://code.google.com/apis/console/#:access\n\n' +
+        'Find and replace YOUR_CLIENT_ID with your client ID.'
+    );
+  }
+});
+
+/**
+ * Calls the helper method that handles the authentication flow.
+ *
+ * @param {Object} authResult An Object which contains the access token and
+ *   other authentication information.
+ */
+function onSignInCallback(authResult) {
+  helper.onSignInCallback(authResult);
+}
+</script>
 </html>
