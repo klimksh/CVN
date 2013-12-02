@@ -23,7 +23,9 @@ public class Application extends Controller {
 
     public static void index() {
     	
-        render();
+        //render();
+        renderTemplate("Application/frontpage.html");
+        //redirect("frontpage.html"); 
     }
 
     // checking if email and password are OK
@@ -103,6 +105,10 @@ public class Application extends Controller {
 	        }
 	       
 	    }
+      public static void frontpage()
+      {
+    	  render();
+      }
 
 public static void add_video()
 {

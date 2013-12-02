@@ -1,26 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+#{extends 'main.html' /}
+#{set title:'Video Notes' /}
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+  <![endif]-->
+
+  <!-- Fav and touch icons -->
+  	<!--link rel="stylesheet/less" href="less/bootstrap.less" type="text/css" /-->
+	<!--link rel="stylesheet/less" href="less/responsive.less" type="text/css" /-->
+	<!--script src="js/less-1.3.3.min.js"></script-->
+	<!--append ‘#!watch’ to the browser URL, then refresh the page. -->
+	 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+  <![endif]-->
+<!-- <html lang="en">
 <head>
+
   <meta charset="utf-8">
   <title>VideoNotes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
 
-	<!--link rel="stylesheet/less" href="less/bootstrap.less" type="text/css" /-->
-	<!--link rel="stylesheet/less" href="less/responsive.less" type="text/css" /-->
-	<!--script src="js/less-1.3.3.min.js"></script-->
-	<!--append ‘#!watch’ to the browser URL, then refresh the page. -->
+
 	
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
 
-  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-  <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-  <![endif]-->
+ 
 
-  <!-- Fav and touch icons -->
+
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon-114-precomposed.png">
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72-precomposed.png">
@@ -30,13 +40,28 @@
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/scripts.js"></script>
-</head>
+
+	<link href="@{'public/css/bootstrap.min.css'}" rel="stylesheet">
+	<link href="@{'public/css/style.css'}" rel="stylesheet">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="@{'public/img/apple-touch-icon-144-precomposed.png'}">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="@{'public/img/apple-touch-icon-114-precomposed.png'}">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="@{'public/img/apple-touch-icon-72-precomposed.png'}">
+  <link rel="apple-touch-icon-precomposed" href="@{'public/img/apple-touch-icon-57-precomposed.png'}">
+  <link rel="shortcut icon" href="@{'public/img/favicon.png'}">
+  
+	<script type="text/javascript" src="@{'public/js/jquery-2.0.3.min.js'}"></script>
+	<script type="text/javascript" src="@{'public/js/bootstrap.min.js'}"></script>
+	<script type="text/javascript" src="@{'public/js/scripts.js'}"></script>
+
+</head>-->
 
 <body>
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
-			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+			<!--  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 				<div class="navbar-header">
 					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">Collab. VideoNotes</a>
 				</div>
@@ -57,7 +82,7 @@
 					</ul>
 				</div>
 				
-			</nav>
+			</nav> -->
 			<div class="jumbotron" style="margin-top:100px;">
 				<h1>
 					Welcome to collaborative VideoNotes
@@ -104,5 +129,5 @@
 		</div>
 	</div>
 </div>
-</body>
-</html>
+<!--  </body>
+</html>-->

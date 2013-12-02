@@ -2,7 +2,53 @@
 
 <html>
     <head>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+	<!--link rel="stylesheet/less" href="less/bootstrap.less" type="text/css" /-->
+	<!--link rel="stylesheet/less" href="less/responsive.less" type="text/css" /-->
+	<!--script src="js/less-1.3.3.min.js"></script-->
+	<!--append ‘#!watch’ to the browser URL, then refresh the page. -->
+	
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+  <![endif]-->
+
+  <!-- Fav and touch icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon-114-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
+  <link rel="shortcut icon" href="img/favicon.png">
+  
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/scripts.js"></script>
+	<!--  added by kujtim -->
+	<link href="@{'public/css/bootstrap.min.css'}" rel="stylesheet">
+	<link href="@{'public/css/style.css'}" rel="stylesheet">
+
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+  <![endif]-->
+
+  <!-- Fav and touch icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="@{'public/img/apple-touch-icon-144-precomposed.png'}">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="@{'public/img/apple-touch-icon-114-precomposed.png'}">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="@{'public/img/apple-touch-icon-72-precomposed.png'}">
+  <link rel="apple-touch-icon-precomposed" href="@{'public/img/apple-touch-icon-57-precomposed.png'}">
+  <link rel="shortcut icon" href="@{'public/img/favicon.png'}">
+  
+	<script type="text/javascript" src="@{'public/js/jquery-2.0.3.min.js'}"></script>
+	<script type="text/javascript" src="@{'public/js/bootstrap.min.js'}"></script>
+	<script type="text/javascript" src="@{'public/js/scripts.js'}"></script>
+	<!--   till here -->
   <script type="text/javascript">
   (function() {
     var po = document.createElement('script');
@@ -24,8 +70,8 @@
         #{get 'moreScripts' /}
     </head>
     <body>
-     <div id="gConnect">
-    <button class="g-signin"
+   <!-- <div id="gConnect">
+     <button class="g-signin"
         data-scope="https://www.googleapis.com/auth/userinfo.email" "https://www.googleapis.com/auth/userinfo.email" https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me
         data-requestvisibleactions="http://schemas.google.com/AddActivity"
         data-clientId="201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav"
@@ -46,13 +92,66 @@
     <pre id="authResult"></pre>
   </div>
   <div id="loaderror"> </div>
-       <!--  #{doLayout /} -->
+  -->
+  <div>
+   <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">Collab. VideoNotes</a>
+				</div>
+				  
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<form class="navbar-form navbar-left" role="search">
+						<div class="form-group">
+							<input type="text" class="form-control">
+						</div> 
+						<button type="submit" class="btn btn-default">Search</button>
+					</form>
+					 <div id="gConnect" style="float: left">
+    					<button class="g-signin"
+        					data-scope="https://www.googleapis.com/auth/userinfo.email" "https://www.googleapis.com/auth/userinfo.email" https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me
+        					data-requestvisibleactions="http://schemas.google.com/AddActivity"
+        					data-clientId="201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav"
+        					data-callback="onSignInCallback"
+        					data-theme="dark"
+        					data-cookiepolicy="single_host_origin">
+    					</button>
+ 			 		</div>
+ 			 		 <div id="authOps" style="display:none">
+    					<div id="profile" style="float:left"></div>
+    					<button id="disconnect" style="float:left">Disconnect</button>
+    					<button id="logout" style="float:left">Logout</button>
+
+ 
+   					 <div id="profile"></div>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="#">Login</a>
+						</li>				
+						<li>
+							<a href="#">Register</a>
+						</li>
+					</ul>
+				</div>
+				
+	</nav> 
+  
+  </div>
+  <div>
+  #{doLayout /}
+  </div>
+          
     </body>
     <script type="text/javascript">
 var helper = (function() {
   var BASE_API_PATH = 'plus/v1/';
 
   return {
+	    logout: function(){
+	    	$('#gConnect').show();
+	        $('#logout').hide();
+	        $('#disconnect').hide();
+	        $('#profile').empty();	       	   	 
+	    },
     /**
      * Hides the sign in button and starts the post-authorization operations.
      *
@@ -73,12 +172,16 @@ var helper = (function() {
          if (authResult['access_token']) {
           $('#authOps').show('slow');
           $('#gConnect').hide();
+          $('#logout').show();
+          $('#disconnect').show();
           helper.profile();
           helper.people();
         } else if (authResult['error']) {
-          $('#authResult').append('Logged out');
-          $('#authOps').hide('slow');
+           $('#authOps').hide('slow');
           $('#gConnect').show();
+          $('#logout').hide();
+          $('#disconnect').hide();
+          
         }
      //   console.log('authResult', authResult);
       });
@@ -104,6 +207,8 @@ var helper = (function() {
           $('#visiblePeople').empty();
           $('#authResult').empty();
           $('#gConnect').show();
+          $('#logout').hide();
+          $('#disconnect').hide();
         },
         error: function(e) {
          // console.log(e);
@@ -117,6 +222,7 @@ var helper = (function() {
       /**
      * Gets and renders the currently signed in user's profile data.
      */
+
     profile: function(){
       var request = gapi.client.plus.people.get( {'userId' : 'me'} );
    //   console.log(request);
@@ -130,18 +236,9 @@ var helper = (function() {
          	    console.log(profile.displayName);
          	           
          		 }); 
-    	  /*$.ajax({
-    		    type: "POST",
-    		    url: '@{Application.example()}',
-    		    async:true,
-    		    data: {
-    		      a:profile.emails[0].value
-    		    }
-    		   });*/
-    	//  '@{example(profile)}';
-    	  console.log(profile.emails[0].value);
-    	 // var str = JSON.stringify(eval('('+profile+')'));
-    	 // console.log(profile.toString());
+    	
+    	 console.log(profile.emails[0].value);
+    	
         $('#profile').empty();
         if (profile.error) {
           $('#profile').prepend(profile.error);
@@ -162,6 +259,7 @@ var helper = (function() {
  */
 $(document).ready(function() {
   $('#disconnect').click(helper.disconnect);
+  $('#logout').click(helper.logout);
   $('#loaderror').hide();
   if ($('[data-clientid=["201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav"]').length > 0) {
     alert('This sample requires your OAuth credentials (client ID) ' +
@@ -180,6 +278,10 @@ $(document).ready(function() {
  */
 function onSignInCallback(authResult) {
   helper.onSignInCallback(authResult);
+  
 }
 </script>
+<!-- Put in content here -->
+				
+			
 </html>
