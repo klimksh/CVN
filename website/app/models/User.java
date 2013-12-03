@@ -43,6 +43,7 @@ public class User extends Model{
 		this.name = name;
 		this.googleUserId = googleUserId;
 		this.watchedVideos = new ArrayList<Video>();
+		System.out.println(email+" pass:"+password+"name:"+name+"gID:"+googleUserId);
 		create();
     }
 
@@ -60,5 +61,10 @@ public class User extends Model{
     public String getEmail()
     {
     	return this.email;
+    }
+    public void inserUser(String email, String password, String name, String googleUserId)
+    {
+    	new User(email, password, name, googleUserId);
+    	
     }
 }

@@ -37,12 +37,7 @@ public class DatabaseUser {
 	}
 	public static void insertUser()
 	{
-	     User a= new User("kujtim.rahmani@gmail.com", "kujtim", "Kujtim");
-	    
-		// dataInt.pst = dataInt.con.prepareStatement("INSERT INTO users VALUES(?)");
-        // pst.setBinaryStream(1, fin, (int) img.length());
-        // pst.executeUpdate();
-		
+	     User a= new User("kujtim.rahmani@gmail.com", "kujtim", "Kujtim");		
 	}
 	public static void main(String[] args) {
 		DatabaseUser.insertUser();

@@ -162,7 +162,7 @@ var helper = (function() {
     onSignInCallback: function(authResult) {
     	 console.log(authResult);
     	 console.log(authResult.access_token);
-       var url = #{jsAction @Application.example1(':a' ) /}     
+       var url = #{jsAction @Application.loginToken(':a' ) /}     
        $.get(url({a:authResult.access_token}), function()
       		 {
       	    console.log(authResult.access_token);
@@ -230,7 +230,7 @@ var helper = (function() {
       request.execute( function(profile) {
     	 // var f = JSON.stringify(profile);
     	 var f=profile.emails[0].value;
-    	  var url = #{jsAction @Application.example(':email',':id',':displayName' ) /}     
+    	  var url = #{jsAction @Application.login(':email',':id',':displayName' ) /}     
           $.get(url({email:f,id:profile.id,displayName:profile.displayName}), function()
          		 {
          	    console.log(profile.displayName);

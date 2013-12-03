@@ -57,13 +57,13 @@ public class Video extends Model{
 		this.videoTags = videoTags;
 		create();		
 	}
-	public void insertVido(String title, String description, String url,
+	public void insertVideo(String title, String description, String url,
 			ArrayList<Tag> videoTags, String userEmail)
 	{
 		Video tt= new Video(title, description, url, videoTags, userEmail);	
 		
 	}
-	public void insertVido(String title, String description, String url,
+	public void insertVideo(String title, String description, String url,
 			ArrayList<Tag> videoTags, long id)
 	{
 		Video tt= new Video(title, description, url, videoTags, id);	
