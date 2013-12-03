@@ -28,11 +28,11 @@ public class Application extends Controller {
     	
         //render();
     	//DatabaseUser.insertUser();  
-    	ArrayList<Tag> tags= new ArrayList<Tag>();
+    /*	ArrayList<Tag> tags= new ArrayList<Tag>();
     	tags.add(Tag.findByTitle("education"));
     	tags.add(Tag.findByTitle("university"));
     	
-    	Video a= new Video("title", "description", "www.url.com", tags, 26);
+    	Video a= new Video("title", "description", "www.url.com", tags, 26);*/
         renderTemplate("Application/frontpage.html");
         //redirect("frontpage.html"); 
     }
