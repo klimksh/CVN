@@ -10,20 +10,29 @@ import play.mvc.*;
 //import com.*;
 import java.util.*;
 
+import models.User;
+import models.Video;
+import database.*;
+
 import com.google.*;
 //import com.google.gdata.data.youtube.VideoEntry;
 
 
 
-import Model.User;
 
-//import models.*;
+import models.*;
 
 public class Application extends Controller {
 
     public static void index() {
     	
         //render();
+    	//DatabaseUser.insertUser();  
+    	ArrayList<Tag> tags= new ArrayList<Tag>();
+    	tags.add(Tag.findByTitle("education"));
+    	tags.add(Tag.findByTitle("university"));
+    	
+    	Video a= new Video("title", "description", "www.url.com", tags, 26);
         renderTemplate("Application/frontpage.html");
         //redirect("frontpage.html"); 
     }
@@ -47,14 +56,8 @@ public class Application extends Controller {
         session.put("logged", user.id);
     }
     public static void example(String email, String id,String displayName)
-     {
-    	
-    	System.out.println(email+"  "+id+" "+displayName);
- //  VideoEntry php= new VideoEntry();
- //  VideoEntry pp= new VideoEntry();
-    //	VideoEntry a= new VideoEntry("http://www.youtube.com/watch?v=zhhABsA_WdM");
-    //	System.out.println(a.getTitle().getPlainText());
-    	
+     {   	
+    	System.out.println(email+"  "+id+" "+displayName);    	
      }
     public static void example1(String a)
     {

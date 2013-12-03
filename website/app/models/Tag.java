@@ -1,4 +1,4 @@
-package Model;
+package models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +18,16 @@ public class Tag extends Model{
 
 	public Tag(String title)
 	{
+		super();
         notes = new ArrayList<Note>();
         videos = new ArrayList<Video>();
 		this.title = title;
 		create();
 	}
 
-    public static Tag findByGoogleID(String title) {
+    public static Tag findByTitle(String title) {
 	    return find("title", title).first();
 	}
+  
 
 }

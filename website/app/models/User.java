@@ -1,12 +1,17 @@
-package Model;
+package models;
 
 import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import java.util.List;
+
+import play.data.validation.Email;
+import play.data.validation.Unique;
 import play.db.jpa.Model;
 @Entity(name="Users")
 public class User extends Model{
+	@Email
+	@Unique
 	public String email;
 	public String password;
 	public String name;
@@ -14,7 +19,7 @@ public class User extends Model{
 	@ManyToMany
 	public List<Video>watchedVideos;
 
-	public User(String email, String password, String name) {
+	public User(@Email @Unique String  email, String password, String name) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -23,6 +28,12 @@ public class User extends Model{
 		this.watchedVideos = new ArrayList<Video>();
 		create();
 	}
+	///------------------------------
+	public void insertUser(String email, String password, String name)
+	{
+		User a= new User(email, password, name);	
+	}
+
 
 	public User(String email, String password, String name, String googleUserId)
 	 {
@@ -46,5 +57,8 @@ public class User extends Model{
     public boolean checkPassword(String password) {
 	    return this.password.equals(password);
 	}
-
+    public String getEmail()
+    {
+    	return this.email;
+    }
 }
