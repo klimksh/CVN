@@ -18,3 +18,6 @@ tmp
 /website/MasterLabProject09_2013.iml
 /.metadata
 
+*.iml
+website/Collaborative VideoNotes.ipr
+website/Collaborative VideoNotes.iws
