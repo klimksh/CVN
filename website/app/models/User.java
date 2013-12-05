@@ -67,4 +67,5 @@ public class User extends Model{
     	new User(email, password, name, googleUserId);
     	
     }
+   
 }

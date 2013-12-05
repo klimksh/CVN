@@ -39,7 +39,5 @@ public class DatabaseUser {
 	{
 	     User a= new User("kujtim.rahmani@gmail.com", "kujtim", "Kujtim");		
 	}
-	public static void main(String[] args) {
-		DatabaseUser.insertUser();
-	}
+	
 }

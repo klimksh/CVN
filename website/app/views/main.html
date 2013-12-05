@@ -29,6 +29,8 @@
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/scripts.js"></script>
+
+	
 	<!--  added by kujtim -->
 	<link href="@{'public/css/bootstrap.min.css'}" rel="stylesheet">
 	<link href="@{'public/css/style.css'}" rel="stylesheet">
@@ -48,6 +50,8 @@
 	<script type="text/javascript" src="@{'public/js/jquery-2.0.3.min.js'}"></script>
 	<script type="text/javascript" src="@{'public/js/bootstrap.min.js'}"></script>
 	<script type="text/javascript" src="@{'public/js/scripts.js'}"></script>
+	<!-- 	https://github.com/AlexChittock/JQuery-Session-Plugin  -->
+    <script type="text/javascript" src="@{'public/js/jquery.session.js'}"></script>
 	<!--   till here -->
   <script type="text/javascript">
   (function() {
@@ -106,6 +110,7 @@
 						</div> 
 						<button type="submit" class="btn btn-default">Search</button>
 					</form>
+				<div align="right">
 					 <div id="gConnect" style="float: left">
     					<button class="g-signin"
         					data-scope="https://www.googleapis.com/auth/userinfo.email" "https://www.googleapis.com/auth/userinfo.email" https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me
@@ -116,21 +121,22 @@
         					data-cookiepolicy="single_host_origin">
     					</button>
  			 		</div>
- 			 		 <div id="authOps" style="display:none">
+ 			 	
+ 			 		 	<div id="authOps" style="display:none">
     					<div id="profile" style="float:left"></div>
     					<button id="disconnect" style="float:left">Disconnect</button>
     					<button id="logout" style="float:left">Logout</button>
 
- 
    					 <div id="profile"></div>
-					<ul class="nav navbar-nav navbar-right">
+   					</div>
+				<!-- 	<ul class="nav navbar-nav navbar-right">
 						<li>
 							<a href="#">Login</a>
 						</li>				
 						<li>
 							<a href="#">Register</a>
 						</li>
-					</ul>
+					</ul> -->
 				</div>
 				
 	</nav> 
@@ -142,6 +148,11 @@
           
     </body>
     <script type="text/javascript">
+   var a=0;
+ //  console.log(${id})
+  
+//   console.log(a);   
+  
 var helper = (function() {
   var BASE_API_PATH = 'plus/v1/';
 
@@ -150,15 +161,10 @@ var helper = (function() {
 	    	$('#gConnect').show();
 	        $('#logout').hide();
 	        $('#disconnect').hide();
-	        $('#profile').empty();	       	   	 
-	    },
-    /**
-     * Hides the sign in button and starts the post-authorization operations.
-     *
-     * @param {Object} authResult An Object which contains the access token and
-     *   other authentication information.
-     */
-  
+	        $('#profile').empty();
+	        var url = #{jsAction @Application.logout() /}     
+	        $.get(url(), function() {}); 
+	    },    
     onSignInCallback: function(authResult) {
     	 console.log(authResult);
     	 console.log(authResult.access_token);
@@ -166,10 +172,15 @@ var helper = (function() {
        $.get(url({a:authResult.access_token}), function()
       		 {
       	    console.log(authResult.access_token);
+      	    
+      	    
       	           
       		 }); 
       gapi.client.load('plus','v1', function(){
-         if (authResult['access_token']) {
+    	// var name=$.session.get('id');
+    	  //  console.log(name);  
+    	//  console.log(a);
+         if (authResult['access_token'] ) {
           $('#authOps').show('slow');
           $('#gConnect').hide();
           $('#logout').show();
@@ -181,17 +192,12 @@ var helper = (function() {
           $('#gConnect').show();
           $('#logout').hide();
           $('#disconnect').hide();
+         
           
-        }
-     //   console.log('authResult', authResult);
+        }         
       });
-    },
-
-    /**
-     * Calls the OAuth2 endpoint to disconnect the app for the user.
-     */
-    disconnect: function() {
-      // Revoke the access token.
+    },   
+    disconnect: function() {     
       $.ajax({
         type: 'GET',
         url: 'https://accounts.google.com/o/oauth2/revoke?token=' +
@@ -200,8 +206,6 @@ var helper = (function() {
         contentType: 'application/json',
         dataType: 'jsonp',
         success: function(result) {
-       //   console.log('revoke response: ' + result);
-      
           $('#authOps').hide();
           $('#profile').empty();
           $('#visiblePeople').empty();
@@ -209,26 +213,20 @@ var helper = (function() {
           $('#gConnect').show();
           $('#logout').hide();
           $('#disconnect').hide();
+          var url = #{jsAction @Application.disconnectAccount() /}     
+	        $.get(url(), function() {}); 
         },
-        error: function(e) {
-         // console.log(e);
+        error: function(e) {      
         }
       });
     },
-
-    /**
-     * Gets and renders the list of people visible to this app.
-     */
-      /**
-     * Gets and renders the currently signed in user's profile data.
-     */
-
+  
     profile: function(){
       var request = gapi.client.plus.people.get( {'userId' : 'me'} );
-   //   console.log(request);
-   
-      request.execute( function(profile) {
+       request.execute( function(profile) {
+    	   console.log(98);
     	 // var f = JSON.stringify(profile);
+        a=1;
     	 var f=profile.emails[0].value;
     	  var url = #{jsAction @Application.login(':email',':id',':displayName' ) /}     
           $.get(url({email:f,id:profile.id,displayName:profile.displayName}), function()
@@ -253,10 +251,6 @@ var helper = (function() {
     }
   };
 })();
-
-/**
- * jQuery initialization
- */
 $(document).ready(function() {
   $('#disconnect').click(helper.disconnect);
   $('#logout').click(helper.logout);
@@ -269,13 +263,6 @@ $(document).ready(function() {
     );
   }
 });
-
-/**
- * Calls the helper method that handles the authentication flow.
- *
- * @param {Object} authResult An Object which contains the access token and
- *   other authentication information.
- */
 function onSignInCallback(authResult) {
   helper.onSignInCallback(authResult);
   
