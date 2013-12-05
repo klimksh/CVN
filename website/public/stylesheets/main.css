@@ -1,0 +1,9 @@
+#content{
+    width: 1000px;
+    margin: 0px auto;
+    background-color: #262626;
+    color: #bce8f1;
+    font: bold 14px Helvetica;
+    padding: 30px;
+    min-height: 450px;
+}

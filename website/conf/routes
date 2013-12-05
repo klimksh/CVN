@@ -8,6 +8,11 @@ GET     /                                       Application.index
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
+
+# Videos
+GET     /videos                                 VideoController.getAllVideos
+GET     /video/add                              VideoController.addVideo
+
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 

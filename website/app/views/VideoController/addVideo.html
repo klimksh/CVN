@@ -1,0 +1,92 @@
+#{extends 'main.html' /}
+#{set title:'Adding new video' /}
+#{set 'moreStyles'}
+    #{stylesheet 'main.css'/}
+#{/set}
+
+
+<div class="col-md-4 column" id="video-info">
+    <form role="form">
+        <div class="form-group">
+            <label for="video-link">Link to the video on YouTube</label>
+            <input type="text" class="form-control" id="video-link" placeholder="link to a video on YouTube..."/>
+        </div>
+
+        <div class="form-group">
+            <label for="video-title">Video title</label>
+            <input type="text" disabled class="form-control" id="video-title" placeholder="Video title..."/>
+        </div>
+
+        <div class="form-group">
+            <label for="video-description">Video description</label>
+            <textarea rows="5" disabled class="form-control" id="video-description"
+                      placeholder="Video description..."></textarea>
+        </div>
+    </form>
+
+</div>
+
+<div class="col-md-8 column" id="video-info">
+    <div id="player"  style=" height: 360px; width:480px; margin: 10px auto;"></div>
+    <div id="loading" style="width: 124px; height: 124px; margin:0px auto;"></div>
+
+</div>
+
+<script>
+    $("#video-link").change(function () {
+        var request_link = "https://gdata.youtube.com/feeds/api/videos/" + $(this).val() + "?v=2";
+        var link = $(this).val();
+        $("#loading").append('<img src="/public/img/loading.gif"/>');
+        $.ajax({
+            type: "GET",
+            url: request_link,
+            dataType: "xml",
+            success: function (data) {
+                $xml = $(data);
+                var title = $xml.find("title");
+                $("#video-title").val(title.text());
+                $("#video-title").prop('disabled', false);
+
+                var desc = $xml.find("media\\:description, description");
+                $("#video-description").val(desc.text());
+                $("#video-description").prop('disabled', false);
+
+                //var thumbnail = $xml.find("media\\:thumbnail[yt\\:name='hqdefault'], thumbnail").attr("url");
+                //console.log(thumbnail);
+                //$("#video").css("background-image", "url(" + thumbnail+ ")");
+                $("#loading").remove();
+
+
+                console.log(link);
+                var player;
+                player = new YT.Player('player', {
+                    height: '360',
+                    width: '480',
+                    videoId: '' + link + '',
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+
+                function onPlayerReady(event) {
+
+                }
+
+                var done = false;
+
+                function onPlayerStateChange(event) {
+                    if (event.data == 1) {
+                        //if the video is playing start catching events
+
+                    }
+                }
+
+                function stopVideo() {
+                    player.stopVideo();
+                }
+
+            }
+        })
+    })
+</script>
