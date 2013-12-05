@@ -1,12 +1,5 @@
-/**
- * Created with IntelliJ IDEA.
- * User: daniel
- * Date: 26/11/13
- * Time: 12:19
- */
-
 $(function() {
-    addTimeToPanel();
+    initializeTimeline();
 
     $("#delay").blur(function(){
        if(parseInt($("#delay").val()) < 5) {
@@ -16,6 +9,22 @@ $(function() {
     });
 })
 
+/**
+ * Starts the timer
+ */
+function startTimer() {
+    currentTime = 0;
+    window.setInterval(function(){
+        currentTime++;
+        $("#timer").html(formatTime(currentTime));
+        slideTimeline(currentTime);
+    }, 1000);
+}
+
+/**
+ * Adds the timeframe a note is visible to the notes header
+ * DEVELOPMENT ONLY
+ */
 function addTimeToPanel() {
     $("#timeline .note").each(function(){
         var startTime = parseInt($(this).data("start"));
@@ -26,31 +35,32 @@ function addTimeToPanel() {
         }
 
         $(this).children(".panel-heading").html(title+" ("+formatTime(startTime)+"-"+formatTime(endTime)+")");
-        console.log("time added");
+        console.log("Time added to Note");
     });
 }
 
-function updateNoteFeed(currentVideoTime) {
+/**
+ * Removes old notes from the timeline, while watching a video
+ * @param currentVideoTime
+ */
+function slideTimeline(currentVideoTime) {
     $(".note").each(function(){
         var noteEndTime = parseInt($(this).data("start"))+parseInt($("#delay").val());
         if(noteEndTime<currentVideoTime && $(this).is(':visible')) {
-            console.log("check");
             $(this).hide(500, function(){
                 "slide", { direction: "left" }
             });
+            console.log("Remove note");
         }
     });
 }
 
-function startTimer() {
-    currentTime = 0;
-    window.setInterval(function(){
-        currentTime++;
-        $("#timer").html(formatTime(currentTime));
-        updateNoteFeed(currentTime);
-    }, 1000);
-}
-
+/**
+ * Formats the timeInSeconds
+ * Examples: 5s, 2m5s, 1h2m5s
+ * @param timeInSeconds
+ * @returns {string}
+ */
 function formatTime(timeInSeconds) {
     var h, m, s;
 
@@ -71,4 +81,67 @@ function formatTime(timeInSeconds) {
     } else {
         return s+"s";
     }
+}
+
+/**
+ * Create a single Note from JsonObject
+ * @param singleNote
+ * @returns {string}
+ */
+function createNote( singleNote ) {
+    return "<div class='panel panel-default note' data-start='"+singleNote.startTime
+        +"s'><div class='panel-heading'>"+singleNote.title
+        +"</div><div class='panel-body'>"+singleNote.content
+        +"</div><div class='panel-footer'><a href='/user?id="+singleNote.user.id+"'>by "+singleNote.user.name
+        +"</a></div></div>";
+}
+
+/**
+ * Creates all notes and adds them to the timeline
+ */
+function initializeTimeline() {
+    $.getJSON( "data/data.json", function( data ) {
+        var notes = [];
+        $.each( data, function( index ) {
+            if(data[index].title !== "") {
+                notes.push( createNote(data[index]) );
+            }
+        });
+
+        $("#timeline").html( notes.join( "" ) );
+    });
+}
+
+/**
+ * Adds notes to the timeline after initialization
+ */
+function updateTimeline() {
+    $.getJSON( "data/update.json", function( data ) {
+        $.each( data, function( index ) {
+            var prevNote = findPrevNote(data[index].startTime);
+            if(prevNote !== null) { // prevNote found, add after the prevNote
+                prevNote.after( createNote(data[index]) );
+            } else { // no notes found, add at beginning of timeline
+                $("#timeline").prepend( createNote(data[index]) );
+            }
+        });
+    });
+}
+
+/**
+ * Searches for the previous note to a certain startTime
+ * @param startTime
+ * @returns prevNote | null
+ */
+function findPrevNote(startTime) {
+    var prevNote = null;
+    var time = 0;
+    $(".note").each(function() {
+        time = parseInt( $(this).data("start") );
+        if(time <= startTime) {
+            prevNote = $(this);
+        }
+    });
+
+    return prevNote;
 }
