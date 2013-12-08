@@ -44,13 +44,18 @@ function addTimeToPanel() {
  * @param currentVideoTime
  */
 function slideTimeline(currentVideoTime) {
-    $(".note").each(function(){
+    $(".note:not(.past)").each(function(){
         var noteEndTime = parseInt($(this).data("start"))+parseInt($("#delay").val());
-        if(noteEndTime<currentVideoTime && $(this).is(':visible')) {
-            $(this).hide(500, function(){
-                "slide", { direction: "left" }
-            });
-            console.log("Remove note");
+
+        if(noteEndTime<=currentVideoTime ) {
+            $(this).addClass("past");
+
+            var width = $(".note").width();
+            var currentPos = $(this).offset().left;
+            console.log("CurrentPos: "+currentPos);
+            console.log("Width: "+width);
+
+            $("#timeline").animate({scrollLeft: currentPos+width}, 500);
         }
     });
 }
