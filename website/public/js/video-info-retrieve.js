@@ -3,8 +3,9 @@
  */
 
 $("#video-link").change(function () {
-    var request_link = "https://gdata.youtube.com/feeds/api/videos/" + $(this).val() + "?v=2";
     var link = $(this).val();
+    //link = link.match(/^(?:http:\/\/www.youtube.com\/watch\?v=|http:\/\/youtu.be\/)(\w{11})$/)[1];
+    var request_link = "https://gdata.youtube.com/feeds/api/videos/" + link + "?v=2";
     $("#video").append('<img src="/public/img/loading.gif"/>');
     $.ajax({
         type: "GET",
@@ -31,7 +32,6 @@ $("#video-link").change(function () {
             $("#loading").remove();
 
 
-            console.log(link);
             var player;
             player = new YT.Player('player', {
                 height: '360',
@@ -41,6 +41,11 @@ $("#video-link").change(function () {
             });
 
 
+        },
+        statusCode: {
+            400: function() {
+                $("#video-link-group").addClass("has-error");
+            }
         }
     })
 })

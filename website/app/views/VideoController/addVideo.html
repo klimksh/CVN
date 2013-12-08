@@ -9,17 +9,19 @@
 
 #{form @VideoController.saveVideo(), method:"POST"}
 <div class="col-md-5 column" id="video-info">
-    <div class="form-group">
+    <div id="video-link-group" class="form-group">
         <label for="video-link">Link to the video on YouTube</label>
-        <input type="text" class="form-control" id="video-link" name="video-link" placeholder="link to a video on YouTube..."/>
+        <input type="text" class="form-control" id="video-link" name="video-link"
+               placeholder="link to a video on YouTube..."/>
     </div>
 
-    <div class="form-group">
+    <div id="video-title-group" class="form-group">
         <label for="video-title">Video title</label>
-        <input type="text" disabled class="form-control"  name="video-title" id="video-title" placeholder="Video title..."/>
+        <input type="text" disabled class="form-control" name="video-title" id="video-title"
+               placeholder="Video title..."/>
     </div>
 
-    <div class="form-group">
+    <div id="video-description-group" class="form-group">
         <label for="video-description">Video description</label>
         <textarea rows="7" disabled class="form-control" id="video-description" name="video-description"
                   placeholder="Video description..."></textarea>
@@ -40,6 +42,7 @@
 <span class="row" style="margin-top: 20px">
     <button id="video-save" type="submit" class="btn btn-success col-md-2 pull-right">Save</button>
 </span>
+
 
 #{/form}
 <script src="/public/js/video-info-retrieve.js"></script>
