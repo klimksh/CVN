@@ -4,7 +4,7 @@
 
 $("#video-link").change(function () {
     var link = $(this).val();
-    //link = link.match(/^(?:http:\/\/www.youtube.com\/watch\?v=|http:\/\/youtu.be\/)(\w{11})$/)[1];
+    link = link.match(/^(?:http:\/\/www.youtube.com\/watch\?v=|http:\/\/youtu.be\/)(\w{11})$/)[1];
     var request_link = "https://gdata.youtube.com/feeds/api/videos/" + link + "?v=2";
     $("#video").append('<img src="/public/img/loading.gif"/>');
     $.ajax({
