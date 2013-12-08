@@ -2,10 +2,6 @@
  * Created by D Mak on 06.12.13.
  */
 
-var title = "";
-var desc = "";
-var tags = "";
-var thumbnails = "";
 $("#video-link").change(function () {
     var request_link = "https://gdata.youtube.com/feeds/api/videos/" + $(this).val() + "?v=2";
     var link = $(this).val();
@@ -28,7 +24,8 @@ $("#video-link").change(function () {
             $("#video-tags").val(tags.text());
             $("#video-tags").prop('disabled', false);
 
-            //var thumbnail = $xml.find("media\\:thumbnail[yt\\:name='hqdefault'], thumbnail").attr("url");
+            var thumbnail = $xml.find("media\\:thumbnail[yt\\:name='hqdefault'], thumbnail").attr("url");
+            $("#video-thumbnail").val(thumbnail);
             //console.log(thumbnail);
             //$("#video").css("background-image", "url(" + thumbnail+ ")");
             $("#loading").remove();

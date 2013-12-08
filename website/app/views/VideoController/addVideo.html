@@ -11,19 +11,21 @@
 <div class="col-md-5 column" id="video-info">
     <div class="form-group">
         <label for="video-link">Link to the video on YouTube</label>
-        <input type="text" class="form-control" id="video-link" placeholder="link to a video on YouTube..."/>
+        <input type="text" class="form-control" id="video-link" name="video-link" placeholder="link to a video on YouTube..."/>
     </div>
 
     <div class="form-group">
         <label for="video-title">Video title</label>
-        <input type="text" disabled class="form-control" id="video-title" placeholder="Video title..."/>
+        <input type="text" disabled class="form-control"  name="video-title" id="video-title" placeholder="Video title..."/>
     </div>
 
     <div class="form-group">
         <label for="video-description">Video description</label>
-        <textarea rows="7" disabled class="form-control" id="video-description"
+        <textarea rows="7" disabled class="form-control" id="video-description" name="video-description"
                   placeholder="Video description..."></textarea>
     </div>
+
+    <input type="text" class="hidden" class="form-control" name="video-thumbnail" id="video-thumbnail"/>
 
 
 </div>
