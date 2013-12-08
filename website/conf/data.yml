@@ -1,0 +1,19 @@
+User(1):
+    name:           tumStudent
+    email:          abc1@g.com
+    password:       secret
+User(2):
+    name:           tumStudent
+    email:          abc2@g.com
+    password:       secret
+User(3):
+    name:           tumStudent
+    email:          abc3@g.com
+    password:       secret
+Tag(1):
+    title:          education
+Tag(2):
+    title:          university
+Tag(3):
+    title:          something
+    

@@ -13,4 +13,4 @@ GET     /public/                                staticDir:public
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
-*       /auth       module:securesocial
+*     /application/example/a                 Application.example(a: ArrayList<Object>)
