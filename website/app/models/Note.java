@@ -1,16 +1,15 @@
 package models;
 
+import play.db.jpa.Model;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Entity;
 
-import play.db.jpa.Model;
-
-@Entity(name="Notes")
+@Entity(name = "Notes")
 public class Note extends Model {
     public String title; // title of the note
     public String content; // content will be around 140 charac
@@ -20,24 +19,22 @@ public class Note extends Model {
     public User user; // user who has wrote it
     public long visited; // number of visitors who have visited this note
     @ManyToMany
-    public List<Tag>noteTags;// tags of the note
+    public List<Tag> noteTags;// tags of the note
 
-	public Note(String title, String content, Date startTime, Video video,
-			User user,  ArrayList<Tag> noteTags) {
-		super();
-		this.title = title;
-		this.content = content;
-		this.startTime = startTime;
-		this.video = video;
-		this.user = user;
-		this.visited = 0;
-		this.noteTags = noteTags;
-		create();
-		
-	}
+    public Note(String title, String content, Date startTime, Video video, User user, ArrayList<Tag> noteTags) {
+        super();
+        this.title = title;
+        this.content = content;
+        this.startTime = startTime;
+        this.video = video;
+        this.user = user;
+        this.visited = 0;
+        this.noteTags = noteTags;
+        create();
 
-    public Note(String title, String content, Date startTime, Video video,
-                User user, ArrayList<Tag> noteTags, long visited) {
+    }
+
+    public Note(String title, String content, Date startTime, Video video, User user, ArrayList<Tag> noteTags, long visited) {
         super();
         this.title = title;
         this.content = content;
@@ -47,6 +44,5 @@ public class Note extends Model {
         this.visited = visited;
         this.noteTags = noteTags;
         create();
-
     }
 }

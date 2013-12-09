@@ -1,0 +1,48 @@
+#{extends 'main.html' /}
+#{set title:'Adding new video' /}
+#{set 'moreStyles'}
+    #{stylesheet 'main.css'/}
+#{/set}
+<div class="page-header">
+    <h1>Add new video</h1>
+</div>
+
+#{form @VideoController.saveVideo(), method:"POST"}
+<div class="col-md-5 column" id="video-info">
+    <div id="video-link-group" class="form-group">
+        <label for="video-link">Link to the video on YouTube</label>
+        <input type="text" class="form-control" id="video-link" name="video-link"
+               placeholder="link to a video on YouTube..."/>
+    </div>
+
+    <div id="video-title-group" class="form-group">
+        <label for="video-title">Video title</label>
+        <input type="text" disabled class="form-control" name="video-title" id="video-title"
+               placeholder="Video title..."/>
+    </div>
+
+    <div id="video-description-group" class="form-group">
+        <label for="video-description">Video description</label>
+        <textarea rows="7" disabled class="form-control" id="video-description" name="video-description"
+                  placeholder="Video description..."></textarea>
+    </div>
+
+    <input type="text" class="hidden" class="form-control" name="video-thumbnail" id="video-thumbnail"/>
+
+
+</div>
+
+<div class="col-md-7 column" id="video-info" style="text-align: center; padding: 10px; background-color: #262626">
+    <div id="player" style=" height: 360px; width:480px;"></div>
+
+</div>
+
+<div class="clearfix"></div>
+
+<span class="row" style="margin-top: 20px">
+    <button id="video-save" type="submit" class="btn btn-success col-md-2 pull-right">Save</button>
+</span>
+
+
+#{/form}
+<script src="/public/js/video-info-retrieve.js"></script>
