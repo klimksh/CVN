@@ -10,6 +10,7 @@
     <meta name="author" content="">
 
     <link href="@{'public/css/bootstrap.min.css'}" rel="stylesheet">
+    <link href="@{'public/css/main.css'}" rel="stylesheet">
     <link href="@{'public/css/style.css'}" rel="stylesheet">
 #{get 'moreStyles' /}
 
@@ -54,9 +55,9 @@
 </div>
 <div id="loaderror"> </div>
 -->
-<div id=header">
-#{include 'header_nav.html'/}
-</div>
+<header>
+#{include 'header.html'/}
+</header>
 
 <div id="content">
 #{doLayout /}

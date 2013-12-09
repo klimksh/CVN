@@ -43,6 +43,8 @@ function addTimeToPanel() {
  * Removes old notes from the timeline, while watching a video
  * @param currentVideoTime
  */
+
+/* !!! use it */
 function slideTimeline(currentVideoTime) {
     $(".note:not(.past)").each(function(){
         var noteEndTime = parseInt($(this).data("start"))+parseInt($("#delay").val());
@@ -105,7 +107,7 @@ function createNote( singleNote ) {
  * Creates all notes and adds them to the timeline
  */
 function initializeTimeline() {
-    $.getJSON( "data/data.json", function( data ) {
+    $.getJSON( "/public/data/data.json", function( data ) {
         var notes = [];
         $.each( data, function( index ) {
             if(data[index].title !== "") {

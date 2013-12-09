@@ -13,6 +13,7 @@ GET     /favicon.ico                            404
 GET     /videos                                 VideoController.getAllVideos
 GET     /video/add                              VideoController.addVideo
 POST    /video/save                             VideoController.saveVideo
+GET     /video/{id}                             VideoController.getVideo
 
 GET     /timeline                               Application.timeline
 

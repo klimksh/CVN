@@ -38,4 +38,8 @@ public class VideoController extends Controller {
         Video video = new Video(title, desc, link, new Date(year, month, day), new ArrayList<Tag>(), user);
         video.save();
     }
+
+    public static void getVideo(String id){
+        render(id);
+    }
 }
