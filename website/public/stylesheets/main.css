@@ -1,0 +1,22 @@
+body{
+    /*background: url("/public/img/bg-blue.png") repeat-x;*/
+    background-color: #edeae1;
+}
+
+header, footer{
+    width: 1100px;
+    min-height: 70px;
+    margin: 10px auto;
+}
+
+
+
+#content{
+    width: 1100px;
+    margin: 0px auto;
+    background-color: #ffffff;
+    color: #6E6B5F;
+  /*  font: 18px Helvetica, Arial, Verdana, Sans-Serif;*/
+    padding: 5px 30px 30px 30px;
+    min-height: 450px;
+}

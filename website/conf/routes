@@ -14,9 +14,12 @@ GET     /videos                                 VideoController.getAllVideos
 GET     /video/add                              VideoController.addVideo
 POST    /video/save                             VideoController.saveVideo
 
-# Map static resources from the /app/public folder to the /public path
+GET     /timeline                               Application.timeline
+
+
 GET     /public/                                staticDir:public
+GET     /data/                                  staticDir:public/data
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
-*     /application/example/a                 Application.example(a: ArrayList<Object>)
+*       /application/example/a                  Application.example(a: ArrayList<Object>)
