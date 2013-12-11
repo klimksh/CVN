@@ -10,10 +10,3 @@ User(3):
     name:           tumStudent
     email:          abc3@g.com
     password:       secret
-Tag(1):
-    title:          education
-Tag(2):
-    title:          university
-Tag(3):
-    title:          something
-    

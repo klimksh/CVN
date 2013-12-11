@@ -11,10 +11,10 @@ import play.mvc.Controller;
 //import com.google.gdata.data.youtube.VideoEntry;
 
 public class Application extends Controller {
-    static String id = session.get("id");
-
+  String id;
     public static void index() {
-
+         if(session.get("id")!=null)
+    	 session.put("id","");
         renderTemplate("Application/frontpage.html");
     }
 
@@ -32,14 +32,14 @@ public class Application extends Controller {
             a = User.findByEmail(email);
         session.put("id", a.id);
         session.put("email", a.email);
-        id = session.get("id");
+      //  id = session.get("id");
 
-        System.out.println("myy:" + session.get("logid"));
+        System.out.println("myy:" + session.get("id"));
     }
 
     public static void loginToken(String token) {
         session.put("token", token);
-        System.out.println("i have this token" + session.get("token"));
+        System.out.println("i have this token" + session.get("token")+"    and id:"+session.get("id"));
     }
 
     // get the user which is logged ON
@@ -53,11 +53,19 @@ public class Application extends Controller {
     public static void logout() {
 
         flash.success("You've been logged out");
-        session.remove("id");
-        session.remove("email");
-        id = null;
+        session.put("id",0);
+        session.put("email","");
+    //    id = null;
 
 
+    }
+    public static int exist()
+    {
+    	System.out.println("helllo");
+    	if(session.get("id")==null)
+    		return 0;
+    	else
+    		return 1;
     }
 
     public static void disconnectAccount() {
@@ -81,6 +89,7 @@ public class Application extends Controller {
 
     public static void add_video() {
         int tt = 10;
+        
         render(tt);
     }
 
@@ -105,9 +114,9 @@ public class Application extends Controller {
             params.flash();
             String error = "";
             if (User.findByEmail(email) != null) {
-                // tell him that this ID already exists
+            	flash.error("This email allready exist in our database");
             } else {
-                // tell to user that his email or paswword does not match
+            	flash.error("passwords does not match");
             }
         } else {
             User user = new User(email, password2, name);
