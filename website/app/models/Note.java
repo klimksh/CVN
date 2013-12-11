@@ -45,4 +45,8 @@ public class Note extends Model {
         this.noteTags = noteTags;
         create();
     }
+
+    public static List<Note> findAllByVideoId(Video video) {
+        return find("video = ? order by startTime desc", video).fetch();
+    }
 }

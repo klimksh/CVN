@@ -31,7 +31,7 @@ public class User extends Model{
 
 	public void insertUser(String email, String password, String name)
 	{
-		User a= new User(email, password, name);	
+		new User(email, password, name);
 	}
 
     public User(String email, String password, String name, String googleUserId) {
@@ -55,10 +55,12 @@ public class User extends Model{
     public boolean checkPassword(String password) {
         return this.password.equals(password);
     }
+
     public String getEmail()
     {
     	return this.email;
     }
+
     public void inserUser(String email, String password, String name, String googleUserId)
     {
     	new User(email, password, name, googleUserId);
