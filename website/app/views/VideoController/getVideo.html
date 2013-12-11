@@ -2,10 +2,6 @@
 
 #{set title:'Adding new video' /}
 
-#{set 'moreStyles'}
-    #{stylesheet 'main.css'/}
-#{/set}
-
 <div class="page-header">
     <h1>Video ${id}</h1>
 </div>
@@ -38,14 +34,15 @@
 
     var done = false;
     function onPlayerStateChange(event) {
-        if (event.data == 1){
-            //if the video is playing start catching events
+        if (event.data === 1){  //if the video is playing start catching events
             checkTimePointsOnVideo();
         }
     }
-    /** not used yet **/
+
+
+    /** not used yet **//*
     function catchNextMoment(points){
-        /* catches the next timepoint */
+        *//* catches the next timepoint *//*
         var played = Math.round(player.getCurrentTime()),
                 i=0,
                 point = 0;
@@ -53,34 +50,36 @@
             if (point === played) {
                 console.log("in");
                 slideTimeline(played);
-                /* !!!! call time line method*/
+                *//* !!!! call time line method*//*
                 $("#result").text("Reached "+point + "!");
                 break;
             }
         }
     }
 
-    var points = [1, 2, 3, 5, 10, 13, 15, 20];
+    var points = [1, 2, 3, 5, 10, 13, 15, 20];*/
 
 
     /* !!!contains timer that runs slideTimeline */
     function checkTimePointsOnVideo() {
 
-
         addTimeToPanel();
+
         /* catches all timepoints on the video*/
         if (!player.getCurrentTime) {
             return false;
         }
-        catchNextMoment(points);
 
-        setInterval(function(){
-            //catchNextMoment(points);
-            var played = Math.round(player.getCurrentTime());
-            console.log(played);
-            slideTimeline(played);
-            $("#sec").text(Math.round(player.getCurrentTime()));
-        },800);
+        // player.getPlayerState() ----- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
+        var interval = setInterval(function(){
+            if(player.getPlayerState() === 1) {
+                var played = Math.round(player.getCurrentTime());
+                console.log("CurrentTime:"+played+"s");
+                slideTimeline(played);
+            } else if(player.getPlayerState() === 0 || player.getPlayerState() === 2) {
+                clearInterval(interval);
+            }
+        },1000);
     }
 
     function stopVideo() {

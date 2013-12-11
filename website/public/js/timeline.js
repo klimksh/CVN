@@ -10,18 +10,6 @@ $(function() {
 })
 
 /**
- * Starts the timer
- */
-function startTimer() {
-    currentTime = 0;
-    window.setInterval(function(){
-        currentTime++;
-        $("#timer").html(formatTime(currentTime));
-        slideTimeline(currentTime);
-    }, 1000);
-}
-
-/**
  * Adds the timeframe a note is visible to the notes header
  * DEVELOPMENT ONLY
  */
@@ -43,8 +31,6 @@ function addTimeToPanel() {
  * Removes old notes from the timeline, while watching a video
  * @param currentVideoTime
  */
-
-/* !!! use it */
 function slideTimeline(currentVideoTime) {
     $(".note:not(.past)").each(function(){
         var noteEndTime = parseInt($(this).data("start"))+parseInt($("#delay").val());
@@ -52,8 +38,8 @@ function slideTimeline(currentVideoTime) {
         if(noteEndTime<=currentVideoTime ) {
             $(this).addClass("past");
 
-            var width = $(".note").width();
-            var currentPos = $(this).offset().left;
+            var width = 200; // $('.note').width();
+            var currentPos = $('#timeline').scrollLeft(); // doesn't work if someone moves the slider by hand
             console.log("CurrentPos: "+currentPos);
             console.log("Width: "+width);
 
