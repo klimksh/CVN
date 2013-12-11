@@ -24,7 +24,7 @@ public class Video extends Model {
 
     public Date uploadDate;
 
-    @ManyToMany
+    @ManyToMany 
     public List<Tag> videoTags;
 
     @ManyToOne
