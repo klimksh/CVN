@@ -7,6 +7,16 @@ $(function() {
        }
         addTimeToPanel();
     });
+
+    $('#autoslide').change(function(){
+        if( $(this).is(':checked') ) {
+            console.log("manual slide");
+            var pastNotes = Math.max(0, $('.past').length);
+            var width = 200; // $('.note').width();
+            var scrollToPosition = width*pastNotes;
+            $("#timeline").animate({scrollLeft: scrollToPosition}, 100);
+        }
+    });
 })
 
 /**
@@ -33,23 +43,36 @@ function addTimeToPanel() {
  */
 function slideTimeline(currentVideoTime) {
     $(".note:not(.past)").each(function(){
+        var currentPosition = $('#timeline').scrollLeft();
+        var pastNotes = Math.max(0, $('.past').length);
+        var width = 200; // $('.note').width();
+
+        var slideToleranceMin = (pastNotes-1)*width;
+        var slideToleranceMax = (pastNotes+1)*width;
+
+        if(currentPosition<slideToleranceMin || currentPosition>slideToleranceMax) {
+            $('#autoslide').prop('checked', false);
+            console.log("Out of tolerance area -> automatical sliding deactivated");
+        }
+
         var noteEndTime = parseInt($(this).data("start"))+parseInt($("#delay").val());
+        var autoSlide = $('#autoslide').is(':checked');
 
-        if(noteEndTime<=currentVideoTime ) {
+        if(noteEndTime<=currentVideoTime) {
             $(this).addClass("past");
+            pastNotes++;
 
-            var width = 200; // $('.note').width();
-            var currentPos = $('#timeline').scrollLeft(); // doesn't work if someone moves the slider by hand
-            console.log("CurrentPos: "+currentPos);
-            console.log("Width: "+width);
-
-            $("#timeline").animate({scrollLeft: currentPos+width}, 500);
+            if(autoSlide) {
+                var scrollToPosition = width*pastNotes;
+                console.log("scroll from "+currentPosition+" to "+scrollToPosition);
+                $("#timeline").animate({scrollLeft: scrollToPosition}, 500);
+            }
         }
     });
 }
 
 /**
- * Formats the timeInSeconds
+ * Formatting the timeInSeconds
  * Examples: 5s, 2m5s, 1h2m5s
  * @param timeInSeconds
  * @returns {string}

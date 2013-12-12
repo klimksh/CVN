@@ -1,6 +1,6 @@
 #{extends 'main.html' /}
 
-#{set title:'Adding new video' /}
+#{set title:'Play video' /}
 
 <div class="page-header">
     <h1>Video ${id}</h1>
@@ -9,6 +9,9 @@
     Delay (&ge; 5) <input id="delay" style="width: 60px;text-align: center" type="text" placeholder="5" value="5"/>
 </div>
 <div id="player"></div>
+<div id="slideHandler">
+    <input id="autoslide" type="checkbox" checked="checked"/> Automatically slide
+</div>
 <div id="timeline"></div>
 #{set 'moreStyles'}
 
