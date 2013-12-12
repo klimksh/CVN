@@ -5,6 +5,8 @@ import play.db.jpa.Model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,8 @@ public class Note extends Model {
     public int startTime; // start time in the video in which will be shown the note
     @ManyToOne
     public Video video; // the video in which is the note
-    public User user; // user who has wrote it
+    @OneToOne
+    public User noteWriter; // user who has wrote it
     public long visited; // number of visitors who have visited this note
     @ManyToMany
     public List<Tag> noteTags;// tags of the note
@@ -26,7 +29,7 @@ public class Note extends Model {
         this.content = content;
         this.startTime = startTime;
         this.video = video;
-        this.user = user;
+        this.noteWriter = user;
         this.visited = 0;
         this.noteTags = noteTags;
         create();
@@ -39,9 +42,13 @@ public class Note extends Model {
         this.content = content;
         this.startTime = startTime;
         this.video = video;
-        this.user = user;
+        this.noteWriter = user;
         this.visited = visited;
         this.noteTags = noteTags;
         create();
     }
+    //public static void main(String[] args) {
+		//Video a= new 
+	//}
 }
+ 
