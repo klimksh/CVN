@@ -22,6 +22,8 @@ public class VideoController extends Controller {
     }
 
     public static void addVideo() {
+    	if(session.get("id")!=null)
+       	 session.put("id","");
         render();
     }
 
