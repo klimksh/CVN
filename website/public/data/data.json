@@ -3,6 +3,7 @@
         "title": "Title of note",
         "content": "Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ...",
         "startTime": 1,
+        "endTime": 3,
         "user": {
             "id" : 1234,
             "name": "User1234"
@@ -12,6 +13,7 @@
         "title": "Title of note",
         "content": "Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ...",
         "startTime": 5,
+        "endTime": 9,
         "user": {
             "id" : 123,
             "name": "User123"
@@ -21,6 +23,7 @@
         "title": "Title of note",
         "content": "Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ...",
         "startTime": 7,
+        "endTime": 15,
         "user": {
             "id" : 123,
             "name": "User123"
@@ -30,6 +33,7 @@
         "title": "Title of note",
         "content": "Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ...",
         "startTime": 10,
+        "endTime": 13,
         "user": {
             "id" : 123,
             "name": "User123"
@@ -39,6 +43,7 @@
         "title": "Title of note",
         "content": "Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ...",
         "startTime": 12,
+        "endTime": 16,
         "user": {
             "id" : 123,
             "name": "User123"
@@ -48,6 +53,7 @@
         "title": "Title of note",
         "content": "Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ...",
         "startTime": 16,
+        "endTime": 20,
         "user": {
             "id" : 123,
             "name": "User123"
@@ -57,6 +63,7 @@
         "title": "Title of note",
         "content": "Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ...",
         "startTime": 18,
+        "endTime": 23,
         "user": {
             "id" : 123,
             "name": "User123"
@@ -66,6 +73,7 @@
         "title": "Title of note",
         "content": "Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ...",
         "startTime": 22,
+        "endTime": 27,
         "user": {
             "id" : 123,
             "name": "User123"
@@ -75,6 +83,7 @@
         "title": "Title of note",
         "content": "Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ... Lorem ipsum dolor sit amet ...",
         "startTime": 29,
+        "endTime": 35,
         "user": {
             "id" : 123,
             "name": "User123"

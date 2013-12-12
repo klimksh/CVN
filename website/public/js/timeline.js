@@ -1,21 +1,10 @@
-$(function() {
-    initializeTimeline();
+$(function () {
 
-    $("#delay").blur(function(){
-       if(parseInt($("#delay").val()) < 5) {
-           $("#delay").val("5");
-       }
-        addTimeToPanel();
-    });
-
-    $('#autoslide').change(function(){
-        if( $(this).is(':checked') ) {
-            console.log("manual slide");
-            var pastNotes = Math.max(0, $('.past').length);
-            var width = 200; // $('.note').width();
-            var scrollToPosition = width*pastNotes;
-            $("#timeline").animate({scrollLeft: scrollToPosition}, 100);
+    $("#delay").blur(function () {
+        if (parseInt($("#delay").val()) < 5) {
+            $("#delay").val("5");
         }
+        addTimeToPanel();
     });
 })
 
@@ -24,15 +13,16 @@ $(function() {
  * DEVELOPMENT ONLY
  */
 function addTimeToPanel() {
-    $("#timeline .note").each(function(){
+    $("#timeline .note").each(function () {
+        console.log($(this).data());
         var startTime = parseInt($(this).data("start"));
-        var endTime = startTime+parseInt($("#delay").val());
+        var endTime = parseInt($(this).data("end"));
         var title = $(this).children(".panel-heading").html();
-        if( title.indexOf("(") !== -1 ) {
+        if (title.indexOf("(") !== -1) {
             title = title.substr(0, title.indexOf("("));
         }
 
-        $(this).children(".panel-heading").html(title+" ("+formatTime(startTime)+"-"+formatTime(endTime)+")");
+        $(this).children(".panel-heading").html(title + " (" + formatTime(startTime) + "-" + formatTime(endTime) + ")");
         console.log("Time added to Note");
     });
 }
@@ -42,37 +32,24 @@ function addTimeToPanel() {
  * @param currentVideoTime
  */
 function slideTimeline(currentVideoTime) {
-    $(".note:not(.past)").each(function(){
-        var currentPosition = $('#timeline').scrollLeft();
-        var pastNotes = Math.max(0, $('.past').length);
-        var width = 200; // $('.note').width();
+    $(".note:not(.past)").each(function () {
+        var noteEndTime = parseInt($(this).data("end"));
 
-        var slideToleranceMin = (pastNotes-1)*width;
-        var slideToleranceMax = (pastNotes+1)*width;
-
-        if(currentPosition<slideToleranceMin || currentPosition>slideToleranceMax) {
-            $('#autoslide').prop('checked', false);
-            console.log("Out of tolerance area -> automatical sliding deactivated");
-        }
-
-        var noteEndTime = parseInt($(this).data("start"))+parseInt($("#delay").val());
-        var autoSlide = $('#autoslide').is(':checked');
-
-        if(noteEndTime<=currentVideoTime) {
+        if (noteEndTime <= currentVideoTime) {
             $(this).addClass("past");
-            pastNotes++;
 
-            if(autoSlide) {
-                var scrollToPosition = width*pastNotes;
-                console.log("scroll from "+currentPosition+" to "+scrollToPosition);
-                $("#timeline").animate({scrollLeft: scrollToPosition}, 500);
-            }
+            var width = 200; // $('.note').width();
+            var currentPos = $('#timeline').scrollLeft(); // doesn't work if someone moves the slider by hand
+            console.log("CurrentPos: " + currentPos);
+            console.log("Width: " + width);
+
+            $("#timeline").animate({scrollLeft: currentPos + width}, 500);
         }
     });
 }
 
 /**
- * Formatting the timeInSeconds
+ * Formats the timeInSeconds
  * Examples: 5s, 2m5s, 1h2m5s
  * @param timeInSeconds
  * @returns {string}
@@ -80,22 +57,22 @@ function slideTimeline(currentVideoTime) {
 function formatTime(timeInSeconds) {
     var h, m, s;
 
-    s = Math.floor(timeInSeconds%60);
-    m = Math.floor((timeInSeconds-s)/60)%60;
+    s = Math.floor(timeInSeconds % 60);
+    m = Math.floor((timeInSeconds - s) / 60) % 60;
 
-    if((timeInSeconds-s-m*60) !== 0) {
-        h = Math.floor((timeInSeconds-s-m*60)/3600);
+    if ((timeInSeconds - s - m * 60) !== 0) {
+        h = Math.floor((timeInSeconds - s - m * 60) / 3600);
     } else {
         h = 0;
     }
 
 
-    if(h > 0) {
-        return h+"h"+m+"m"+s+"s";
-    } else if(m > 0) {
-        return m+"m"+s+"s";
+    if (h > 0) {
+        return h + "h" + m + "m" + s + "s";
+    } else if (m > 0) {
+        return m + "m" + s + "s";
     } else {
-        return s+"s";
+        return s + "s";
     }
 }
 
@@ -104,27 +81,27 @@ function formatTime(timeInSeconds) {
  * @param singleNote
  * @returns {string}
  */
-function createNote( singleNote ) {
-    return "<div class='panel panel-default note' data-start='"+singleNote.startTime
-        +"s'><div class='panel-heading'>"+singleNote.title
-        +"</div><div class='panel-body'>"+singleNote.content
-        +"</div><div class='panel-footer'><a href='/user?id="+singleNote.user.id+"'>by "+singleNote.user.name
-        +"</a></div></div>";
+function createNote(singleNote) {
+    return "<div class='panel panel-default note' data-start='" + singleNote.startTime + "s' data-end='" + singleNote.endTime + "'>" +
+        "<div class='panel-heading'>" + singleNote.title + " </div>" +
+        "<div class='panel-body'>" + singleNote.content + "</div>" +
+        "<div class='panel-footer'>" +
+        "<a href='/user?id=" + singleNote.user.id + "'>by " + singleNote.user.name + "</a>" +
+        "</div>" +
+        "</div>";
 }
 
 /**
  * Creates all notes and adds them to the timeline
  */
-function initializeTimeline() {
-    $.getJSON( "/public/data/data.json", function( data ) {
-        var notes = [];
-        $.each( data, function( index ) {
-            if(data[index].title !== "") {
-                notes.push( createNote(data[index]) );
-            }
-        });
+function initializeTimeline(jsonData) {
+    var notes = [];
+    $.each(jsonData, function (index) {
+        if (jsonData[index].title !== "") {
+            notes.push(createNote(jsonData[index]));
+        }
 
-        $("#timeline").html( notes.join( "" ) );
+        $("#timeline").html(notes.join(""));
     });
 }
 
@@ -132,13 +109,13 @@ function initializeTimeline() {
  * Adds notes to the timeline after initialization
  */
 function updateTimeline() {
-    $.getJSON( "data/update.json", function( data ) {
-        $.each( data, function( index ) {
+    $.getJSON("data/update.json", function (data) {
+        $.each(data, function (index) {
             var prevNote = findPrevNote(data[index].startTime);
-            if(prevNote !== null) { // prevNote found, add after the prevNote
-                prevNote.after( createNote(data[index]) );
+            if (prevNote !== null) { // prevNote found, add after the prevNote
+                prevNote.after(createNote(data[index]));
             } else { // no notes found, add at beginning of timeline
-                $("#timeline").prepend( createNote(data[index]) );
+                $("#timeline").prepend(createNote(data[index]));
             }
         });
     });
@@ -152,9 +129,9 @@ function updateTimeline() {
 function findPrevNote(startTime) {
     var prevNote = null;
     var time = 0;
-    $(".note").each(function() {
-        time = parseInt( $(this).data("start") );
-        if(time <= startTime) {
+    $(".note").each(function () {
+        time = parseInt($(this).data("start"));
+        if (time <= startTime) {
             prevNote = $(this);
         }
     });

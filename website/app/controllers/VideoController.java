@@ -3,15 +3,11 @@ package controllers;
 import models.Tag;
 import models.User;
 import models.Video;
-import models.Note;
 import play.mvc.Controller;
-
-import com.google.gson.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Milya on 04.12.13.
@@ -32,7 +28,7 @@ public class VideoController extends Controller {
         String desc = request.params.get("video-description");
         /*add thumbnail to Video class*/
         String thumbnail = request.params.get("video-thumbnail");
-        String link = request.params.get("video-link");
+        String link = request.params.get("video-id");
         /*change to actual user*/
         User user = new User("email", "pass", "user");
         user.save();
@@ -43,19 +39,15 @@ public class VideoController extends Controller {
 
         Video video = new Video(title, desc, link, new Date(year, month, day), new ArrayList<Tag>(), user);
         video.save();
+
+        redirect("/video/" + video.id);
     }
 
-    public static void getVideo(String id){
-        render(id);
+    public static void video(String id){
+        Video video = Video.findById(Long.parseLong(id));
+
+        //String notes = NoteController.getNotes(Long.parseLong(id));
+        render(video);
     }
 
-    public static void getNotes(Long id){
-        Gson gson = new Gson();
-        Video video = null;
-        video.findById(id);
-
-        List<Note> notes = Note.findAllByVideoId(video);
-        String json = gson.toJson(notes);
-        render(json);
-    }
 }

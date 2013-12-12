@@ -29,6 +29,8 @@ $("#video-link").change(function () {
             $("#video-thumbnail").val(thumbnail);
             //console.log(thumbnail);
             //$("#video").css("background-image", "url(" + thumbnail+ ")");
+            $("#video-id").val(link);
+
             $("#loading").remove();
 
 
