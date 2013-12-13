@@ -1,17 +1,21 @@
 #{extends 'main.html' /}
 
+
 #{set title: "${video.title}" /}
+
+#{stylesheet 'video-page.css'/}
+
 
 <div class="page-header">
     <h1>${video.title}</h1>
 </div>
 <div id="container">
-    <div id="player" style="width: 60%; float: left"></div>
+    <div id="player"></div>
 
-    <div style="float: right; width: 35%">
+    <div id="note-container">
         <button id="add-new-note" type="submit" class="btn btn-success">+ New note</button>
 
-        <div id="new-note" style="margin:10px; display: none">
+        <div id="new-note">
 
         #{form @NoteController.saveNote(), method:"POST"}
             <div id="note-title-group" class="form-group">
@@ -40,9 +44,7 @@
             <input type="text" hidden="hidden" name="video-id" id="video-id" value="${video.id}"/>
 
 
-            <div id="tags-list" style="margin:10px 0px"></div>
-            <input type="text" class="form-control" id="tags-input" name="tags-input" placeholder="Type tags separated by comma..."/>
-            <input type="text" hidden="hidden" name="tags" id="tags" value=""/>
+            #{include 'add-tag.html'/}
 
             <span class="row" style="margin-top: 20px">
                 <button id="note-save" type="submit" class="btn btn-success pull-right">Save note</button>
@@ -66,33 +68,6 @@
 #{/set}
 <script src="/public/js/timeline.js"></script>
 <script>
-
-    $("#tags-input").keyup(function (event) {
-
-        if (event.which == 188 && $(this).val()) {
-            var newTag = $(this).val().replace(",", "");
-            $("#tags-list").append('<span name="' + newTag + '" class="label label-warning" style="font-size:14px; margin:5px">' + newTag + '  <span id="delete-tag" style="padding:3px; font-size: 16px">&times;</span></span>');
-            var tags = $("#tags").val();
-            tags += newTag + "; ";
-            $("#tags").val(tags);
-
-            console.log($("#tags").val());
-            $(this).val("");
-        }
-    })
-
-    $("#tags-list").on("mouseover", "#delete-tag",function () {
-        $(this).css("color", "#196A75");
-        $("body").css("cursor", "pointer");
-    }).on("mouseout", "#delete-tag",function () {
-            $(this).css("color", "white");
-            $("body").css("cursor", "default");
-    }).on("click", "#delete-tag", function () {
-            $(this).parent().remove();
-            var tagText = $(this).parent().attr("name");
-            var tags = $("#tags").val().replace("" + tagText + "; ", "");
-    })
-
 
     $(function () {
         //var noteSaveUrl = #{jsAction @NoteController.getNotes(':video-id') /}
@@ -165,10 +140,6 @@
         //player.seekTo(seekTime, false );
 
         player.cueVideoById("${video.url}", startSeekTime, endSeekTime, "large");
-
-        //setTimeout(player.stopVideo, 1000);
-
-        console.log(startSeekTime);
         $("#note-start-int").val(startSeekTime);
     })
 
@@ -178,9 +149,6 @@
         //player.seekTo(seekTime, false );
 
         player.cueVideoById("${video.url}", startSeekTime, endSeekTime, "large");
-
-        //setTimeout(player.stopVideo, 1000);
-
         $("#note-end-int").val(endSeekTime);
 
     })
