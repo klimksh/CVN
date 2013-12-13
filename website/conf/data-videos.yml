@@ -1,14 +1,6 @@
 Video(1):
-  title:           Ultimate 20 Min Cats Compilation 2013 - We Love Animals!
-  description:     New Vines Compilation http://youtu.be/pvScFdcyngY
-                   Subscribe for more funny Compilations
-                   No copyright infringement intended. All rights attributed accordingly.
-                   All material belongs to their appropriate owners.
-
-                   Under Section 107 of the Copyright Act 1976, allowance is made for «fair use» for purposes such as criticism, comment, news reporting, teaching, scholarship, and research. Fair use is a use permitted by copyright statute that might otherwise be infringing. Non-profit, educational or personal use tips the balance in favor of «fair use». The recent amendments to the Copyright Act of 1976 pertain to music. «Fair use» remains in force for film and video.
-
-                   No copyright intended. All content used in adherence to Fair Use copyright law.
-                   Copyright issue? Send me a message and we will get it resolved ASAP.
+  title:           videoTitle
+  description:     description of video 1
   url:             http://www.youtube.com/watch?v=SaGu7OBovJE
   uploadDate:      2013-12-12
   videoTags:       [1, 2, 3]

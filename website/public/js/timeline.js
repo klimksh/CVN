@@ -95,6 +95,7 @@ function initializeTimeline(videoId) {
 
 function addNoteToTimeline(note) {
     var prevNote = findPrevNote(note.startTime);
+    $('#noNotesAvailable').fadeOut();
     if (prevNote !== null) { // prevNote found, add after the prevNote
         prevNote.after(createNote(note));
     } else { // no notes found, add at beginning of timeline
