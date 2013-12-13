@@ -22,9 +22,9 @@ public class Note extends Model {
     public User noteWriter; // user who has wrote it
     public long visited; // number of visitors who have visited this note
     @ManyToMany
-    public List<Tag> noteTags;// tags of the note
+    public List<Tag> tags;// tags of the note
 
-    public Note(String title, String content, int startTime, /*int endTime,*/ Video video, User user, ArrayList<Tag> noteTags) {
+    public Note(String title, String content, int startTime, /*int endTime,*/ Video video, User user, ArrayList<Tag> tags) {
         super();
         this.title = title;
         this.content = content;
@@ -33,12 +33,12 @@ public class Note extends Model {
         this.video = video;
         this.noteWriter = user;
         this.visited = 0;
-        this.noteTags = noteTags;
+        this.tags = tags;
         //create();
 
     }
 
-    public Note(String title, String content, int startTime, /*int endTime,*/ Video video, User user, ArrayList<Tag> noteTags, long visited) {
+    public Note(String title, String content, int startTime, /*int endTime,*/ Video video, User user, ArrayList<Tag> tags, long visited) {
         super();
         this.title = title;
         this.content = content;
@@ -47,7 +47,7 @@ public class Note extends Model {
         this.video = video;
         this.noteWriter = user;
         this.visited = visited;
-        this.noteTags = noteTags;
+        this.tags = tags;
         create();
     }
 
