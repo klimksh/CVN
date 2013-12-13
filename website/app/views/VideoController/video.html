@@ -61,16 +61,7 @@
 <script src="/public/js/timeline.js"></script>
 <script>
 
-    $(function () {
-        //var noteSaveUrl = #{jsAction @NoteController.getNotes(':video-id') /}
-        $.ajax( {url:       "/notes/"+"${video.id}",
-                 datatype:  "json",
-                 success:   function (data) {
-                                console.log(data);
-                                initializeTimeline(data);
-                            }
-                 })
-    })
+    initializeTimeline(${video.id});
 
     var player;
     $("#add-new-note").click(function () {

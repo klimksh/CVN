@@ -36,3 +36,7 @@
     font-size: 20px;
 
 }
+
+.panel-body {
+    min-height: 185px;
+}
