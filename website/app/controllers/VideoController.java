@@ -45,8 +45,9 @@ public class VideoController extends Controller {
 
     public static void video(String id){
         Video video = Video.findById(Long.parseLong(id));
-
-        //String notes = NoteController.getNotes(Long.parseLong(id));
+        if(video == null) {
+            redirect("/");
+        }
         render(video);
     }
 

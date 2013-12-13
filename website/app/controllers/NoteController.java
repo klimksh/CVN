@@ -15,13 +15,6 @@ import java.util.List;
  * Created by D Mak on 12.12.13.
  */
 public class NoteController extends Controller{
-    public static void getVideo(){
-
-    }
-
-    public static void addNote(){
-        render();
-    }
 
     public static void saveNote(){
         String title = request.params.get("note-title");
@@ -34,7 +27,6 @@ public class NoteController extends Controller{
         user.save();
 
         Note note = new Note(title, content, startTime, /*endTime,*/ video, user, null);
-
 
         String tagsString = request.params.get("tags");
         String[] tagsStringList = tagsString.split("; ");
