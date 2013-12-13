@@ -1,0 +1,14 @@
+#player {
+    width: 60%;
+    float: left
+}
+
+#note-container {
+    float: right;
+    width: 35%
+}
+
+#new-note {
+    margin: 10px;
+    display: none
+}

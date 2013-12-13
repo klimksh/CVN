@@ -25,7 +25,7 @@ public class Video extends Model {
     public Date uploadDate;
 
     @ManyToMany 
-    public List<Tag> videoTags;
+    public List<Tag> tags;
 
     @ManyToOne
     public User owner;
@@ -33,44 +33,44 @@ public class Video extends Model {
     @ManyToMany(mappedBy = "watchedVideos")
     List<User> whatchers;
 
-    public Video(String title, String description, String url, Date uploadDate, ArrayList<Tag> videoTags, User owner) {
+    public Video(String title, String description, String url, Date uploadDate, ArrayList<Tag> tags, User owner) {
         super();
         this.title = title;
         this.description = description;
         this.url = url;
         this.uploadDate = uploadDate;
-        this.videoTags = videoTags;
+        this.tags = tags;
         this.owner = owner;
         create();
     }
 
-    public Video(String title, String description, String url, ArrayList<Tag> videoTags, String userEmail) {
+    public Video(String title, String description, String url, ArrayList<Tag> tags, String userEmail) {
         super();
         this.uploadDate = new Date();
         this.owner = User.findByEmail(userEmail);
         this.title = title;
         this.description = description;
         this.url = url;
-        this.videoTags = videoTags;
+        this.tags = tags;
         create();
     }
 
-    public Video(String title, String description, String url, ArrayList<Tag> videoTags, long id) {
+    public Video(String title, String description, String url, ArrayList<Tag> tags, long id) {
         super();
         this.uploadDate = new Date();
         this.owner = User.findById(id);
         this.title = title;
         this.description = description;
         this.url = url;
-        this.videoTags = videoTags;
+        this.tags = tags;
         create();
     }
 
-    public void insertVideo(String title, String description, String url, ArrayList<Tag> videoTags, String userEmail) {
-        Video tt = new Video(title, description, url, videoTags, userEmail);
+    public void insertVideo(String title, String description, String url, ArrayList<Tag> tags, String userEmail) {
+        Video tt = new Video(title, description, url, tags, userEmail);
     }
 
-    public void insertVideo(String title, String description, String url, ArrayList<Tag> videoTags, long id) {
-        Video tt = new Video(title, description, url, videoTags, id);
+    public void insertVideo(String title, String description, String url, ArrayList<Tag> tags, long id) {
+        Video tt = new Video(title, description, url, tags, id);
     }
 }

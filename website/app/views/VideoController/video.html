@@ -2,16 +2,19 @@
 
 #{set title: "${video.title}" /}
 
+#{stylesheet 'video-page.css'/}
+
+
 <div class="page-header">
     <h1>${video.title}</h1>
 </div>
 <div id="container">
-    <div id="player" style="width: 60%; float: left"></div>
+    <div id="player"></div>
 
-    <div style="float: right; width: 35%">
+    <div id="note-container">
         <button id="add-new-note" type="submit" class="btn btn-success">+ New note</button>
 
-        <div id="new-note" style="margin:10px; display: none">
+        <div id="new-note">
 
         #{form @NoteController.saveNote(), method:"POST"}
             <div id="note-title-group" class="form-group">
@@ -39,9 +42,13 @@
             <input type="text" hidden="hidden" name="note-end-int" id="note-end-int" value=""/>
             <input type="text" hidden="hidden" name="video-id" id="video-id" value="${video.id}"/>
 
+
+            #{include 'add-tag.html'/}
+
             <span class="row" style="margin-top: 20px">
                 <button id="note-save" type="submit" class="btn btn-success pull-right">Save note</button>
             </span>
+
 
 
         #{/form}
@@ -129,10 +136,6 @@
         //player.seekTo(seekTime, false );
 
         player.cueVideoById("${video.url}", startSeekTime, endSeekTime, "large");
-
-        //setTimeout(player.stopVideo, 1000);
-
-        console.log(startSeekTime);
         $("#note-start-int").val(startSeekTime);
     })
 
@@ -142,9 +145,6 @@
         //player.seekTo(seekTime, false );
 
         player.cueVideoById("${video.url}", startSeekTime, endSeekTime, "large");
-
-        //setTimeout(player.stopVideo, 1000);
-
         $("#note-end-int").val(endSeekTime);
 
     })

@@ -33,8 +33,25 @@ public class NoteController extends Controller{
         User user = new User("email", "pass", "user");
         user.save();
 
-        Note note = new Note(title, content, startTime, /*endTime,*/ video, user, new ArrayList<Tag>());
+        Note note = new Note(title, content, startTime, /*endTime,*/ video, user, null);
+
+
+        String tagsString = request.params.get("tags");
+        String[] tagsStringList = tagsString.split("; ");
+        ArrayList<Tag> tags = new ArrayList<Tag>();
+
+        for(String tag : tagsStringList){
+            Tag tagObj = new Tag(tag, note, video);
+            tagObj.save();
+            tags.add(tagObj);
+        }
+        note.tags = tags;
+        video.tags = tags;
+        video.save();
         note.save();
+
+
+        System.out.println(tags);
 
         redirect("/video/" + video.id);
     }
