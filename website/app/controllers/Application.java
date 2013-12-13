@@ -6,10 +6,6 @@ import play.data.validation.Equals;
 import play.data.validation.Required;
 import play.mvc.Controller;
 
-//import controllers.securesocial.SecureSocial;
-//import com.*;
-//import com.google.gdata.data.youtube.VideoEntry;
-
 public class Application extends Controller {
   String id;
     public static void index() {
@@ -24,44 +20,28 @@ public class Application extends Controller {
     }
 
     public static void login(String email, String id, String displayName) {
-        System.out.println(email + "  " + id + " " + displayName);
-        User a;
+            User a;
         if (User.findByEmail(email) == null)
             a = new User(email, "randomPassword", displayName, id);
         else
             a = User.findByEmail(email);
         session.put("id", a.id);
         session.put("email", a.email);
-      //  id = session.get("id");
-
-        System.out.println("myy:" + session.get("id"));
     }
 
     public static void loginToken(String token) {
         session.put("token", token);
         System.out.println("i have this token" + session.get("token")+"    and id:"+session.get("id"));
     }
-
-    // get the user which is logged ON
-    static User connectedUser() {
-        String userId = session.get("logged");
-        return userId == null ? null : (User) User.findById(Long.parseLong(userId));
-    }
-
-
     //logout
     public static void logout() {
 
         flash.success("You've been logged out");
         session.put("id",0);
         session.put("email","");
-    //    id = null;
-
-
     }
     public static int exist()
     {
-    	System.out.println("helllo");
     	if(session.get("id")==null)
     		return 0;
     	else
@@ -69,18 +49,10 @@ public class Application extends Controller {
     }
 
     public static void disconnectAccount() {
-
         User usr = User.findByEmail(session.get("email"));
-         /*
-    	  * should we delete account from the system or not
-    	  */
-        // JPA.em().remove(usr);
-
     }
 
-
     public static void frontpage() {
-        //  String kk=session.get("id");
         int isLoged = 3;
         if (session.get("id") != null)
             isLoged = 6;
@@ -88,11 +60,15 @@ public class Application extends Controller {
     }
 
     public static void add_video() {
-        int tt = 10;
-        
+        int tt = 10;        
         render(tt);
-    }
+    }   
 
+    public static void timeline() {
+        render();
+    }
+    //-------------------------------------------------------------------------------
+    // maybe will be needed if we support 
     // checking if email and password are OK
     public static void authenticate(String email, String password) {
         User user = User.findByEmail(email);
@@ -106,7 +82,6 @@ public class Application extends Controller {
         flash.success("Welcome %s !", user.name);
         //redirect somewhere
     }
-
     //register  ( we have two password fields  password and verify password
     public static void register(@Required String name, @Required @Email String email, @Required String password, @Equals("password") String password2) {
         if (validation.hasErrors() || User.findByEmail(email) != null) {
@@ -125,9 +100,5 @@ public class Application extends Controller {
 
         }
 
-    }
-
-    public static void timeline() {
-        render();
     }
 }
