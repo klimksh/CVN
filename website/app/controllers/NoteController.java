@@ -20,30 +20,28 @@ public class NoteController extends Controller{
         String title = request.params.get("note-title");
         String content = request.params.get("note-content");
         int startTime = Integer.parseInt(request.params.get("note-start-int"));
+        //int endTime = Integer.parseInt(request.params.get("note-end-int"));
         Video video = Video.findById(Long.parseLong(request.params.get("video-id")));
         /*change to actual user*/
         User user = new User("email", "pass", "user");
         user.save();
 
-        Note note = new Note(title, content, startTime, video, user, null);
+        Note note = new Note(title, content, startTime, /*endTime,*/ video, user, null);
 
         String tagsString = request.params.get("tags");
-        String[] tagsStringList = tagsString.split(", ");
+        String[] tagsStringList = tagsString.split("; ");
         ArrayList<Tag> tags = new ArrayList<Tag>();
 
         for(String tag : tagsStringList){
-            //TODO: search for existing tag, before creating a new one
             Tag tagObj = new Tag(tag, note, video);
             tagObj.save();
             tags.add(tagObj);
         }
-
-        //note.tags = tags;
+        note.tags = tags;
+        video.tags = tags;
+        video.save();
         note.save();
 
-        //TODO: adding to the already existing tags, instead of overwriting them
-        //video.tags = tags;
-        //video.save();
 
         System.out.println(tags);
 
