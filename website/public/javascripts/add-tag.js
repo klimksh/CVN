@@ -7,7 +7,7 @@ $("#tags-input").keyup(function (event) {
         var newTag = $(this).val().replace(",", "");
         $("#tags-list").append('<span name="' + newTag + '" class="label label-warning" style="font-size:14px; margin:5px">' + newTag + '  <span id="delete-tag" style="padding:3px; font-size: 16px">&times;</span></span>');
         var tags = $("#tags").val();
-        tags += newTag + "; ";
+        tags += newTag;
         $("#tags").val(tags);
 
         console.log($("#tags").val());
