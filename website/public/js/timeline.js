@@ -16,27 +16,54 @@ function addTimeToPanel() {
     });
 }
 
+$('#autoslide').change(function(){
+    if( $(this).is(':checked') ) {
+        console.log("manual slide");
+        var pastNotes = Math.max(0, $('.past').length);
+        var width = 200; // $('.note').width();
+        var scrollToPosition = width*pastNotes;
+        $("#timeline").animate({scrollLeft: scrollToPosition}, 100);
+    }
+});
+
 /**
  * Removes old notes from the timeline, while watching a video
  * @param currentVideoTime
  */
 function slideTimeline(currentVideoTime) {
     $(".note:not(.past)").each(function () {
-        var noteEndTime = parseInt($(this).data("end"));
+        console.log("Future note found");
+        var currentPosition = $('#timeline').scrollLeft();
+        var pastNotes = Math.max(0, $('.past').length);
+        var width = 200; // $('.note').width();
 
-        if (noteEndTime <= currentVideoTime) {
+        var slideToleranceMin = (pastNotes-1)*width;
+        var slideToleranceMax = (pastNotes+1)*width;
+
+        if(currentPosition<slideToleranceMin || currentPosition>slideToleranceMax) {
+            $('#autoslide').prop('checked', false);
+            console.log("Out of tolerance area -> automatical sliding deactivated");
+        }
+
+        var noteEndTime = parseInt($(this).data("start"))+delayTime;
+        var autoSlide = $('#autoslide').is(':checked');
+
+        if (noteEndTime < currentVideoTime) {
+            console.log("Passed note! delay: "+delayTime+" endTime: "+noteEndTime+" Curr: "+currentVideoTime);
             $(this).addClass("past");
+            pastNotes++;
 
-            var width = 200; // $('.note').width();
-            var currentPos = $('#timeline').scrollLeft(); // doesn't work if someone moves the slider by hand
-
-            $("#timeline").animate({scrollLeft: currentPos + width}, 500);
+            if(autoSlide) {
+                var scrollToPosition = width*pastNotes;
+                console.log("scroll from "+currentPosition+" to "+scrollToPosition);
+                $("#timeline").animate({scrollLeft: scrollToPosition}, 500);
+            }
         }
     });
 }
 
 /**
- * Formats the timeInSeconds
+ * Formatting the timeInSeconds
  * Examples: 5s, 2m5s, 1h2m5s
  * @param timeInSeconds
  * @returns {string}
@@ -69,7 +96,7 @@ function formatTime(timeInSeconds) {
  * @returns {string}
  */
 function createNote(note) {
-    return "<div class='panel panel-default note' data-start='" + note.startTime + "s'>" +
+    return "<div class='panel panel-default note' data-start='" + note.startTime + "'>" +
         "<div class='panel-heading'>" + note.title + " </div>" +
         "<div class='panel-body'>" + note.content + "</div>" +
         "<div class='panel-footer'>" +

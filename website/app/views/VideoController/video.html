@@ -10,6 +10,9 @@
 </div>
 <div id="container">
     <div id="player"></div>
+    <div id="slideHandler">
+        <input id="autoslide" type="checkbox" checked="checked"/> Automatically slide
+    </div>
 
     <div id="note-container">
         <button id="add-new-note" type="submit" class="btn btn-success">+ New note</button>
@@ -122,7 +125,6 @@
             if (player.getPlayerState() === 1) {
                 var played = Math.round(player.getCurrentTime());
                 slideTimeline(played);
-
             } else if (player.getPlayerState() === 0 || player.getPlayerState() === 2) {
                 clearInterval(interval);
             }
