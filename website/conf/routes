@@ -3,14 +3,14 @@
 # ~~~~
 
 # Home page
-GET     /                                       Application.index
+# GET     /                                       Application.index
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
 
 # Videos
-GET     /videos                                 VideoController.getAllVideos
+GET     /                                       VideoController.index
 GET     /video/add                              VideoController.addVideo
 POST    /video/save                             VideoController.saveVideo
 GET     /video/{id}                             VideoController.video

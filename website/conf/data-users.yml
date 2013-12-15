@@ -1,12 +1,12 @@
-User(1):
+User(user1):
     name:           tumStudent
     email:          abc1@g.com
     password:       secret
-User(2):
-    name:           tumStudent
+User(user2):
+    name:           tumStudent2
     email:          abc2@g.com
     password:       secret
-User(3):
-    name:           tumStudent
+User(user3):
+    name:           tumStudent3
     email:          abc3@g.com
     password:       secret

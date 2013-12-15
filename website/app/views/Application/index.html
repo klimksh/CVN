@@ -1,4 +1,9 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
-
+#{list items:videos, as:"video"}
+	${video?.url}
+	${video?.owner}
+	${video?.uploadDate}
+	${video?.title}
+#{/list}
 #{welcome /}

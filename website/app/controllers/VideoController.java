@@ -8,13 +8,16 @@ import play.mvc.Controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Milya on 04.12.13.
  */
 public class VideoController extends Controller {
 
-    public static void getAllVideos() {
+    public static void index() {
+    	List<Video> videos = Video.findAll();
+    	render(videos);
     }
 
     public static void addVideo() {
