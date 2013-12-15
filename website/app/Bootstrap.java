@@ -14,10 +14,10 @@ public class Bootstrap extends Job {
 			 Logger.info("Users are loaded");
 			 Fixtures.loadModels("data-tags.yml");
 			 Logger.info("Tags are loaded");
+             Fixtures.loadModels("data-videos.yml");
+             Logger.info("Videos are loaded");
 			 Fixtures.loadModels("data-notes.yml");
 			 Logger.info("Notes are loaded");
-			 Fixtures.loadModels("data-videos.yml");
-	         Logger.info("Videos are loaded");
 		 }
 	}
 
