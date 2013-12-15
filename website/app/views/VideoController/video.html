@@ -24,8 +24,8 @@
 
             <div id="note-content-group" class="form-group">
                 <label for="note-content">Content</label>
-                <input type="text" class="form-control" name="note-content" id="note-content"
-                       placeholder="Note content..."/>
+                <textarea class="form-control" placeholder="Note" content="" name="name-content" id="note-content"
+                          cols="10" rows="1"></textarea>
             </div>
 
             <div id="note-content-group" class="form-group col-md-6">
@@ -73,6 +73,8 @@
 #{/set}
 <script src="/public/js/timeline.js"></script>
 <script>
+
+    $('#note-content').autogrow();
 
     initializeTimeline(${video.id});
 

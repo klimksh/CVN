@@ -1,5 +1,6 @@
 package models;
 
+import com.google.gson.annotations.Expose;
 import play.data.validation.Email;
 import play.data.validation.Unique;
 import play.db.jpa.Model;
@@ -10,10 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 @Entity(name="Users")
 public class User extends Model{
-	@Email
+    @Expose
+    @Email
 	@Unique
 	public String email;
 	public String password;
+    @Expose
 	public String name;
 	public String googleUserId;
 	@ManyToMany

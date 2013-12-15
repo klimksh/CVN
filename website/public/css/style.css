@@ -40,3 +40,7 @@
 .panel-body {
     min-height: 185px;
 }
+
+.panel-default>.panel-heading {
+    max-height: 43px;
+}

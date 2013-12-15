@@ -1,5 +1,6 @@
 package models;
 
+import com.google.gson.annotations.Expose;
 import play.db.jpa.Model;
 
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ public class Tag extends Model {
     public List<Note> notes;
     @ManyToMany(mappedBy = "tags")
     public List<Video> videos;
+    @Expose
     public String title;
 
     public Tag() {

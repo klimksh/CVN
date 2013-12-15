@@ -1,26 +1,32 @@
 package models;
 
+import com.google.gson.annotations.Expose;
 import play.db.jpa.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Notes")
 public class Note extends Model {
+    @Expose
     public String title; // title of the note
+    @Expose
     public String content; // content will be around 140 charac
+    @Expose
     public int startTime; // start time in the video in which will be shown the note
     //public int endTime;
     @ManyToOne
     public Video video; // the video in which is the note
+    @Expose
     @OneToOne
     public User noteWriter; // user who has wrote it
+    @Expose
     public long visited; // number of visitors who have visited this note
+    @Expose
     @ManyToMany
     public List<Tag> tags;// tags of the note
 

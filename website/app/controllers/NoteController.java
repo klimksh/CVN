@@ -1,7 +1,6 @@
 package controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import com.google.gson.*;
 import models.Note;
 import models.Tag;
 import models.User;
@@ -49,10 +48,14 @@ public class NoteController extends Controller{
     }
 
     public static void getNotes(String id){
-        Gson gson = new Gson();
-        Video video = Video.findById(Long.parseLong(id));
 
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
+
+        Video video = Video.findById(Long.parseLong(id));
         List<Note> notes = Note.findAllByVideoId(video);
+
         JsonElement json = gson.toJsonTree(notes);
         renderJSON(json);
     }
