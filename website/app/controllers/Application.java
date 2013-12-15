@@ -53,8 +53,16 @@ public class Application extends Controller {
     public static void logout() {
 
         flash.success("You've been logged out");
-        session.put("id",0);
-        session.put("email","");
+        session.remove("id");
+        System.out.println("logout");
+        session.remove("email");
+      try {
+		Thread.sleep(2000);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+      renderTemplate("Application/frontpage.html");
     //    id = null;
 
 

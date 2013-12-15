@@ -1,19 +1,42 @@
 <div class="row" style="padding: 10px 50px">
     <a href="/"><img src="/public/img/logo.png" style="height: 70px;" class="pull-left"/></a>
 
-    <div class="row pull-right text-center" style="width: 70px">
-        <img src="/public/img/user.png" style="width: 50px; margin-bottom: 5px" class="img-circle"/>
-
-        <div class="btn-group">
-            <button type="button" class="btn btn-success dropdown-toggle  btn-xs" data-toggle="dropdown">
-                Daniel
-                <span class="caret"></span>
+    <div  id="Gphoto" class="row pull-right text-center" style="width: 70px">
+     <!--     <img src="/public/img/user.png" style="width: 50px; margin-bottom: 5px" class="img-circle"/>-->
+       
+        <div id="userDetails" class="btn-group"  >
+              <button  id="nameButton" hidden="true" type="button" class="btn btn-success dropdown-toggle  btn-xs" data-toggle="dropdown">
+         
+                <span id="spanN"class="caret" ></span>  
             </button>
+ 
             <ul class="dropdown-menu text-left">
                 <li><a href="@{VideoController.addVideo()}"><span class="glyphicon glyphicon-facetime-video"></span> Add video</a></li>
                 <li><a href="/"><span class="glyphicon glyphicon-user"></span> Personal page</a></li>
-                <li><a href="/"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                <li  ><a id="logout2" onclick="fun()" ><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
             </ul>
         </div>
+                  <div align="right">
+            <div id="gConnect" style="float: left">
+                <button class="g-signin"
+                 data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me"
+                data-requestvisibleactions="http://schemas.google.com/AddActivity"
+                data-clientId="201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav"
+                data-callback="onSignInCallback"
+                data-theme="dark"
+                data-cookiepolicy="single_host_origin">
+                </button>
+            </div>
+
+         <!--   <div id="authOps" style="display:none">
+                <div id="profile" style="float:left"></div>
+                <button id="disconnect" style="float:left">Disconnect</button>
+                 <button id="logout" style="float:left">Logout</button> 
+
+                <div id="profile"></div>
+            </div> --> 
+         
+        </div>
     </div>
+    
 </div>

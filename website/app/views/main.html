@@ -65,7 +65,7 @@
 
 
 <script type="text/javascript">
-    var a = 0;
+  // function
 
     var helper = (function () {
         var BASE_API_PATH = 'plus/v1/';
@@ -76,10 +76,13 @@
                 $('#logout').hide();
                 $('#disconnect').hide();
                 $('#profile').empty();
+                console.log("helellele");
+            	gapi.auth.signOut();
                 var url = #{jsAction @Application.logout() /}
                         $.get(url(), function () {
                         	gapi.auth.signOut();
                         });
+                        window.location.replace("@{Application.index()}");         
             },
             onSignInCallback: function (authResult) {
                 console.log(authResult);
@@ -95,7 +98,9 @@
                         $('#authOps').show('slow');
                         $('#gConnect').hide();
                         $('#logout').show();
-                        $('#disconnect').show();
+                        $('#disconnect').hide();
+                        $('#userDetails').css('display','block');
+                        $('#btn-group').css('display','block');
                         helper.profile();
                         helper.people();
                     } else if (authResult['error']) {
@@ -153,11 +158,14 @@
                         $('#profile').prepend(profile.error);
                         return;
                     }
-                    $('#profile').prepend(
-                            $('<p><img src=\"' + profile.image.url + '\"></p>'));
-                    $('#profile').append(
-                            $('<p>Hello ' + profile.displayName + '</p>'));
-
+                    $('#Gphoto').prepend(
+                    		
+                    		$('<img src=\"'+ profile.image.url+'\" style=\"width: 50px; margin-bottom: 5px\" class=\"img-circle\"/>')
+                    );
+                    $('#nameButton').html(profile.displayName);
+                    
+                   
+                  
                 });
             }
         };
@@ -165,8 +173,37 @@
     $(document).ready(function () {
         $('#disconnect').click(helper.disconnect);
         $('#logout').click(helper.logout);
+        $('#logout2').click(function(){
+         $('#gConnect').show();
+         $('.btn-group').css('display','none');
+         $(".btn-group").css('display',"none");
+         $('#userDetails').css('display','none');
+         jQuery("#userDetails").css("display","none");
+         $("#Gphoto").css("display","none");
+         $("#Gphoto").css({display: "none"});
+         $("#userDetails").css({display: "none"});
+         $(".btn-group").css("display",function()
+         {
+        	 console.log("update");
+        	 return "none";
+        }		 
+         );
+             
+               	gapi.auth.signOut();
+             var url = #{jsAction @Application.logout() /}
+                     $.get(url(), function () {
+                     	gapi.auth.signOut();
+                     });
+                     window.location.replace("@{Application.index()}");   
+        }
+        
+        );
+        $('#logout').find('a').click(helper.logout);
+        $('#logout:first-of-type').click(  	helper.logout	);
+        
+
         $('#loaderror').hide();
-        if ($('[data-clientid="201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav"]').length > 0) {
+        if (false && $('[data-clientid="201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav"]').length > 0) {
             alert('This sample requires your OAuth credentials (client ID) ' +
                     'from the Google APIs console:\n' +
                     '    https://code.google.com/apis/console/#:access\n\n' +
@@ -178,6 +215,8 @@
         helper.onSignInCallback(authResult);
 
     }
+   
+    
 </script>
 
 
