@@ -67,10 +67,10 @@ public class Video extends Model {
     }
 
     public void insertVideo(String title, String description, String url, ArrayList<Tag> tags, String userEmail) {
-        Video tt = new Video(title, description, url, tags, userEmail);
+    	  	Video tt = new Video(title, description, url, tags, userEmail);
     }
 
     public void insertVideo(String title, String description, String url, ArrayList<Tag> tags, long id) {
-        Video tt = new Video(title, description, url, tags, id);
+    	 Video tt = new Video(title, description, url, tags, id);
     }
 }

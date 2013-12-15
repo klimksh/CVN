@@ -1,0 +1,36 @@
+#{extends 'main.html' /}
+
+#{set title:'All videos' /}
+
+#{set 'moreStyles'}
+    #{stylesheet 'main.css'/}
+#{/set}
+
+<div class="page-header">
+    <h1>All videos</h1>
+</div>
+[18:49:33] Daniel S.: #{extends 'main.html' /}
+
+#{set title:'All videos' /}
+
+#{set 'moreStyles'}
+    #{stylesheet 'main.css'/}
+#{/set}
+
+<div class="page-header">
+    <h1>All videos</h1>
+</div>
+#{list items:videos, as:'video'}
+<div class="video clearfix">
+ <div class="pull-left" >
+  <iframe width="320" height="180" src="http://www.youtube.com/embed/${video.url}"></iframe>
+ </div>
+ <div class="pull-left">    
+  <a href="@{VideoController.video(video.id)}">${video.title}</a>
+       ${video.description} 
+ </div> 
+</div> 
+#{/list}
+ </div>
+
+<script src="/public/js/video-info-retrieve.js"></script>

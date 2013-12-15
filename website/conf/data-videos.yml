@@ -1,7 +1,7 @@
 Video(1):
   title:           videoTitle
   description:     description of video 1
-  url:             http://www.youtube.com/watch?v=SaGu7OBovJE
+  url:             SaGu7OBovJE
   uploadDate:      2013-12-12
   videoTags:       [1, 2, 3]
   owner:           1
