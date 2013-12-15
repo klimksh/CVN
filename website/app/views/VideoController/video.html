@@ -80,11 +80,11 @@
 
     var player;
     $("#add-new-note").click(function () {
-        if ($("#new-note").css("display") == "none") {
-            $("#new-note").show();
+        if (!$("#new-note").is(":visible")) {
+            $("#new-note").slideDown(200);
             $(this).text("Close");
         } else {
-            $("#new-note").hide();
+            $("#new-note").slideUp(200);
             $(this).text("+ New note");
         }
     })
