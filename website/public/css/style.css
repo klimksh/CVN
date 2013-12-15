@@ -44,32 +44,3 @@
 .panel-default>.panel-heading {
     max-height: 43px;
 }
-
-.video {
-    position: relative;
-    margin-bottom: 10px;
-}
-
-.video a {
-    position: absolute;
-    display: block;
-    background: url('../img/play.png');
-    background-repeat: no-repeat;
-    background-position: 110px 40px;
-    height: 180px;
-    width: 320px;
-    top: 0px;
-    left: 0px;
-}
-
-.video img {
-    padding: 0 5px 5px 0;
-}
-
-.video h3 {
-    margin-top: 0;
-}
-
-.video:nth-child(odd) {
-    background: #F2F2F2;
-}
