@@ -100,7 +100,7 @@ function createNote(note) {
         "<div class='panel-heading'>" + note.title + " </div>" +
         "<div class='panel-body'>" + note.content + "</div>" +
         "<div class='panel-footer'>" +
-        "<a href='/user/" + note.noteWriter.id + "'>by " + note.noteWriter.name + "</a>" +
+        "<a href='#'>by " + note.noteWriter.name + "</a>" +
         "</div>" +
         "</div>";
 }
