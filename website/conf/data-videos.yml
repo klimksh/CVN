@@ -1,8 +1,8 @@
-Video(1):
+Video(video1):
   title:           videoTitle
   description:     description of video 1
   url:             SaGu7OBovJE
   uploadDate:      2013-12-12
-  videoTags:       [1, 2, 3]
-  owner:           1
-  watchers:        [1, 2, 3]
+  videoTags:       [tag1, tag2, tag3]
+  owner:           user1
+  watchers:        [user1, user2, user3]

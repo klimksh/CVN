@@ -1,20 +1,20 @@
-Note(1):
+Note(note1):
   title:         note1
   content:       content of note1 starts here
   startTime:     10
-  user:          1
-  noteTags:      [1, 2]
-Note(2):
+  user:          user1
+  noteTags:      [tag1, tag2]
+Note(note2):
   title:         note2
   content:       content of note1 starts here
   startTime:     10
-  user:          1
-  noteTags:      [4, 2]
-Note(3):
+  user:          user1
+  noteTags:      [tag4, tag2]
+Note(note3):
   title:         note3
   content:       content of note1 starts here
   startTime:     10
-  user:          1
-  noteTags:      [4,5,1, 2]
+  user:          user1
+  noteTags:      [tag4,tag5,tag1, tag2]
   
   

@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class VideoController extends Controller {
 
-    public static void getAllVideos() {
-    	List<Video> videos =Video.findAll();
+    public static void index() {
+    	List<Video> videos = Video.findAll();
     	render(videos);
     }
 
