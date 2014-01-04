@@ -5,6 +5,8 @@ import play.data.validation.Email;
 import play.data.validation.Equals;
 import play.data.validation.Required;
 import play.mvc.*;
+import controllers.securesocial.SecureSocial;
+
 import java.util.*;
 
 import Model.User;
