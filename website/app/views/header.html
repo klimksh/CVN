@@ -3,7 +3,7 @@
 
     <div  id="Gphoto" class="row pull-right text-center" style="width: 70px">
      <!--     <img src="/public/img/user.png" style="width: 50px; margin-bottom: 5px" class="img-circle"/>-->
-       
+       <div id= "userDetailss" hidden="true">
         <div id="userDetails" class="btn-group"  >
               <button  id="nameButton" hidden="true" type="button" class="btn btn-success dropdown-toggle  btn-xs" data-toggle="dropdown">
          
@@ -13,8 +13,9 @@
             <ul class="dropdown-menu text-left">
                 <li><a href="@{VideoController.addVideo()}"><span class="glyphicon glyphicon-facetime-video"></span> Add video</a></li>
                 <li><a href="/"><span class="glyphicon glyphicon-user"></span> Personal page</a></li>
-                <li  ><a id="logout2" onclick="fun()" ><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                <li><a id="logout2"  ><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
             </ul>
+        </div>
         </div>
                   <div align="right">
             <div id="gConnect" style="float: left">
@@ -26,15 +27,7 @@
                 data-theme="dark"
                 data-cookiepolicy="single_host_origin">
                 </button>
-            </div>
-
-         <!--   <div id="authOps" style="display:none">
-                <div id="profile" style="float:left"></div>
-                <button id="disconnect" style="float:left">Disconnect</button>
-                 <button id="logout" style="float:left">Logout</button> 
-
-                <div id="profile"></div>
-            </div> --> 
+            </div>        
          
         </div>
     </div>
