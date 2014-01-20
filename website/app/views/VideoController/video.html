@@ -1,6 +1,8 @@
-#{extends 'main.html' /} #{set title: "${video.title}" /} #{stylesheet
-'video-page.css'/}
+#{extends 'main.html' /}
+#{set title: "${video.title}" /}
+#{stylesheet 'video-page.css'/}
 
+<script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
 
 <div class="page-header">
 	<h1>${video.title}</h1>
@@ -39,14 +41,14 @@
 			</div>
 
 
-			<input type="text" hidden="hidden" name="note-start-int"
-				id="note-start-int" value="" /> <input type="text" hidden="hidden"
-				name="note-end-int" id="note-end-int" value="" /> <input type="text"
-				hidden="hidden" name="video-id" id="video-id" value="${video.id}" />
+			<input type="text" hidden="hidden" name="note-start-int" id="note-start-int" value="" />
+            <input type="text" hidden="hidden" name="note-end-int" id="note-end-int" value="" />
+            <input type="text" hidden="hidden" name="video-id" id="video-id" value="${video.id}" />
+            <input type="text" hidden="hidden" name="username" id="username" value="${user.name}" />
 
 
 			#{include 'add-tag.html'/} <span class="row" style="margin-top: 20px">
-				<button id="note-save" type="submit"
+				<button id="note-save" type="button" onclick="broadcastNote()"
 					class="btn btn-success pull-right">Save note</button>
 			</span> #{/form}
 		</div>

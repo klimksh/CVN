@@ -1,4 +1,5 @@
 var delayTime = 10;
+var videoId = $('#video-id').val();
 
 /**
  * Adds the timeframe a note is visible to the notes header
@@ -146,4 +147,40 @@ function findPrevNote(startTime) {
     });
 
     return prevNote;
+}
+
+/**
+ * Receive Note-Updates via Socket and add them to the timeline if videoId is correct
+ * Listening to Port 8080
+ */
+$(function(){
+    var socket = io.connect('http://localhost:8080');
+
+    socket.on('note', function(noteJsonString) {
+        var noteObj = jQuery.parseJSON(noteJsonString);
+        if(videoId === noteObj.videoId) {
+            addNoteToTimeline(noteObj);
+        }
+    });
+});
+
+/**
+ * Broadcast Note to all clients
+ * Sending to Port 8080
+ */
+function broadcastNote() {
+    var socket = io.connect('http://localhost:8080');
+
+    var noteObj = new Object();
+    noteObj.title       = $('#note-title').val();
+    noteObj.content     = $('#note-content').val();
+    noteObj.startTime   = $('#note-start-int').val();
+    noteObj.tags        = $('#tags').val();
+    noteObj.videoId     = videoId;
+    noteObj.noteWriter  = new Object();
+    noteObj.noteWriter.name = $('#username').val();
+
+    console.log('Emit note');
+    socket.emit('note', JSON.stringify(noteObj));
+    console.log("Done sending note");
 }

@@ -29,10 +29,12 @@ public class VideoController extends Controller {
     public static void saveVideo() {
         String title = request.params.get("video-title");
         String desc = request.params.get("video-description");
-        /*add thumbnail to Video class*/
+
+        /* TODO: add thumbnail to Video class*/
         String thumbnail = request.params.get("video-thumbnail");
         String link = request.params.get("video-id");
-        /*change to actual user*/
+
+        /* TODO: change to actual user*/
         User user = new User("email", "pass", "user");
         user.save();
 
@@ -51,7 +53,12 @@ public class VideoController extends Controller {
         if(video == null) {
             redirect("/");
         }
-        render(video);
+
+        /* TODO: change to actual user*/
+        User user = new User("email", "pass", "user");
+        user.save();
+
+        render(video, user);
     }
 
 }
