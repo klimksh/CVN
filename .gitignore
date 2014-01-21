@@ -4,7 +4,7 @@
 *.jar
 *.war
 *.ear
-/eclipse
+/website/eclipse/
 .classpath
 .project
 .settings
