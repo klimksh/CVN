@@ -23,7 +23,6 @@ public class Application extends Controller {
 	}
 
 	public static void login(String email, String id, String displayName) {
-		System.out.println(email + "  " + id + " " + displayName);
 		User a;
 		if (User.findByEmail(email) == null)
 			a = new User(email, "randomPassword", displayName, id);
@@ -32,14 +31,10 @@ public class Application extends Controller {
 		session.put("id", a.id);
 		session.put("email", a.email);
 		// id = session.get("id");
-
-		System.out.println("myy:" + session.get("id"));
 	}
 
 	public static void loginToken(String token) {
 		session.put("token", token);
-		System.out.println("i have this token" + session.get("token")
-				+ "    and id:" + session.get("id"));
 	}
 
 	// get the user which is logged ON
@@ -54,7 +49,6 @@ public class Application extends Controller {
 
 		flash.success("You've been logged out");
 		session.remove("id");
-		System.out.println("logout");
 		session.remove("email");
 		try {
 			Thread.sleep(2000);
@@ -68,7 +62,6 @@ public class Application extends Controller {
 	}
 
 	public static int exist() {
-		System.out.println("helllo");
 		if (session.get("id") == null)
 			return 0;
 		else
@@ -103,7 +96,6 @@ public class Application extends Controller {
 	public static void authenticate(String email, String password) {
 		User user = User.findByEmail(email);
 		if (user == null || !user.checkPassword(password)) {
-			System.out.println("not successfully");
 			flash.error("Bad email or bad password");
 			flash.put("email", email);
 			// redirect somewhere
