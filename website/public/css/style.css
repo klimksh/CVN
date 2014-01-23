@@ -9,8 +9,18 @@ button.new-video{
     margin-left: 20px;
 }
 
+button.new-video>a{
+    text-decoration: none;
+    color: white;
+}
+
+
 form.search-form>button {
     vertical-align: top;
+}
+
+.container {
+    width: 1650px;
 }
 
 #timeline {

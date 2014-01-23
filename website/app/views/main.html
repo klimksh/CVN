@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>#{get 'title' /}</title>
-
+    <link rel="icon" type="image/ico" href="@{'public/cvn.ico'}">
     <meta charset="${_response_encoding}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -29,7 +29,14 @@
     #{get 'moreScripts' /}
     <script type="text/javascript" src="@{'public/js/google-plus-script-init.js'}"></script>
     <script type="text/javascript" src="@{'public/sidr/jquery.sidr.js'}"></script>
-
+    <script type="text/javascript">
+        var login_token_url = #{jsAction @Application.loginToken(':a' )/};
+        var disconnect_account_url = #{jsAction @Application.disconnectAccount() /};
+        var login_url = #{jsAction @Application.login(':email',':id',':displayName' ) /};
+        var logout_url = #{jsAction @Application.logout() /};
+        var index_url = "@{VideoController.index()}";
+    </script>
+    <script type="text/javascript" src="@{'public/js/google-plus-auth.js'}"></script>
 </head>
 <body>
 
@@ -40,123 +47,7 @@
 	<div class="container" id="content">
         #{doLayout /}
     </div>
-
-
-	<script type="text/javascript">
-        var helper = (function () {
-            var BASE_API_PATH = 'plus/v1/';
-
-            return {
-                    onSignInCallback: function (authResult) {
-                    var url = #{jsAction @Application.loginToken(':a' ) /}
-                            $.get(url({a: authResult.access_token}), function () {
-
-
-                            });
-                    gapi.client.load('plus', 'v1', function () {
-                        if (authResult['access_token']) {
-                            $('#authOps').show('slow');
-                            $('#gConnect').hide();
-                            $('#userDetailss').show();
-                            $('#logout').show();
-                            $('#disconnect').hide();                                           
-                            helper.profile();
-                        } else if (authResult['error']) {
-                        	console.log(authResult['error']);
-                            $('#authOps').hide('slow');
-                            $('#gConnect').show();
-                            console.log("error");
-                            $('#logout').hide();
-                            $('#userDetailss').hide();
-                            $('#disconnect').hide();
-
-
-                        }
-                    });
-                },
-                disconnect: function () {
-                    $.ajax({
-                        type: 'GET',
-                        url: 'https://accounts.google.com/o/oauth2/revoke?token=' +
-                                gapi.auth.getToken().access_token,
-                        async: false,
-                        contentType: 'application/json',
-                        dataType: 'jsonp',
-                        success: function (result) {
-                            $('#authOps').hide();
-                            $('#profile').empty();
-                            $('#visiblePeople').empty();
-                            $('#authResult').empty();
-                            $('#gConnect').show();
-                            $('#userDetailss').hide();
-                            $('#logout').hide();
-                            $('#disconnect').hide();
-                            var url = #{jsAction @Application.disconnectAccount() /}
-                                    $.get(url(), function () {
-                                    });
-                        },
-                        error: function (e) {
-                        }
-                    });
-                },
-
-                profile: function () {
-                    var request = gapi.client.plus.people.get({'userId': 'me'});
-                    request.execute(function (profile) {
-                        a = 1;
-                        var f = profile.emails[0].value;
-                        var url = #{jsAction @Application.login(':email',':id',':displayName' ) /}
-                                $.get(url({email: f, id: profile.id, displayName: profile.displayName}), function () {
-                                    console.log(profile.displayName);
-
-                                });
-                        $('#profile').empty();
-                        if (profile.error) {
-                            $('#profile').prepend(profile.error);
-                            return;
-                        }
-                        $('#Gphoto').prepend(
-                        		
-                        		$('<img src=\"'+ profile.image.url+'\" style=\"width: 40px; margin-bottom: 5px\" class=\"img-circle\"/>')
-                        );
-                        $('#nameButton').html(profile.displayName);   
-                       
-                      
-                    });
-                }
-            };
-        })();
-        $(document).ready(function () {
-            $('#disconnect').click(helper.disconnect);
-            $('#logout').click(helper.logout);
-            $('#logout2').click(function(){
-    	        $('#gConnect').show();
-    	        $('#userDetailss').hide();
-    	        console.log('here');
-    	        $("#Gphoto").css("display","none");
-    	      	gapi.auth.signOut();
-    	        var url = #{jsAction @Application.logout() /}
-    	        $.get(url(), function () {
-    	               	gapi.auth.signOut();
-    	        });
-    	        window.location.replace("@{VideoController.index()}"); 
-    	    });
-            $('#loaderror').hide();
-            if ($('[data-clientid="201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav.apps.googleusercontent.com"]').length > 0) {
-                alert('This sample requires your OAuth credentials (client ID) ' +
-                        'from the Google APIs console:\n' +
-                        '    https://code.google.com/apis/console/#:access\n\n' +
-                        'Find and replace YOUR_CLIENT_ID with your client ID.'
-                );
-            }
-        });
-        function onSignInCallback(authResult) {
-        	console.log("fillim");
-        	console.log("");
-            helper.onSignInCallback(authResult);
-
-        }
-    </script>   
+   
 
 </body>
 </html>
