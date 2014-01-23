@@ -8,10 +8,9 @@
 var io = require('socket.io').listen(8080);
 
 io.sockets.on('connection', function (socket) {
-    console.log('connected')
+
     socket.on('note', function(noteJsonString) {
-        console.log('note detected: '+noteJsonString);
         io.sockets.emit('note', noteJsonString);
-        console.log('note emitted');
     });
+
 });
