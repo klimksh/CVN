@@ -1,35 +1,53 @@
-<div class="row" style="padding: 10px 50px">
-    <a href="/"><img src="/public/img/logo.png" style="height: 70px;" class="pull-left"/></a>
-
-    <div  id="Gphoto" class="row pull-right text-center" style="width: 70px">
-     <!--     <img src="/public/img/user.png" style="width: 50px; margin-bottom: 5px" class="img-circle"/>-->
-       <div id= "userDetailss" hidden="true">
-        <div id="userDetails" class="btn-group"  >
-              <button  id="nameButton" hidden="true" type="button" class="btn btn-success dropdown-toggle  btn-xs" data-toggle="dropdown">
-         
-                <span id="spanN"class="caret" ></span>  
-            </button>
- 
-            <ul class="dropdown-menu text-left">
-                <li><a href="@{VideoController.addVideo()}"><span class="glyphicon glyphicon-facetime-video"></span> Add video</a></li>
-                <li><a href="/"><span class="glyphicon glyphicon-user"></span> Personal page</a></li>
-                <li><a id="logout2"  ><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
-            </ul>
-        </div>
-        </div>
-                  <div align="right">
-            <div id="gConnect" style="float: left">
-                <button class="g-signin"
-                 data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me"
-                data-requestvisibleactions="http://schemas.google.com/AddActivity"
-                data-clientId="201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav"
-                data-callback="onSignInCallback"
-                data-theme="dark"
-                data-cookiepolicy="single_host_origin">
-                </button>
-            </div>        
-         
-        </div>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a href="/"><img src="/public/img/logo.png" class="pull-left logo"/></a>
     </div>
-    
-</div>
+    <div class="collapse navbar-collapse">
+        
+        <form class="navbar-form navbar-left search-form" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control search" placeholder="Search">
+          </div>
+          
+          <button type="submit" class="btn btn-default">Search</button>
+
+          <button class="btn btn-danger new-video"><span class="glyphicon glyphicon-plus"></span>  New video</button>
+        </form>
+        
+        
+        <ul class="nav navbar-nav navbar-right" >
+            <li><a href="#"> Sign in </a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Profile <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li id="Gphoto">
+                        <div id="userDetails" class="btn-group" hidden="true">
+                            <button  id="nameButton" hidden="true" type="button" class="btn btn-success dropdown-toggle  btn-xs" data-toggle="dropdown">
+                                <span id="spanN"class="caret" ></span>  
+                            </button>
+                            <li><a href="/"><span class="glyphicon glyphicon-user"></span> Personal page</a></li>
+                            <li><a id="logout2"  ><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                        </div>
+                    </li>
+                    <li id="gConnect">
+                        <button class="g-signin"
+                                data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me"
+                                data-requestvisibleactions="http://schemas.google.com/AddActivity"
+                                data-clientId="201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav"
+                                data-callback="onSignInCallback"
+                                data-theme="dark"
+                                data-cookiepolicy="single_host_origin">
+                        </button>
+                    </li>        
+                </ul>
+            </li>
+
+        </ul>
+    </div>    
+</nav>

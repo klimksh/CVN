@@ -1,3 +1,18 @@
+img.logo {
+    height: 55px;
+}
+input.search {
+    width:519px;
+}
+
+button.new-video{
+    margin-left: 20px;
+}
+
+form.search-form>button {
+    vertical-align: top;
+}
+
 #timeline {
     width: 100%;
     background-color: lightgrey;

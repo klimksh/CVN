@@ -10,8 +10,8 @@
     <meta name="author" content="">
 
     <link href="@{'public/css/bootstrap.min.css'}" rel="stylesheet">
-    <link href="@{'public/css/main.css'}" rel="stylesheet">
     <link href="@{'public/css/style.css'}" rel="stylesheet">
+    <!-- <link href="@{'public/sidr/stylesheets/jquery.sidr.light.css'}" rel="stylesheet"> -->
     #{get 'moreStyles' /}
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -24,41 +24,22 @@
     <script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
     <!--         https://github.com/AlexChittock/JQuery-Session-Plugin  -->
     <script type="text/javascript" src="@{'public/js/jquery.session.js'}"></script>
+    <!--         truncate text plugin -->
     <script type="text/javascript" src="@{'public/js/jQuery.succinct.min.js'}"></script>
     #{get 'moreScripts' /}
     <script type="text/javascript" src="@{'public/js/google-plus-script-init.js'}"></script>
+    <script type="text/javascript" src="@{'public/sidr/jquery.sidr.js'}"></script>
 
 </head>
 <body>
 
 
 
-    <!-- <div id="gConnect">
-      <button class="g-signin"
-         data-scope="https://www.googleapis.com/auth/userinfo.email" "https://www.googleapis.com/auth/userinfo.email" https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me
-         data-requestvisibleactions="http://schemas.google.com/AddActivity"
-         data-clientId="201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav"
-         data-callback="onSignInCallback"
-         data-theme="dark"
-         data-cookiepolicy="single_host_origin">
-     </button>
+	#{include 'header.html'/}
+
+	<div class="container" id="content">
+        #{doLayout /}
     </div>
-    <div id="authOps" style="display:none">
-     <div id="profile" style="float:left"></div>
-     <button id="disconnect" style="float:left">Disconnect</button>
-
-
-     <div id="profile"></div>
-
-
-
-     <pre id="authResult"></pre>
-    </div>
-    <div id="loaderror"> </div>
-    -->
-	<header> #{include 'header.html'/} </header>
-
-	<div id="content">#{doLayout /}</div>
 
 
 	<script type="text/javascript">
@@ -136,7 +117,7 @@
                         }
                         $('#Gphoto').prepend(
                         		
-                        		$('<img src=\"'+ profile.image.url+'\" style=\"width: 50px; margin-bottom: 5px\" class=\"img-circle\"/>')
+                        		$('<img src=\"'+ profile.image.url+'\" style=\"width: 40px; margin-bottom: 5px\" class=\"img-circle\"/>')
                         );
                         $('#nameButton').html(profile.displayName);   
                        
