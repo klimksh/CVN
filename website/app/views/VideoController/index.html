@@ -5,6 +5,10 @@
     #{stylesheet 'main.css'/}
 #{/set}
 
+#{set 'moreScripts'}
+    <script type="text/javascript" src="@{'/public/js/video-info-retrieve.js'}"></script>
+#{/set}
+
 <div class="page-header">
     <h1>All videos <a class="pull-right btn btn-success"  href="@{VideoController.addVideo()}">+ Add new video</a> </h1>
 </div>
@@ -65,10 +69,5 @@
 	</div>
 </div>
 <script>
-    $(function(){
-        $('.truncate').succinct({
-            size: 120
-        });
-    });
+    
 </script>
-<script src="/public/js/video-info-retrieve.js"></script>

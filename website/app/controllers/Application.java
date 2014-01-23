@@ -12,16 +12,11 @@ import play.mvc.Controller;
 
 public class Application extends Controller {
 	String id;
-     public String idd="kujtim";
-	public static void index() {
-		if (session.get("id") != null)
-			session.put("id", "");
-		renderTemplate("Application/frontpage.html");
+
+	public static  boolean check()
+	{
+		return true;
 	}
-   public static  boolean check()
-   {
-	   return true;
-   }
 	// creating a session
 	public static void connect(User user) {
 		session.put("logged", user.id);
