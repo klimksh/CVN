@@ -18,7 +18,9 @@
           <button class="btn btn-danger new-video"><a href="@{VideoController.addVideo()}"><span class="glyphicon glyphicon-plus"></span>  Add new video</a></button>
         </form>
         <ul class="nav navbar-nav navbar-right" >
-            <li><a href="#"> Sign in </a></li>
+            <li id="gConnect">
+                <a href="javascript:void(0);" onclick="login()"><img style="vertical-align:top;"height="34px" src="/public/img/g-auth-btn.png"/></a>
+            </li>        
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Profile <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -31,12 +33,10 @@
                             <li><a id="logout2" onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
                         </div>
                     </li>
-                    <li id="gConnect">
-                        <img onclick="login()" src="/public/img/images.png"/>
-                    </li>        
+                    
                 </ul>
             </li>
-
+    
         </ul>
     </div>    
 </nav>

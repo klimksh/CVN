@@ -27,7 +27,6 @@ public class VideoController extends Controller {
             counter++;
             if (counter==6){
             	chunks.add(chunk);
-            	System.out.println(chunk);
                 chunk = new LinkedList<Video>();
                 counter=0;
             }
