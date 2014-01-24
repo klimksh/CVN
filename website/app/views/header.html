@@ -15,11 +15,12 @@
             <input type="text" class="form-control search" placeholder="Search">
           </div>
           <button type="submit" class="btn btn-default">Search</button>
-          <button class="btn btn-danger new-video"><a href="@{VideoController.addVideo()}"><span class="glyphicon glyphicon-plus"></span>  Add new video</a></button>
+          <button class="btn btn-danger new-video" type="button" data-toggle="modal" data-target="#addVideo"><span class="glyphicon glyphicon-plus"></span>  Share new video</button>
+          <!-- <a href="@{VideoController.addVideo()}"> -->
         </form>
         <ul class="nav navbar-nav navbar-right" >
             <li id="gConnect">
-                <a href="javascript:void(0);" onclick="login()"><img style="vertical-align:top;"height="34px" src="/public/img/g-auth-btn.png"/></a>
+                <a href="javascript:void(0);" onclick="login()"><img height="34px" src="/public/img/g-auth-btn.png"/></a>
             </li>        
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Profile <b class="caret"></b></a>
@@ -40,3 +41,6 @@
         </ul>
     </div>    
 </nav>
+<!-- Modal -->
+<div class="modal fade" id="addVideo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div><!-- /.modal -->

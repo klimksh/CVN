@@ -62,5 +62,6 @@ $(function(){
     $('.truncate').succinct({
         size: 120
     });
+    
 });
 

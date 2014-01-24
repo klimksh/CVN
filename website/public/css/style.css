@@ -1,3 +1,7 @@
+.modal-dialog {
+    width: 1000px;
+}
+
 img.logo {
     height: 55px;
 }
