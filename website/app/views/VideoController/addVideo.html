@@ -8,7 +8,7 @@
       </div>
       <div class="modal-body">
         #{form @VideoController.saveVideo(), method:"POST"}
-            <div class="col-md-5 column" id="video-info">
+            <div class="col-md-5 column">
                 <div id="video-link-group" class="form-group">
                     <label for="video-link">Link to the video on YouTube</label>
                     <input type="text" class="form-control" id="video-link" name="video-link" placeholder="link to a video on YouTube..."/>
@@ -29,9 +29,8 @@
 
             </div>
 
-            <div class="col-md-7 column" id="video-info" style="text-align: center; padding: 10px; background-color: #262626">
-                <div id="player" style=" height: 360px; width:480px;"></div>
-
+            <div class="col-md-7 column" id="video-info">
+                <div id="player"></div>
             </div>
 
             <div class="clearfix"></div>
