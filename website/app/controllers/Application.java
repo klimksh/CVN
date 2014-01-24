@@ -14,8 +14,7 @@ public class Application extends Controller {
 	String id;
      public String idd="kujtim";
 	public static void index() {
-		if (session.get("id") != null)
-			session.put("id", "");
+	
 		renderTemplate("Application/frontpage.html");
 	}
    public static  boolean check()
@@ -61,12 +60,7 @@ public class Application extends Controller {
 		session.remove("id");
 		System.out.println("logout");
 		session.remove("email");
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	   
 		renderTemplate("Application/frontpage.html");
 		// id = null;
 

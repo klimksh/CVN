@@ -33,152 +33,156 @@
 	<script type="text/javascript"
 		src="@{'public/js/google-plus-script-init.js'}"></script>
 
-	<!-- <div id="gConnect">
-  <button class="g-signin"
-     data-scope="https://www.googleapis.com/auth/userinfo.email" "https://www.googleapis.com/auth/userinfo.email" https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me
-     data-requestvisibleactions="http://schemas.google.com/AddActivity"
-     data-clientId="201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav"
-     data-callback="onSignInCallback"
-     data-theme="dark"
-     data-cookiepolicy="single_host_origin">
- </button>
-</div>
-<div id="authOps" style="display:none">
- <div id="profile" style="float:left"></div>
- <button id="disconnect" style="float:left">Disconnect</button>
 
-
- <div id="profile"></div>
-
-
-
- <pre id="authResult"></pre>
-</div>
-<div id="loaderror"> </div>
--->
 	<header> #{include 'header.html'/} </header>
 
 	<div id="content">#{doLayout /}</div>
 
+ <script type="text/javascript">
+      var clientId = '201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav';
+      var apiKey = 'AIzaSyAdjHPT5Pb7Nu56WJ_nlrMGOAgUAtKjiPM';
+      var scopes = "https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me";
+      var image_url=imageURL();
+      var nameGPlus=getName().toString();
+      function handleClientLoad() {
+        window.setTimeout(checkAuth,1);
+      }
+      function checkAuth() {
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+      }
 
-	<script type="text/javascript">
-  // function
+      function handleAuthResult(authResult) {
+        if (authResult && !authResult.error) 
+          makeApiCall();
+      }
 
-    var helper = (function () {
-        var BASE_API_PATH = 'plus/v1/';
-
-        return {
-                onSignInCallback: function (authResult) {
-                var url = #{jsAction @Application.loginToken(':a' ) /}
-                        $.get(url({a: authResult.access_token}), function () {
-
-
-                        });
-                gapi.client.load('plus', 'v1', function () {
-                    if (authResult['access_token']) {
-                        $('#authOps').show('slow');
-                        $('#gConnect').hide();
-                        $('#userDetailss').show();
-                        $('#logout').show();
-                        $('#disconnect').hide();                                           
-                        helper.profile();
-                    } else if (authResult['error']) {
-                    	console.log(authResult['error']);
-                        $('#authOps').hide('slow');
-                        $('#gConnect').show();
-                        console.log("error");
-                        $('#logout').hide();
-                        $('#userDetailss').hide();
-                        $('#disconnect').hide();
-
-
-                    }
-                });
-            },
-            disconnect: function () {
-                $.ajax({
-                    type: 'GET',
-                    url: 'https://accounts.google.com/o/oauth2/revoke?token=' +
-                            gapi.auth.getToken().access_token,
-                    async: false,
-                    contentType: 'application/json',
-                    dataType: 'jsonp',
-                    success: function (result) {
-                        $('#authOps').hide();
-                        $('#profile').empty();
-                        $('#visiblePeople').empty();
-                        $('#authResult').empty();
-                        $('#gConnect').show();
-                        $('#userDetailss').hide();
-                        $('#logout').hide();
-                        $('#disconnect').hide();
-                        var url = #{jsAction @Application.disconnectAccount() /}
-                                $.get(url(), function () {
-                                });
-                    },
-                    error: function (e) {
-                    }
-                });
-            },
-
-            profile: function () {
-                var request = gapi.client.plus.people.get({'userId': 'me'});
-                request.execute(function (profile) {
-                    a = 1;
-                    var f = profile.emails[0].value;
-                    var url = #{jsAction @Application.login(':email',':id',':displayName' ) /}
-                            $.get(url({email: f, id: profile.id, displayName: profile.displayName}), function () {
-                                console.log(profile.displayName);
-
-                            });
-                    $('#profile').empty();
-                    if (profile.error) {
-                        $('#profile').prepend(profile.error);
-                        return;
-                    }
-                    $('#Gphoto').prepend(
-                    		
-                    		$('<img src=\"'+ profile.image.url+'\" style=\"width: 50px; margin-bottom: 5px\" class=\"img-circle\"/>')
-                    );
-                    $('#nameButton').html(profile.displayName);   
-                   
-                  
-                });
-            }
-        };
-    })();
-    $(document).ready(function () {
-        $('#disconnect').click(helper.disconnect);
-        $('#logout').click(helper.logout);
-        $('#logout2').click(function(){
-	        $('#gConnect').show();
-	        $('#userDetailss').hide();
-	        console.log('here');
-	        $("#Gphoto").css("display","none");
-	      	gapi.auth.signOut();
-	        var url = #{jsAction @Application.logout() /}
+      function login()
+      {
+    	  gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+    	  $('#authOps').show('slow');
+          $('#gConnect').hide();
+          $('#userDetailss').show();
+          $('#logout').show();
+          $('#disconnect').hide();    
+          $('#Gphoto').show();
+          return false;  
+      }
+      function logout()
+      {
+    	  document.cookie = "PLAY_SESSION=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    	  document.cookie = "photo_url=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    	  document.cookie = "name_plus=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    	  var url = #{jsAction @Application.logout() /}
 	        $.get(url(), function () {
 	               	gapi.auth.signOut();
 	        });
-	        window.location.replace("@{Application.index()}"); 
-	    });
-        $('#loaderror').hide();
-        if ($('[data-clientid="201851680458-sumhf8v1qua2s1bn33dk9o8q34b0kvav.apps.googleusercontent.com"]').length > 0) {
-            alert('This sample requires your OAuth credentials (client ID) ' +
-                    'from the Google APIs console:\n' +
-                    '    https://code.google.com/apis/console/#:access\n\n' +
-                    'Find and replace YOUR_CLIENT_ID with your client ID.'
-            );
-        }
-    });
-    function onSignInCallback(authResult) {
-    	console.log("fillim");
-    	console.log("");
-        helper.onSignInCallback(authResult);
+	        gapi.auth.signOut();
+	        window.setInterval( function() {redirect();	} ,500);
+      }
+      function redirect()
+      {
+    	  window.location.replace("@{Application.index()}");
+      }
+      function handleAuthClick(event) {
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+        return false;
+      }
+      function makeApiCall() {
+          gapi.client.load('plus', 'v1', function() {
+          var request = gapi.client.plus.people.get({
+            'userId': 'me'
+          });
+          request.execute(function(profile) {
+        	  var f = profile.emails[0].value;
+              var url = #{jsAction @Application.login(':email',':id',':displayName' ) /}
+                      $.get(url({email: f, id: profile.id, displayName: profile.displayName}), function () {
 
-    }
-</script>
-
-
+                      });
+               document.cookie="photo_url="+profile.image.url+";"
+               document.cookie="name_plus=\""+profile.displayName+"\";"
+               $('#profile').empty();
+               if (profile.error) {
+               $('#profile').prepend(profile.error);
+                      return;
+               }
+               $('#Gphoto').prepend(
+                     		$('<img src=\"'+ profile.image.url+'\" style=\"width: 50px; margin-bottom: 5px\" class=\"img-circle\"/>')
+                      );
+               $('#nameButton').html(profile.displayName);           
+          });
+        });
+      }
+      window.onload=function()
+      {
+    	   var exist=false;
+           var ss=document.cookie;
+    	   var ca = document.cookie.split(';');
+           for(var i=0;i < ca.length;i++) {
+              var c = ca[i];
+              if (c.indexOf("PLAY")!=-1) 
+	              if (c.indexOf("email")!=-1) 
+    	         	 exist=true;
+          }
+          var isHeLogedON=true; 
+         sessionParams = { 'client_id': clientId,  'session_state': null};
+        		  gapi.auth.checkSessionState(sessionParams, function(stateMatched) { 
+        		    if (stateMatched == true) { 
+        		    	isHeLogedON=false;
+        		    	  document.cookie = "PLAY_SESSION=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        		    	  document.cookie = "photo_url=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        		    	  document.cookie = "name_plus=; expires=Thu, 01 Jan 1970 00:00:00 GMT";        		    	
+        		    } 
+        		  });
+          if(exist  && isHeLogedON) {
+         	  $('#authOps').show('slow');
+              $('#gConnect').hide();
+              $('#userDetailss').show();
+              $('#logout').show();
+              $('#disconnect').hide();    
+              $('#Gphoto').show();
+       
+              $('#profile').empty();
+              gapi.client.load('plus', 'v1', function() {
+                  var request = gapi.client.plus.people.get({
+                    'userId': 'me'
+                  });
+                  request.execute(function(profile) {
+                              $('#profile').empty();
+                              $('#Gphoto').prepend(
+                              		$("<img src=\""+image_url+"\" style=\"width: 50px; margin-bottom: 5px\" class=\"img-circle\"/>")
+                              );
+                              $('#nameButton').html(nameGPlus); 
+                  });
+                });
+             
+          }
+          else
+         	 $('#gConnect').show();
+      }
+      function imageURL()
+      {
+    	  var ss=document.cookie;
+   	      var ca = document.cookie.split(';');
+          for(var i=0;i < ca.length;i++) {
+          var c = ca[i];
+          if (c.indexOf("photo_url")!=-1)
+        	     return c.substring(10,c.length);
+          }
+      	  return ""; 	
+      }
+      function getName()
+      {
+    	  var ss=document.cookie;
+   	      var ca = document.cookie.split(';');
+          for(var i=0;i < ca.length;i++) {
+          var c = ca[i];
+          if (c.indexOf("name_plus")!=-1)
+        	     return c.substring(12,c.length-1);
+       }
+          return "";
+      }
+    </script>
+    <script src="https://apis.google.com/js/client.js"></script>
+     
 </body>
 </html>
