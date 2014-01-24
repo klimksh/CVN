@@ -8,6 +8,8 @@ import play.mvc.Controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -17,7 +19,24 @@ public class VideoController extends Controller {
 
     public static void index() {
     	List<Video> videos = Video.findAll();
-    	render(videos);
+        LinkedList<LinkedList<Video>> chunks = new LinkedList<LinkedList<Video>>();;
+        int counter = 0;
+        LinkedList<Video> chunk = new LinkedList<Video>();
+        for (Video video : videos) {
+        	chunk.add(video);
+            counter++;
+            if (counter==6){
+            	chunks.add(chunk);
+            	System.out.println(chunk);
+                chunk = new LinkedList<Video>();
+                counter=0;
+            }
+        }
+        if (chunk.size()>0){
+        	chunks.add(chunk);
+        }
+
+        render(chunks);
     }
 
     public static void addVideo() {

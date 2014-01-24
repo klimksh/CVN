@@ -26,12 +26,3 @@
 .size21, .size22, .size23, .twocols { background: #ccc }
 .size31, .size32, .size33, .threecols { background: #ff9999 }
 
-a.btn {
-  margin-right: 1px;
-  line-height: 30px;
-  height: 30px;
-  cursor: pointer;
-  display: inline-block;
-  width: 75px;
-  color: red;
-}

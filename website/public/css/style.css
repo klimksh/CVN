@@ -19,8 +19,26 @@ form.search-form>button {
     vertical-align: top;
 }
 
-.container {
-    width: 1650px;
+nav.filter-oprions{
+    margin-top: -20px;
+}
+
+nav.navbar.navbar-default.filter-oprions{
+    background: #F5F2F2;
+}
+
+.navbar-default.filter-oprions .navbar-nav>.open>a, 
+.navbar-default.filter-oprions .navbar-nav>.open>a:hover, 
+.navbar-default.filter-oprions .navbar-nav>.open>a:focus {
+    background-color: #E9E3E3;
+}
+nav.filter-oprions>.collapse{
+    padding-left: 135px;
+}
+
+#content {
+    margin-left: 150px;
+    margin-right: 150px;
 }
 
 #timeline {

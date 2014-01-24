@@ -44,7 +44,9 @@
 
 	#{include 'header.html'/}
 
-	<div class="container" id="content">
+    #{get 'filterOptions'/}
+
+	<div class="container-fluid" id="content">
         #{doLayout /}
     </div>
    
