@@ -97,7 +97,7 @@ function formatTime(timeInSeconds) {
  * @returns {string}
  */
 function createNote(note) {
-    return "<div class='panel panel-default note' data-start='" + note.startTime + "'>" +
+    return "<div style='display:none' id='note"+note.startTime+"' class='panel panel-default note' data-start='" + note.startTime + "'>" +
         "<div class='panel-heading'>" + note.title + " </div>" +
         "<div class='panel-body'>" + note.content + "</div>" +
         "<div class='panel-footer'>" +
@@ -117,8 +117,6 @@ function initializeTimeline(videoId) {
             }
         });
     });
-
-    // Start socket listener for note updates
 }
 
 function addNoteToTimeline(note) {
@@ -129,6 +127,7 @@ function addNoteToTimeline(note) {
     } else { // no notes found, add at beginning of timeline
         $("#timeline").prepend(createNote(note));
     }
+    $('#note'+note.startTime).fadeIn();
 }
 
 /**
@@ -180,7 +179,5 @@ function broadcastNote() {
     noteObj.noteWriter  = new Object();
     noteObj.noteWriter.name = $('#username').val();
 
-    console.log('Emit note');
     socket.emit('note', JSON.stringify(noteObj));
-    console.log("Done sending note");
 }

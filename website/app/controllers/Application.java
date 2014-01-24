@@ -50,12 +50,7 @@ public class Application extends Controller {
 		flash.success("You've been logged out");
 		session.remove("id");
 		session.remove("email");
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	   
 		renderTemplate("Application/frontpage.html");
 		// id = null;
 

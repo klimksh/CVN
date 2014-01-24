@@ -7,44 +7,67 @@ import models.User;
 import models.Video;
 import play.mvc.Controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by D Mak on 12.12.13.
- */
-public class NoteController extends Controller{
+public class NoteController extends Controller {
 
     public static void saveNote(){
-        String title = request.params.get("note-title");
-        String content = request.params.get("note-content");
-        int startTime = Integer.parseInt(request.params.get("note-start-int"));
-        //int endTime = Integer.parseInt(request.params.get("note-end-int"));
-        Video video = Video.findById(Long.parseLong(request.params.get("video-id")));
-        /*change to actual user*/
-        User user = new User("email", "pass", "user");
-        user.save();
+        try {
+            ServerSocket serverSocket = new ServerSocket(8080);
+            Socket clientSocket = serverSocket.accept();
+            BufferedReader in = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()) );
+            String noteString;
 
-        Note note = new Note(title, content, startTime, /*endTime,*/ video, user, null);
+            while ((noteString = in.readLine()) != null) {
+                JsonArray jsonNote;
+                JsonParser jsonParser = new JsonParser();
+                jsonNote = jsonParser.parse(noteString).getAsJsonArray();
 
-        String tagsString = request.params.get("tags");
-        String[] tagsStringList = tagsString.split(";");
-        ArrayList<Tag> tags = new ArrayList<Tag>();
+                Video video = Video.findById(
+                        Long.parseLong(
+                                jsonNote.get(4).getAsString() // Video-ID
+                        )
+                );
 
-        for(String tag : tagsStringList){
-            Tag tagObj = new Tag(tag, note, video);
-            tagObj.save();
-            tags.add(tagObj);
+                /* TODO: change to actual user */
+                User user = new User("email", "pass", "user");
+                user.save();
+
+                Note note = new Note(
+                        jsonNote.get(0).getAsString(), // Title
+                        jsonNote.get(1).getAsString(), // Content
+                        jsonNote.get(2).getAsInt(),    // Start-Time
+                        video,
+                        user,
+                        null
+                );
+
+                String tagsString = jsonNote.get(3).getAsString(); // Tags
+                String[] tagsStringList = tagsString.split(";");
+                ArrayList<Tag> tags = new ArrayList<Tag>();
+
+                for(String tag : tagsStringList){
+                    Tag tagObj = new Tag(tag, note, video);
+                    tagObj.save();
+                    tags.add(tagObj);
+                }
+                note.tags = tags;
+                video.tags = tags;
+                video.save();
+                note.save();
+
+                System.out.println("Note saved!");
+            }
+
+        } catch (IOException e) {
+            System.out.println("Socket-Connection crashed: "+e.getMessage().toString());
         }
-        note.tags = tags;
-        video.tags = tags;
-        video.save();
-        note.save();
-
-
-        System.out.println(tags);
-
-        redirect("/video/" + video.id);
     }
 
     public static void getNotes(String id){
