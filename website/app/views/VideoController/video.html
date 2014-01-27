@@ -2,58 +2,61 @@
 #{set title: "${video.title}" /}
 #{stylesheet 'video-page.css'/}
 
-<script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
+*{<script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>}*
 
 <div class="page-header">
-	<h1>${video.title}</h1>
+    <h1>${video.title}</h1>
 </div>
 <div id="container">
-	<div id="player"></div>
+    <div id="player"></div>
 
-	<div id="note-container">
-		<button id="add-new-note" type="submit" class="btn btn-success">+
-			New note</button>
-
-		<div id="new-note">
-
-			<form method="post">
-                <div id="note-title-group" class="form-group">
-                    <label for="note-title">Title</label> <input type="text"
-                        class="form-control" id="note-title" name="note-title"
-                        placeholder="Note title..." />
-                </div>
-
-                <div id="note-content-group" class="form-group">
-                    <label for="note-content">Content</label>
-                    <textarea class="form-control" placeholder="Note" content=""
-                        name="note-content" id="note-content" cols="10" rows="1"></textarea>
-                </div>
-
-                <div id="note-content-group" class="form-group col-md-6">
-                    <label for="note-start">Start time</label> <input type="time"
-                        class="form-control" name="note-start" id="note-start"
-                        placeholder="00:00" />
-                </div>
-                <div id="note-content-group" class="form-group col-md-6">
-                    <label for="note-end">End time</label> <input type="time"
-                        class="form-control" name="note-end" id="note-end"
-                        placeholder="00:00" />
-                </div>
+*{<script src="https://www.youtube.com/iframe_api"></script>}*
+    <script>
 
 
-                <input type="text" hidden="hidden" name="note-start-int" id="note-start-int" value="" />
-                <input type="text" hidden="hidden" name="note-end-int" id="note-end-int" value="" />
-                <input type="text" hidden="hidden" name="video-id" id="video-id" value="${video.id}" />
-                <input type="text" hidden="hidden" name="username" id="username" value="${user.name}" />
 
 
-                #{include 'add-tag.html'/} <span class="row" style="margin-top: 20px">
-                    <button id="note-save" type="button" onclick="broadcastNote()"
-                        class="btn btn-success pull-right">Save note</button>
-                </span>
-            </form>
-		</div>
-	</div>
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: '${video.url}',
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === 1) {  //if the video is playing start catching events
+                checkTimePointsOnVideo();
+            }
+        }
+
+
+        /* !!!contains timer that runs slideTimeline */
+        function checkTimePointsOnVideo() {
+            addTimeToPanel();
+            /* catches all timepoints on the video*/
+
+            if (!player.getCurrentTime) {
+                return false;
+            }
+
+            var interval = setInterval(function () {
+                /* player.getPlayerState() -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5). */
+                if (player.getPlayerState() === 1) {
+                    var played = Math.round(player.getCurrentTime());
+                    slideTimeline(played);
+                } else if (player.getPlayerState() === 0 || player.getPlayerState() === 2) {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+
+    </script>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
 
 
 </div>
@@ -61,23 +64,52 @@
 <div class="clearfix"></div>
 
 <div id="slideHandler">
-	<input id="autoslide" type="checkbox" checked="checked" />
-	Automatically slide
+    <input id="autoslide" type="checkbox" checked="checked"/>
+    Automatically slide
 </div>
+<div id="timeline-wrapper">
+    <img src="/public/img/add-pointer.png" id="add-note-pointer" style="margin-bottom: -20px" type="button" data-toggle="modal"
+         data-target="#addNote"/>
 
-<div id="timeline">
-	<div id="noNotesAvailable" class="panel panel-default">
-		<div class="panel-body">
-			Currently there are no notes for this video. Feel free to add some,
-			by clicking the "<span style="color: #13987e">+ New note</span>"
-			button on the top right.
-		</div>
-	</div>
+    <div id="timeline">
+        <div id="noNotesAvailable" class="panel panel-default">
+            <div class="panel-body">
+                Currently there are no notes for this video. Feel free to add some,
+                by clicking the "<span style="color: #13987e">+ New note</span>"
+                button on the top right.
+            </div>
+        </div>
+    </div>
 </div>
-
+<div class="modal fade" id="addNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
 #{set 'moreStyles'} #{/set}
 <script src="/public/js/timeline.js"></script>
 <script>
+
+    $(document).on("mousemove", ".note", function (e) {
+        var horizontal_position = e.pageX - this.offsetLeft;
+        if (horizontal_position > 100) {
+            if (this.offsetLeft - parseInt($("#add-note-pointer").css("marginLeft"), 10) > 100) {
+                move_add_pointer_right();
+            }
+        } else {
+            if (this.offsetLeft - parseInt($("#add-note-pointer").css("marginLeft"), 10) < 100)
+                move_add_pointer_left();
+        }
+
+    })
+
+    function move_add_pointer_right() {
+        console.log("move pointer");
+        var margin = parseInt($("#add-note-pointer").css("marginLeft"), 10) + 200;
+        $("#add-note-pointer").css("marginLeft", margin + "px");
+    }
+    function move_add_pointer_left() {
+        console.log("move pointer");
+        var margin = parseInt($("#add-note-pointer").css("marginLeft"), 10) - 200;
+        $("#add-note-pointer").css("marginLeft", margin + "px");
+    }
 
     $('#note-content').autogrow();
 
@@ -94,44 +126,6 @@
         }
     })
 
-
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            height: '390',
-            width: '640',
-            videoId: '${video.url}',
-            events: {
-                'onStateChange': onPlayerStateChange
-            }
-        });
-    }
-
-    function onPlayerStateChange(event) {
-        if (event.data === 1) {  //if the video is playing start catching events
-            checkTimePointsOnVideo();
-        }
-    }
-
-
-    /* !!!contains timer that runs slideTimeline */
-    function checkTimePointsOnVideo() {
-        addTimeToPanel();
-        /* catches all timepoints on the video*/
-
-        if (!player.getCurrentTime) {
-            return false;
-        }
-
-        var interval = setInterval(function () {
-            /* player.getPlayerState() -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5). */
-            if (player.getPlayerState() === 1) {
-                var played = Math.round(player.getCurrentTime());
-                slideTimeline(played);
-            } else if (player.getPlayerState() === 0 || player.getPlayerState() === 2) {
-                clearInterval(interval);
-            }
-        }, 1000);
-    }
 
     var startSeekTime = 0;
     var endSeekTime = 0;

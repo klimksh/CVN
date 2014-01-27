@@ -152,7 +152,7 @@ function findPrevNote(startTime) {
  * Receive Note-Updates via Socket and add them to the timeline if videoId is correct
  * Listening to Port 8080
  */
-$(function(){
+/*$(function(){
     var socket = io.connect('http://localhost:8080');
 
     socket.on('note', function(noteJsonString) {
@@ -166,7 +166,7 @@ $(function(){
 /**
  * Broadcast Note to all clients
  * Sending to Port 8080
- */
+ */ /*
 function broadcastNote() {
     var socket = io.connect('http://localhost:8080');
 
@@ -180,4 +180,4 @@ function broadcastNote() {
     noteObj.noteWriter.name = $('#username').val();
 
     socket.emit('note', JSON.stringify(noteObj));
-}
+} */
