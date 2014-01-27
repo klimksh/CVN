@@ -3,11 +3,8 @@
 #{stylesheet 'video-page.css'/}
 
 <script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
+<h3>${video.title}</h3>
 
-<div class="page-header">
-	<h1>${video.title}</h1>
-</div>
-<div id="container">
 	<div id="player"></div>
 
 	<div id="note-container">
@@ -54,9 +51,6 @@
             </form>
 		</div>
 	</div>
-
-
-</div>
 
 <div class="clearfix"></div>
 
@@ -123,7 +117,7 @@
         }
 
         var interval = setInterval(function () {
-            /* player.getPlayerState() -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5). */
+             player.getPlayerState() -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5). 
             if (player.getPlayerState() === 1) {
                 var played = Math.round(player.getCurrentTime());
                 slideTimeline(played);
