@@ -24,6 +24,7 @@ function login()
         $('#logout').show();
         $('#disconnect').hide();    
         $('#Gphoto').show();
+        $('.dropdown').show(); 
         return false;  
     }
 function logout()
@@ -31,11 +32,24 @@ function logout()
         document.cookie = "PLAY_SESSION=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
         document.cookie = "photo_url=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
         document.cookie = "name_plus=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        $.get(logout_url(), function () {
-                gapi.auth.signOut();
-        });
-        gapi.auth.signOut();
-        window.setInterval( function() {redirect(); } ,500);
+        
+        
+        $.ajax({
+        	  type: "GET",
+        	  async: false,
+        	  url: logout_url()
+        	})
+        	  .done(function( msg ) {
+        		  gapi.auth.signOut();
+        		  redirect();
+        	  });
+        
+        //$.get(logout_url(), function () {
+        //        gapi.auth.signOut();
+        //});
+        //gapi.auth.signOut();
+        //redirect();
+        //window.setInterval( function() { } ,500);
     }
 function redirect(){
     window.location.replace(index_url);
@@ -59,8 +73,9 @@ function makeApiCall() {
                 $('#profile').prepend(profile.error);
                 return;
             }
-            $('#Gphoto').prepend($('<img src=\"'+ profile.image.url+'\" style=\"width: 50px; margin-bottom: 5px\" class=\"img-circle\"/>'));
-            $('#nameButton').html(profile.displayName);           
+            $('#personal_image').html($("<img src=\""+profile.image.url+"\" style=\"width: 20px; margin-bottom: 0px\" class=\"glyphicon glyphicon-user\"/>"));
+            $('#personal_image2').html($("<img src=\""+profile.image.url+"\" style=\"width: 25px; margin-bottom: 0px\" class=\"glyphicon glyphicon-user\"/>"));
+            $('#personal_name').html(profile.displayName);           
         });
     });
 }
@@ -91,7 +106,7 @@ if(exist  && isHeLogedON) {
     $('#logout').show();
     $('#disconnect').hide();    
     $('#Gphoto').show();
-       
+    $('.dropdown').show();  
     $('#profile').empty();
     gapi.client.load('plus', 'v1', function() {
         var request = gapi.client.plus.people.get({
@@ -99,15 +114,22 @@ if(exist  && isHeLogedON) {
         });
         request.execute(function(profile) {
             $('#profile').empty();
-            $('#Gphoto').prepend($("<img src=\""+image_url+"\" style=\"width: 50px; margin-bottom: 5px\" class=\"img-circle\"/>"));
-            $('#nameButton').html(nameGPlus); 
+           // $('#Gphoto').prepend($("<img src=\""+image_url+"\" style=\"width: 50px; margin-bottom: 5px\" class=\"img-circle\"/>"));
+            $('#personal_name').html(nameGPlus); 
+            $('#personal_image').html($("<img src=\""+image_url+"\" style=\"width: 20px; margin-bottom: 0px\" class=\" glyphicon glyphicon-user\"/>"));
+            $('#personal_image2').html($("<img src=\""+image_url+"\" style=\"width: 25px; margin-bottom: 0px\" class=\" glyphicon glyphicon-user\"/>"));
         });
     });
              
 }
-else
-    $('#gConnect').show();
-}
+  else
+   {
+	  console.log("not logedON");
+    	$('#gConnect').show();
+    	$('#signPhoto').show();
+    	$('.dropdown').hide();
+     }
+ }
 function imageURL(){
     var ss=document.cookie;
     var ca = document.cookie.split(';');

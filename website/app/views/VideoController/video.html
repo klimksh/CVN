@@ -2,7 +2,7 @@
 #{set title: "${video.title}" /}
 #{stylesheet 'video-page.css'/}
 
-<script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
+<!--  <script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>-->
 
 <div class="page-header">
 	<h1>${video.title}</h1>
@@ -76,6 +76,26 @@
 </div>
 
 #{set 'moreStyles'} #{/set}
+<script type="text/javascript">
+
+var c_sh=document.body.scrollHeight;
+var c_sw=document.body.scrollWidth;
+var c_h = $(window).height();
+var c_w= $(window).width();
+document.getElementById('play*r').style.height=0.6*c_h+"px";
+$(function(){
+ $(window).resize(function(){
+     content_height = $(window).height()-110;
+     document.getElementById('play*r').style.height=c_h+"px";
+ });
+});
+
+
+
+
+
+</script>
+
 <script src="/public/js/timeline.js"></script>
 <script>
 
@@ -154,6 +174,5 @@
         $("#note-end-int").val(endSeekTime);
 
     })
-
-
 </script>
+

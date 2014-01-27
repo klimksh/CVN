@@ -87,3 +87,7 @@ nav.filter-oprions>.collapse{
 .panel-default>.panel-heading {
     max-height: 43px;
 }
+
+.dropdown-menu-details {
+	padding: 5px 10px 5px 20px;
+}

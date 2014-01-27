@@ -13,7 +13,7 @@ GET     /video/add                              VideoController.addVideo
 POST    /video/save                             VideoController.saveVideo
 GET     /video/{id}                             VideoController.video
 GET     /notes/{id}                             NoteController.getNotes
-
+POST     /?{query}         						VideoController.search
 GET     /timeline                               Application.timeline
 
 

@@ -2,5 +2,6 @@
 
 require:
     - play
+    - play -> elasticsearch 0.4
     
    
