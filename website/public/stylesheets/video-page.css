@@ -1,6 +1,6 @@
 #note-container {
     float: right;
-    width: 35%
+    width: 30%
 }
 
 #new-note {
@@ -9,5 +9,5 @@
 }
 
 .container.wrap {
-	padding: 0px 20%;
+	padding: 0px 13%;
 }
