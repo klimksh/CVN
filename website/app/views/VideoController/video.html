@@ -2,60 +2,50 @@
 #{set title: "${video.title}" /}
 #{stylesheet 'video-page.css'/}
 
-<!--  <script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>-->
-
-<div class="page-header">
-	<h1>${video.title}</h1>
+<h3 id="header">CVN - ${video.title}</h3>
+<div class="row">
+    <div class="container wrap">
+        <div id="player"></div>
+    </div>
 </div>
-<div id="container">
-	<div id="player"></div>
+<div id="note-container">
+	<div id="new-note">
 
-	<div id="note-container">
-		<button id="add-new-note" type="submit" class="btn btn-success">+
-			New note</button>
+		<form method="post">
+            <div id="note-title-group" class="form-group">
+                <label for="note-title">Title</label> <input type="text"
+                    class="form-control" id="note-title" name="note-title"
+                    placeholder="Note title..." />
+            </div>
 
-		<div id="new-note">
+            <div id="note-content-group" class="form-group">
+                <label for="note-content">Content</label>
+                <textarea class="form-control" placeholder="Note" content=""
+                    name="note-content" id="note-content" cols="10" rows="1"></textarea>
+            </div>
 
-			<form method="post">
-                <div id="note-title-group" class="form-group">
-                    <label for="note-title">Title</label> <input type="text"
-                        class="form-control" id="note-title" name="note-title"
-                        placeholder="Note title..." />
-                </div>
+            <div id="note-content-group" class="form-group col-md-6">
+                <label for="note-start">Start time</label> <input type="time"
+                    class="form-control" name="note-start" id="note-start"
+                    placeholder="00:00" />
+            </div>
+            <div id="note-content-group" class="form-group col-md-6">
+                <label for="note-end">End time</label> <input type="time"
+                    class="form-control" name="note-end" id="note-end"
+                    placeholder="00:00" />
+            </div>
 
-                <div id="note-content-group" class="form-group">
-                    <label for="note-content">Content</label>
-                    <textarea class="form-control" placeholder="Note" content=""
-                        name="note-content" id="note-content" cols="10" rows="1"></textarea>
-                </div>
+            <input type="text" hidden="hidden" name="note-start-int" id="note-start-int" value="" />
+            <input type="text" hidden="hidden" name="note-end-int" id="note-end-int" value="" />
+            <input type="text" hidden="hidden" name="video-id" id="video-id" value="${video.id}" />
+            <input type="text" hidden="hidden" name="username" id="username" value="${user.name}" />
 
-                <div id="note-content-group" class="form-group col-md-6">
-                    <label for="note-start">Start time</label> <input type="time"
-                        class="form-control" name="note-start" id="note-start"
-                        placeholder="00:00" />
-                </div>
-                <div id="note-content-group" class="form-group col-md-6">
-                    <label for="note-end">End time</label> <input type="time"
-                        class="form-control" name="note-end" id="note-end"
-                        placeholder="00:00" />
-                </div>
-
-
-                <input type="text" hidden="hidden" name="note-start-int" id="note-start-int" value="" />
-                <input type="text" hidden="hidden" name="note-end-int" id="note-end-int" value="" />
-                <input type="text" hidden="hidden" name="video-id" id="video-id" value="${video.id}" />
-                <input type="text" hidden="hidden" name="username" id="username" value="${user.name}" />
-
-
-                #{include 'add-tag.html'/} <span class="row" style="margin-top: 20px">
-                    <button id="note-save" type="button" onclick="broadcastNote()"
-                        class="btn btn-success pull-right">Save note</button>
-                </span>
-            </form>
-		</div>
+            #{include 'add-tag.html'/} <span class="row" style="margin-top: 20px">
+                <button id="note-save" type="button" onclick="broadcastNote()"
+                    class="btn btn-success pull-right">Save note</button>
+            </span>
+        </form>
 	</div>
-
-
 </div>
 
 <div class="clearfix"></div>
@@ -64,7 +54,7 @@
 	<input id="autoslide" type="checkbox" checked="checked" />
 	Automatically slide
 </div>
-
+<button id="add-new-note" type="submit" class="btn btn-success">+ New note</button>
 <div id="timeline">
 	<div id="noNotesAvailable" class="panel panel-default">
 		<div class="panel-body">
@@ -76,6 +66,7 @@
 </div>
 
 #{set 'moreStyles'} #{/set}
+
 <script type="text/javascript">
 
 var c_sh=document.body.scrollHeight;
@@ -84,22 +75,22 @@ var c_h = $(window).height();
 var c_w= $(window).width();
 document.getElementById('play*r').style.height=0.6*c_h+"px";
 $(function(){
- $(window).resize(function(){
-     content_height = $(window).height()-110;
-     document.getElementById('play*r').style.height=c_h+"px";
- });
+    $(window).resize(function(){
+        content_height = $(window).height()-110;
+        document.getElementById('play*r').style.height=c_h+"px";
+    });
 });
-
-
-
-
 
 </script>
 
+<script>
+    $(function() {
+        $(document).scrollTop( $("#header").offset().top );  
+    });
+</script>
 <script src="/public/js/timeline.js"></script>
 <script>
-
-    $('#note-content').autogrow();
+        $('#note-content').autogrow();
 
     initializeTimeline(${video.id});
 
@@ -117,8 +108,8 @@ $(function(){
 
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
-            height: '390',
-            width: '640',
+            height: '430',
+            width: '780',
             videoId: '${video.url}',
             events: {
                 'onStateChange': onPlayerStateChange
@@ -143,7 +134,7 @@ $(function(){
         }
 
         var interval = setInterval(function () {
-            /* player.getPlayerState() -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5). */
+             player.getPlayerState() // -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5). 
             if (player.getPlayerState() === 1) {
                 var played = Math.round(player.getCurrentTime());
                 slideTimeline(played);
