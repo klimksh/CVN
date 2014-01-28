@@ -13,6 +13,7 @@ GET     /video/add                              VideoController.addVideo
 POST    /video/save                             VideoController.saveVideo
 GET     /video/{id}                             VideoController.video
 GET     /notes/{id}                             NoteController.getNotes
+WS      /websocket      			            WebSocket.listen
 
 GET     /timeline                               Application.timeline
 

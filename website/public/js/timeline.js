@@ -97,11 +97,17 @@ function formatTime(timeInSeconds) {
  * @returns {string}
  */
 function createNote(note) {
+    var username;
+    if(note.noteWriter !== undefined) {
+        username = note.noteWriter.name;
+    } else {
+        username = note.username;
+    }
     return "<div style='display:none' id='note"+note.startTime+"' class='panel panel-default note' data-start='" + note.startTime + "'>" +
         "<div class='panel-heading'>" + note.title + " </div>" +
         "<div class='panel-body'>" + note.content + "</div>" +
         "<div class='panel-footer'>" +
-        "<a href='#'>by " + note.noteWriter.name + "</a>" +
+        "<a href='#'>by " + username + "</a>" +
         "</div>" +
         "</div>";
 }
@@ -148,36 +154,49 @@ function findPrevNote(startTime) {
     return prevNote;
 }
 
-/**
- * Receive Note-Updates via Socket and add them to the timeline if videoId is correct
- * Listening to Port 8080
- */
-$(function(){
-    var socket = io.connect('http://localhost:8080');
-
-    socket.on('note', function(noteJsonString) {
-        var noteObj = jQuery.parseJSON(noteJsonString);
-        if(videoId === noteObj.videoId) {
-            addNoteToTimeline(noteObj);
-        }
-    });
-});
+function getStartTime() {
+    var time = $('#note-start').val();
+    split = time.split(':');
+    return parseInt(split[0])*60+parseInt(split[1]);
+}
 
 /**
- * Broadcast Note to all clients
- * Sending to Port 8080
+ * Create a Note Object
  */
-function broadcastNote() {
-    var socket = io.connect('http://localhost:8080');
-
+function createNoteObject() {
     var noteObj = new Object();
     noteObj.title       = $('#note-title').val();
     noteObj.content     = $('#note-content').val();
-    noteObj.startTime   = $('#note-start-int').val();
+    noteObj.startTime   = getStartTime();
     noteObj.tags        = $('#tags').val();
     noteObj.videoId     = videoId;
-    noteObj.noteWriter  = new Object();
-    noteObj.noteWriter.name = $('#username').val();
+    noteObj.username    = $('#username').val();
 
-    socket.emit('note', JSON.stringify(noteObj));
+    console.log(noteObj);
+    return noteObj;
+}
+
+/**
+ * Initiate socket connection for specific video-page
+ * @param videoId
+ */
+function initSockets() {
+
+    //depending on the browser we have to use WebSocket or MozWebSocket
+    var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
+    var websocket = new WS("ws://localhost:9000/websocket/listen");
+
+    //sends a message when the 'send' button is clicked
+    $('#note-save').click(function() {
+        var noteObj = createNoteObject();
+        websocket.send(JSON.stringify(noteObj))
+    });
+
+    websocket.onmessage = function (event) {
+        console.log('Note received');
+        noteObj = eval("("+event.data+")");
+        if(noteObj.videoId == videoId) {
+            addNoteToTimeline(noteObj);
+        }
+    }
 }

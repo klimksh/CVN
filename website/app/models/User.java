@@ -22,7 +22,7 @@ public class User extends Model{
 	@ManyToMany
 	public List<Video>watchedVideos;
 
-	public User(@Email @Unique String  email, String password, String name) {
+	public User(@Email @Unique String email, String password, String name) {
 		super();
 		this.email = email;
 		this.password = password;

@@ -2,8 +2,6 @@
 #{set title: "${video.title}" /}
 #{stylesheet 'video-page.css'/}
 
-<script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
-
 <div class="page-header">
 	<h1>${video.title}</h1>
 </div>
@@ -48,8 +46,7 @@
 
 
                 #{include 'add-tag.html'/} <span class="row" style="margin-top: 20px">
-                    <button id="note-save" type="button" onclick="broadcastNote()"
-                        class="btn btn-success pull-right">Save note</button>
+                    <button id="note-save" type="button" class="btn btn-success pull-right">Save note</button>
                 </span>
             </form>
 		</div>
@@ -78,6 +75,7 @@
 #{set 'moreStyles'} #{/set}
 <script src="/public/js/timeline.js"></script>
 <script>
+    initSockets();
 
     $('#note-content').autogrow();
 
