@@ -116,8 +116,8 @@ if(exist  && isHeLogedON) {
             $('#profile').empty();
            // $('#Gphoto').prepend($("<img src=\""+image_url+"\" style=\"width: 50px; margin-bottom: 5px\" class=\"img-circle\"/>"));
             $('#personal_name').html(nameGPlus); 
-            $('#personal_image').html($("<img src=\""+image_url+"\" style=\"width: 20px; margin-bottom: 0px\" class=\" glyphicon glyphicon-user\"/>"));
-            $('#personal_image2').html($("<img src=\""+image_url+"\" style=\"width: 25px; margin-bottom: 0px\" class=\" glyphicon glyphicon-user\"/>"));
+            $('#personal_image2').html($("<img src=\""+image_url+"\" style=\"width: 25px; margin-bottom: 0px\" class=\" img-circle\"/>"));
+            $('#personal_image').html($("<span class=\" glyphicon glyphicon-user\"/></span>"));
         });
     });
              
