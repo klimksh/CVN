@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Milya on 04.12.13.
  */
 public class VideoController extends Controller {
-
+      
     public static void index() {
     	List<Video> videos = Video.findAll();
         LinkedList<LinkedList<Video>> chunks = new LinkedList<LinkedList<Video>>();;
@@ -68,6 +68,8 @@ public class VideoController extends Controller {
 
     public static void video(String id){
         Video video = Video.findById(Long.parseLong(id));
+        System.out.println("i am here");
+    	Video.searchQuery("Dynamic");
         if(video == null) {
             redirect("/");
         }
@@ -78,5 +80,32 @@ public class VideoController extends Controller {
 
         render(video, user);
     }
+    public static void  search(String query)
+    {
+    	System.out.println("i am here");
+    	System.out.println(query);
+    	Video.searchQuery(query);
+       	List<Video> videos = Video.searchQuery(query);
+        LinkedList<LinkedList<Video>> chunks = new LinkedList<LinkedList<Video>>();;
+    	int counter = 0;
+    	LinkedList<Video> chunk = new LinkedList<Video>();
+    	for (Video video : videos) {
+    	   	chunk.add(video);
+    	    counter++;
+    	    if (counter==6){
+    	       	chunks.add(chunk);
+    	        chunk = new LinkedList<Video>();
+    	        counter=0;
+    	            }
+    	        }
+    	        if (chunk.size()>0){
+    	        	chunks.add(chunk);
+    	        }
+   	        render(chunks);
+    
+    	    
+
+    }
+   
 
 }

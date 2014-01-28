@@ -2,48 +2,49 @@
     width: 1000px;
 }
 
-#video-info{
+#video-info {
     margin-left: 20px;
     /*background-image: url(../img/no-signal.gif);*/
-    width:480px;
+    width: 480px;
     height: 360px;
 }
 
 img.logo {
     height: 55px;
 }
+
 input.search {
-    width:519px;
+    width: 519px;
 }
 
-button.new-video{
+button.new-video {
     margin-left: 20px;
 }
 
-button.new-video>a{
+button.new-video > a {
     text-decoration: none;
     color: white;
 }
 
-
-form.search-form>button {
+form.search-form > button {
     vertical-align: top;
 }
 
-nav.filter-oprions{
+nav.filter-oprions {
     margin-top: -20px;
 }
 
-nav.navbar.navbar-default.filter-oprions{
+nav.navbar.navbar-default.filter-oprions {
     background: #F5F2F2;
 }
 
-.navbar-default.filter-oprions .navbar-nav>.open>a, 
-.navbar-default.filter-oprions .navbar-nav>.open>a:hover, 
-.navbar-default.filter-oprions .navbar-nav>.open>a:focus {
+.navbar-default.filter-oprions .navbar-nav > .open > a,
+.navbar-default.filter-oprions .navbar-nav > .open > a:hover,
+.navbar-default.filter-oprions .navbar-nav > .open > a:focus {
     background-color: #E9E3E3;
 }
-nav.filter-oprions>.collapse{
+
+nav.filter-oprions > .collapse {
     padding-left: 135px;
 }
 
@@ -52,13 +53,18 @@ nav.filter-oprions>.collapse{
     margin-right: 150px;
 }
 
+#timeline-wrapper {
+    padding: 0px 0px;
+    width: 100%;
+    z-index: 100;
+}
+
 #timeline {
     width: 100%;
     background-color: lightgrey;
     overflow-x: scroll;
-    white-space: nowrap;
-    margin: 50px 5px;
-    padding: 5px;
+    z-index: -100;
+    margin: 0px 23px;
 }
 
 #timeline .note {
@@ -70,6 +76,7 @@ nav.filter-oprions>.collapse{
     vertical-align: middle;
     white-space: normal;
     margin-bottom: 0px !important;
+    z-index: -2;
 }
 
 #timer, #buttons {
@@ -83,7 +90,7 @@ nav.filter-oprions>.collapse{
     margin-bottom: 20px;
     padding-bottom: 20px;
     font-size: 25px;
-    border-bottom: 2px dotted darkgray ;
+    border-bottom: 2px dotted darkgray;
 }
 
 #buttons button {
@@ -95,6 +102,10 @@ nav.filter-oprions>.collapse{
     min-height: 185px;
 }
 
-.panel-default>.panel-heading {
+.panel-default > .panel-heading {
     max-height: 43px;
+}
+
+.dropdown-menu-details {
+	padding: 5px 10px 5px 20px;
 }

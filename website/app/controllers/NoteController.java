@@ -70,6 +70,9 @@ public class NoteController extends Controller {
         }
     }
 
+    public static void addNote(){
+        render();
+    }
     public static void getNotes(String id){
 
         Gson gson = new GsonBuilder()

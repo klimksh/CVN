@@ -172,7 +172,6 @@ function createNoteObject() {
     noteObj.videoId     = videoId;
     noteObj.username    = $('#username').val();
 
-    console.log(noteObj);
     return noteObj;
 }
 

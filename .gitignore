@@ -10,6 +10,10 @@
 .settings
 tmp
 website/tmp
+website/data
+website/modules
+website/lib
+website/target
 /RemoteSystemsTempFiles
 /website/.idea
 /website/.settings
@@ -20,3 +24,4 @@ website/tmp
 *.iml
 website/Collaborative VideoNotes.ipr
 website/Collaborative VideoNotes.iws
+akka-amqp
