@@ -166,8 +166,13 @@ function findPrevNote(startTime) {
 /**
  * Broadcast Note to all clients
  * Sending to Port 8080
+
  */
 /*function broadcastNote() {
+
+ */ /*
+function broadcastNote() {
+
     var socket = io.connect('http://localhost:8080');
 
     var noteObj = new Object();
@@ -180,4 +185,5 @@ function findPrevNote(startTime) {
     noteObj.noteWriter.name = $('#username').val();
 
     socket.emit('note', JSON.stringify(noteObj));
+
 }*/

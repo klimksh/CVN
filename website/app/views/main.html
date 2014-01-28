@@ -11,21 +11,21 @@
 
     <link href="@{'public/css/bootstrap.min.css'}" rel="stylesheet">
     <link href="@{'public/css/style.css'}" rel="stylesheet">
-    #{get 'moreStyles' /}
+#{get 'moreStyles' /}
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-        <script src="js/html5shiv.js"></script>
-        <![endif]-->
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
     <script type="text/javascript" src="@{'public/js/jquery-2.0.3.min.js'}"></script>
     <script type="text/javascript" src="@{'public/js/bootstrap.min.js'}"></script>
     <script type="text/javascript" src="@{'public/js/scripts.js'}"></script>
-    <script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
+
     <!--         https://github.com/AlexChittock/JQuery-Session-Plugin  -->
     <script type="text/javascript" src="@{'public/js/jquery.session.js'}"></script>
     <!--         truncate text plugin -->
     <script type="text/javascript" src="@{'public/js/jQuery.succinct.min.js'}"></script>
-    #{get 'moreScripts' /}
+#{get 'moreScripts' /}
     <script type="text/javascript" src="@{'public/js/google-plus-script-init.js'}"></script>
     <script type="text/javascript">
         var login_token_url = #{jsAction @Application.loginToken(':a' )/};
@@ -34,22 +34,23 @@
         var logout_url = #{jsAction @Application.logout() /};
         var index_url = "@{VideoController.index()}";
         var add_video_url = "@{VideoController.addVideo()}";
+        var add_note_url = "@{NoteController.addNote()}";
     </script>
     <script type="text/javascript" src="@{'public/js/google-plus-auth.js'}"></script>
     <script src="https://apis.google.com/js/client.js"></script>
-    
+
     <script type="text/javascript" src="@{'/public/js/add-video.js'}"></script>
 </head>
 <body>
 
-	#{include 'header.html'/}
+#{include 'header.html'/}
 
-    #{get 'filterOptions'/}
+#{get 'filterOptions'/}
 
-	<div class="container-fluid" id="content">
-        #{doLayout /}
-    </div>
-   
+<div class="container-fluid" id="content">
+#{doLayout /}
+</div>
+
 
 </body>
 </html>
