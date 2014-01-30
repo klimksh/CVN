@@ -88,13 +88,8 @@ public class Video extends Model {
     }
     public static List<Video> searchQuery(String query)
     {
-    	//System.out.println("hello");
+
     	SearchResults<Video>list= play.modules.elasticsearch.ElasticSearch.search(QueryBuilders.queryString(query), Video.class);
-    	System.out.println(list.objects.size());
-    	for(int i=0;i<list.objects.size();i++)
-    	{
-    		System.out.println(list.objects.get(i).id+" "+list.objects.get(i).title );
-    	}
     	return list.objects;
     }
 }

@@ -68,8 +68,6 @@ public class VideoController extends Controller {
 
     public static void video(String id){
         Video video = Video.findById(Long.parseLong(id));
-        System.out.println("i am here");
-    	Video.searchQuery("Dynamic");
         if(video == null) {
             redirect("/");
         }
@@ -82,8 +80,8 @@ public class VideoController extends Controller {
     }
     public static void  search(String query)
     {
-    	System.out.println("i am here");
-    	System.out.println(query);
+    	
+    	
     	Video.searchQuery(query);
        	List<Video> videos = Video.searchQuery(query);
         LinkedList<LinkedList<Video>> chunks = new LinkedList<LinkedList<Video>>();;
