@@ -19,7 +19,7 @@
     Automatically slide
 </div>
 <div id="timeline-wrapper">
-    <img src="/public/img/add-pointer.png" id="add-note-pointer" style="margin-bottom: -20px" type="button" data-toggle="modal"
+    <img src="/public/img/add-pointer.png" id="add-note-pointer" style="margin-bottom: -20px; z-index: 100" type="button" data-toggle="modal"
          data-target="#addNote"/>
 
     <div id="timeline">
@@ -57,7 +57,6 @@
 
 <script src="/public/js/timeline.js"></script>
 <script>
-
     $(document).on("mousemove", ".note", function (e) {
         var horizontal_position = e.pageX - this.offsetLeft;
         if (horizontal_position > 100) {
@@ -84,7 +83,7 @@
 
     $('#note-content').autogrow();
 
-
+    initSockets();
     initializeTimeline(${video.id});
 
     var player;
@@ -97,8 +96,6 @@
             $(this).text("+ New note");
         }
     })
-
-
 
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
@@ -117,11 +114,10 @@
         }
     }
 
-
-    /* !!!contains timer that runs slideTimeline */
+    // !!!contains timer that runs slideTimeline
     function checkTimePointsOnVideo() {
         addTimeToPanel();
-        /* catches all timepoints on the video*/
+        // catches all timepoints on the video
 
         if (!player.getCurrentTime) {
             return false;
@@ -149,15 +145,4 @@
         player.cueVideoById("${video.url}", startSeekTime, endSeekTime, "large");
         $("#note-start-int").val(startSeekTime);
     })
-
-    $("#note-end").change(function () {
-        var time = $(this).val().split(":");
-        endSeekTime = parseInt(time[0]) * 60 + parseInt(time[1]);
-        //player.seekTo(seekTime, false );
-
-        player.cueVideoById("${video.url}", startSeekTime, endSeekTime, "large");
-        $("#note-end-int").val(endSeekTime);
-
-    })
 </script>
-

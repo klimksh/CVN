@@ -172,6 +172,8 @@ function createNoteObject() {
     noteObj.videoId     = videoId;
     noteObj.username    = $('#username').val();
 
+    console.log(noteObj);
+
     return noteObj;
 }
 
@@ -180,13 +182,13 @@ function createNoteObject() {
  * @param videoId
  */
 function initSockets() {
-
-    //depending on the browser we have to use WebSocket or MozWebSocket
+    // depending on the browser we have to use WebSocket or MozWebSocket
     var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
     var websocket = new WS("ws://localhost:9000/websocket/listen");
 
-    //sends a message when the 'send' button is clicked
+    // save a note when the 'save' button is clicked
     $('#note-save').click(function() {
+        console.log("Click & Save");
         var noteObj = createNoteObject();
         websocket.send(JSON.stringify(noteObj))
     });
