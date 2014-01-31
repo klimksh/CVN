@@ -53,59 +53,85 @@ nav.filter-oprions > .collapse {
     margin-right: 150px;
 }
 
-#timeline-wrapper {
-    padding: 0px 0px;
-    width: 100%;
-    z-index: 100;
-}
+/**
+***********************
+*
+*  TIMELINE
+*
+***********************
+*/
 
 #timeline {
-    width: 100%;
-    background-color: lightgrey;
-    overflow-x: scroll;
-    z-index: -100;
-    margin: 0px 23px;
+    padding: 0px;
+    height: 250px;
+    position: relative;
+    background-color: #f8f8f8;
+    border: 1px solid #e7e7e7;
+    border-bottom: 0px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+#timeline #pastNotes, #timeline #futureNotes {
+    padding: 10px 20px;
+    height: 100%;
+    float: left;
+    opacity: 0.5;
+    overflow-y: scroll;
+}
+
+#timeline #pastNotes {
+    border-right: 1px dashed darkgray;
+}
+
+#timeline #currentNotes {
+    padding: 10px 20px;
+    height: 100%;
+    float: left;
+}
+
+#timeline #mainPanel {
+    padding: 0 5px;
+    min-width: 500px;
+    height: 100%;
+    float: left;
+    border-right: 1px dashed darkgray;
+}
+
+#timeline #options {
+    width: 100px;
+    height: 100%;
+    font-size: 30px;
+    float: left;
+    text-align: center;
+    padding: 0 5px;
+    border-right: 1px dashed darkgray;
+}
+
+#timeline #options div {
+    height: 50%;
+}
+
+#timeline #options #currentTime {
+    padding-top: 10px;
+}
+
+
+#timeline #options .btn {
+    font-size: 70px;
 }
 
 #timeline .note {
-    width: 200px;
-    height: 280px;
+    width: 100px;
+    min-height: 65px;
+    float: left;
     border: 1px solid black;
     padding: 5px;
     display: inline-block;
-    vertical-align: middle;
-    white-space: normal;
-    margin-bottom: 0px !important;
-    z-index: -2;
+    background-color: lightgray;
+    margin: 5px 5px 0 0;
 }
 
-#timer, #buttons {
+.row iframe {
     margin: 0 auto;
-    font-weight: bold;
-    text-align: center;
-}
-
-#timer {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    font-size: 25px;
-    border-bottom: 2px dotted darkgray;
-}
-
-#buttons button {
-    font-size: 20px;
-
-}
-
-.panel-body {
-    min-height: 185px;
-}
-
-.panel-default > .panel-heading {
-    max-height: 43px;
-}
-
-.dropdown-menu-details {
-	padding: 5px 10px 5px 20px;
 }

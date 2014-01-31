@@ -1,94 +1,131 @@
 var delayTime = 10;
 var videoId = $('#video-id').val();
+var mainPanelFlipped = false;
+var allNotes = Array();
+var noNotesText = "<span class='noNotesText'>Currently there are no notes for this video. Feel free to add some, by clicking the <span style='color: #13987e'>+ New note</span> button on the top right.</span>";
+
+function flipMainPanel() {
+    if(mainPanelFlipped === false) {
+        $("#myFlippyBox").flippy({
+            verso: $('#newNoteForm').html(),
+            direction:"TOP",
+            duration:"500",
+            color_target:"#f8f8f8"
+        });
+        mainPanelFlipped = true;
+        flipButtons();
+    } else {
+        $("#myFlippyBox").flippyReverse();
+        mainPanelFlipped = false;
+        flipButtons();
+    }
+}
+
+function flipButtons() {
+    $('#addNoteBtn').toggle();
+    $('#revertFlip').toggle();
+}
 
 /**
- * Adds the timeframe a note is visible to the notes header
- * DEVELOPMENT ONLY
+ * Creates all notes and adds them to the timeline
  */
-function addTimeToPanel() {
-    $("#timeline .note").each(function () {
-        var startTime = parseInt($(this).data("start"));
-        var title = $(this).children(".panel-heading").html();
-        if (title.indexOf("(") !== -1) {
-            title = title.substr(0, title.indexOf("("));
-        }
-
-        $(this).children(".panel-heading").html(title + " (" + formatTime(startTime) + "-" + formatTime(startTime+delayTime) + ")");
+function initializeTimeline(videoId) {
+    $.getJSON("/notes/"+videoId, function (data) {
+        $.each(data.elements, function (index, note) {
+            if (note.title !== "") {
+                allNotes.push(note);
+            }
+        });
+        updateTimeline(0); // update Timeline for 0 sec
     });
 }
 
-$('#autoslide').change(function(){
-    if( $(this).is(':checked') ) {
-        console.log("manual slide");
-        var pastNotes = Math.max(0, $('.past').length);
-        var width = 200; // $('.note').width();
-        var scrollToPosition = width*pastNotes;
-        $("#timeline").animate({scrollLeft: scrollToPosition}, 100);
-    }
+/**
+ * Auto resize all note-boxes when browser gets resized
+ */
+$( window ).resize(function(){
+    setTimelineBoxSizes();
 });
 
 /**
- * Removes old notes from the timeline, while watching a video
+ * Set the width of all timeline boxes to fit the video-player
+ */
+function setTimelineBoxSizes(){
+    var playerWidth = $('iframe#player').width();
+    var browserViewport = $('#content').width();
+    var options = $('#options').width();
+
+    var mainBox = playerWidth-options-12; // 12px = padding
+    var sideBox = (browserViewport-mainBox-75)/2;
+
+    $('#mainPanel').css('width', mainBox);
+    if (browserViewport-playerWidth > 450) {
+        $('#pastNotes, #futureNotes').fadeIn();
+        $('#pastNotes, #futureNotes').css('width', sideBox);
+        $('#timeline').css('width', sideBox*2+mainBox+options+14);  // 12px = padding
+    } else {
+        $('#pastNotes, #futureNotes').fadeOut();
+        $('#timeline').css('width', playerWidth);
+    }
+
+    // positioning below video
+    var leftOffset = $('iframe#player').offset().left;
+    if( $('#pastNotes').is(':visible') ) {
+        leftOffset = leftOffset-40-$('#pastNotes').width();
+    }
+    $('#timeline').offset({ left: leftOffset });
+}
+/**
+ * Move notes to their part of the timeline (past, current, future)
  * @param currentVideoTime
  */
-function slideTimeline(currentVideoTime) {
-    $(".note:not(.past)").each(function () {
-        console.log("Future note found");
-        var currentPosition = $('#timeline').scrollLeft();
-        var pastNotes = Math.max(0, $('.past').length);
-        var width = 200; // $('.note').width();
+function updateTimeline(currentVideoTime) {
+    if( !$('#autoslide').is(':checked') ) {
+        return;
+    }
 
-        var slideToleranceMin = (pastNotes-1)*width;
-        var slideToleranceMax = (pastNotes+1)*width;
-
-        if(currentPosition<slideToleranceMin || currentPosition>slideToleranceMax) {
-            $('#autoslide').prop('checked', false);
-            console.log("Out of tolerance area -> automatical sliding deactivated");
-        }
-
-        var noteEndTime = parseInt($(this).data("start"))+delayTime;
-        var autoSlide = $('#autoslide').is(':checked');
-
-        if (noteEndTime < currentVideoTime) {
-            console.log("Passed note! delay: "+delayTime+" endTime: "+noteEndTime+" Curr: "+currentVideoTime);
-            $(this).addClass("past");
-            pastNotes++;
-
-            if(autoSlide) {
-                var scrollToPosition = width*pastNotes;
-                console.log("scroll from "+currentPosition+" to "+scrollToPosition);
-                $("#timeline").animate({scrollLeft: scrollToPosition}, 500);
-            }
+    // Filter notes
+    allNotes.forEach(function(note) {
+        if(note.startTime+delayTime < currentVideoTime) {
+            addNoteToTimeline('pastNotes', note);
+            $('#currentNotes #note'+note.startTime).remove();
+        } else if (note.startTime+delayTime <= (currentVideoTime+30)) { // Timeframe of 30 seconds
+            addNoteToTimeline('currentNotes', note);
+            $('#futureNotes #note'+note.startTime).remove();
+        } else {
+            addNoteToTimeline('futureNotes', note);
         }
     });
+
+    // Set noNotes text if there are no notes for this period
+    if( $('#pastNotes .note').length <= 0 ) {
+        $('#pastNotes').html(noNotesText);
+    }
+    if( $('#currentNotes .note').length <= 0 ) {
+        $('#currentNotes').html(noNotesText);
+    }
+    if( $('#futureNotes .note').length <= 0 ) {
+        $('#futureNotes').html(noNotesText);
+    }
+
+    // Update Timer
+    $('#currentVideoTime').html(convertSecToTime(currentVideoTime));
 }
 
 /**
- * Formatting the timeInSeconds
- * Examples: 5s, 2m5s, 1h2m5s
- * @param timeInSeconds
- * @returns {string}
+ * Adds a note to one part of the timeline (past, current, future), if not already there
+ * @param (pastNotes|currentNotes|futureNotes)
+ * @param note
  */
-function formatTime(timeInSeconds) {
-    var h, m, s;
-
-    s = Math.floor(timeInSeconds % 60);
-    m = Math.floor((timeInSeconds - s) / 60) % 60;
-
-    if ((timeInSeconds - s - m * 60) !== 0) {
-        h = Math.floor((timeInSeconds - s - m * 60) / 3600);
-    } else {
-        h = 0;
+function addNoteToTimeline(dom, note) {
+    $('#'+dom+' .noNotesText').hide();
+    var prevNote = findPrevNote(dom, note.startTime);
+    if (prevNote !== null) { // prevNote found, add after the prevNote
+        prevNote.after(createNote(note));
+    } else { // no notes found, add at beginning of timeline
+        $("#timeline #"+dom).prepend(createNote(note));
     }
-
-
-    if (h > 0) {
-        return h + "h" + m + "m" + s + "s";
-    } else if (m > 0) {
-        return m + "m" + s + "s";
-    } else {
-        return s + "s";
-    }
+    $('#note'+note.startTime).fadeIn();
 }
 
 /**
@@ -103,37 +140,9 @@ function createNote(note) {
     } else {
         username = note.username;
     }
-    return "<div style='display:none' id='note"+note.startTime+"' class='panel panel-default note' data-start='" + note.startTime + "'>" +
-        "<div class='panel-heading'>" + note.title + " </div>" +
-        "<div class='panel-body'>" + note.content + "</div>" +
-        "<div class='panel-footer'>" +
-        "<a href='#'>by " + username + "</a>" +
-        "</div>" +
-        "</div>";
-}
-
-/**
- * Creates all notes and adds them to the timeline
- */
-function initializeTimeline(videoId) {
-    $.getJSON("/notes/"+videoId, function (data) {
-        $.each(data.elements, function (index, note) {
-            if (note.title !== "") {
-                addNoteToTimeline(note);
-            }
-        });
-    });
-}
-
-function addNoteToTimeline(note) {
-    var prevNote = findPrevNote(note.startTime);
-    $('#noNotesAvailable').fadeOut();
-    if (prevNote !== null) { // prevNote found, add after the prevNote
-        prevNote.after(createNote(note));
-    } else { // no notes found, add at beginning of timeline
-        $("#timeline").prepend(createNote(note));
-    }
-    $('#note'+note.startTime).fadeIn();
+    return "<div style='display:none' id='note"+note.startTime+"' class='note' data-start='" + note.startTime + "'>" +
+                "<p>" + note.title + " </p>" +
+           "</div>";
 }
 
 /**
@@ -141,21 +150,55 @@ function addNoteToTimeline(note) {
  * @param startTime
  * @returns prevNote | null
  */
-function findPrevNote(startTime) {
+function findPrevNote(dom, startTime) {
     var prevNote = null;
     var time = 0;
-    $(".note").each(function () {
+    $("#"+dom+" .note").each(function () {
         time = parseInt($(this).data("start"));
         if (time <= startTime) {
             prevNote = $(this);
         }
     });
-
     return prevNote;
 }
 
-function getStartTime() {
-    var time = $('#note-start').val();
+/** ****************************
+ *
+ *
+ *  SOCKET CONNECTION STUFF
+ *
+ *
+ * *****************************
+ */
+
+/**
+ * Converts the formated time from new notes into seconds
+ * @returns time in seconds
+ */
+function convertSecToTime(time) {
+    var hours = Math.floor(time / 3600);
+    var minutes = Math.floor(time / 60);
+    var seconds = time - minutes * 60;
+
+    if(minutes<10) {
+        minutes = "0"+minutes;
+    }
+    if(seconds<10) {
+        seconds = "0"+seconds;
+    }
+
+    if(hours>0) {
+        return hours+":"+minutes+":"+seconds;
+    } else {
+        return minutes+":"+seconds;
+    }
+}
+/**
+ * Converts the formated time from new notes into seconds
+ * @returns time in seconds
+ */
+function convertTimeToSec() {
+    var time = $('#currentVideoTime').val();
     split = time.split(':');
     return parseInt(split[0])*60+parseInt(split[1]);
 }
@@ -167,7 +210,7 @@ function createNoteObject() {
     var noteObj = new Object();
     noteObj.title       = $('#note-title').val();
     noteObj.content     = $('#note-content').val();
-    noteObj.startTime   = getStartTime();
+    noteObj.startTime   = convertTimeToSec();
     noteObj.tags        = $('#tags').val();
     noteObj.videoId     = videoId;
     noteObj.username    = $('#username').val();
@@ -187,7 +230,7 @@ function initSockets() {
     var websocket = new WS("ws://localhost:9000/websocket/listen");
 
     // save a note when the 'save' button is clicked
-    $('#note-save').click(function() {
+    $('#saveNote').click(function() {
         console.log("Click & Save");
         var noteObj = createNoteObject();
         websocket.send(JSON.stringify(noteObj))
