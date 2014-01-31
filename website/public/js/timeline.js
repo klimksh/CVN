@@ -4,6 +4,9 @@ var mainPanelFlipped = false;
 var allNotes = Array();
 var noNotesText = "<span class='noNotesText'>Currently there are no notes for this video. Feel free to add some, by clicking the <span style='color: #13987e'>+ New note</span> button on the top right.</span>";
 
+/**
+ * Flip between the "new Note"-Form and the current Notes
+ */
 function flipMainPanel() {
     if(mainPanelFlipped === false) {
         $("#myFlippyBox").flippy({
@@ -13,15 +16,10 @@ function flipMainPanel() {
             color_target:"#f8f8f8"
         });
         mainPanelFlipped = true;
-        flipButtons();
     } else {
         $("#myFlippyBox").flippyReverse();
         mainPanelFlipped = false;
-        flipButtons();
     }
-}
-
-function flipButtons() {
     $('#addNoteBtn').toggle();
     $('#revertFlip').toggle();
 }
@@ -162,15 +160,6 @@ function findPrevNote(dom, startTime) {
     return prevNote;
 }
 
-/** ****************************
- *
- *
- *  SOCKET CONNECTION STUFF
- *
- *
- * *****************************
- */
-
 /**
  * Converts the formated time from new notes into seconds
  * @returns time in seconds
@@ -201,46 +190,4 @@ function convertTimeToSec() {
     var time = $('#currentVideoTime').val();
     split = time.split(':');
     return parseInt(split[0])*60+parseInt(split[1]);
-}
-
-/**
- * Create a Note Object
- */
-function createNoteObject() {
-    var noteObj = new Object();
-    noteObj.title       = $('#note-title').val();
-    noteObj.content     = $('#note-content').val();
-    noteObj.startTime   = convertTimeToSec();
-    noteObj.tags        = $('#tags').val();
-    noteObj.videoId     = videoId;
-    noteObj.username    = $('#username').val();
-
-    console.log(noteObj);
-
-    return noteObj;
-}
-
-/**
- * Initiate socket connection for specific video-page
- * @param videoId
- */
-function initSockets() {
-    // depending on the browser we have to use WebSocket or MozWebSocket
-    var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
-    var websocket = new WS("ws://localhost:9000/websocket/listen");
-
-    // save a note when the 'save' button is clicked
-    $('#saveNote').click(function() {
-        console.log("Click & Save");
-        var noteObj = createNoteObject();
-        websocket.send(JSON.stringify(noteObj))
-    });
-
-    websocket.onmessage = function (event) {
-        console.log('Note received');
-        noteObj = eval("("+event.data+")");
-        if(noteObj.videoId == videoId) {
-            addNoteToTimeline(noteObj);
-        }
-    }
 }
