@@ -6,10 +6,6 @@ import play.data.validation.Equals;
 import play.data.validation.Required;
 import play.mvc.Controller;
 
-//import controllers.securesocial.SecureSocial;
-//import com.*;
-//import com.google.gdata.data.youtube.VideoEntry;
-
 public class Application extends Controller {
 
 	public static  boolean check()
