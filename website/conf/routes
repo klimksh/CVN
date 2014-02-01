@@ -16,7 +16,7 @@ GET     /video/{id}                             VideoController.video
 GET     /notes/add                              NoteController.addNote
 GET     /notes/{id}                             NoteController.getNotes
 
-WS      /websocket      			            WebSocket.listen
+WS      /liveannotation                         LiveAnnotation.WebSocket.stream
 
 POST    /?{query}         						VideoController.search
 

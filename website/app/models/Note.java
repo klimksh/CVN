@@ -31,6 +31,12 @@ public class Note extends Model {
     @ManyToMany
     public List<Tag> tags;// tags of the note
 
+    public Note(String title, String content) {
+        super();
+        this.title = title;
+        this.content = content;
+    }
+    
     public Note(String title, String content, int startTime, /*int endTime,*/ Video video, User user, ArrayList<Tag> tags) {
         super();
         this.title = title;

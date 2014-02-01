@@ -75,7 +75,7 @@ public class VideoController extends Controller {
         /* TODO: change to actual user*/
         User user = new User("email", "pass", "user");
         user.save();
-
+		
         render(video, user);
     }
     public static void  search(String query)
