@@ -2,7 +2,6 @@
 #{set title: "${video.title}" /}
 #{stylesheet 'video-page.css'/}
 
-
 <h3 id="header">CVN - ${video.title}</h3>
 <div class="row">
     <div class="container wrap">
@@ -11,10 +10,12 @@
     </div>
 </div>
 
+<script src="/public/js/timeline.js"></script>
+<script src="/public/js/jquery.flip.min.js"></script>
 
 <div class="clearfix"></div>
 
-<div id="slideHandler">
+<div id="slideHandler" class="row">
     <label for="autoslide">
         <input id="autoslide" type="checkbox" checked="checked"/> Update notes during the video
     </label>
@@ -40,7 +41,7 @@
 </div>
 
 <div id="newNoteForm" style="display: none">
-    <form class="form-horizontal" role="form">
+    <form class="form-horizontal" style="margin-top: 10px;" role="form">
         <div id="note-title-group" class="form-group">
             <label for="note-title" class="col-sm-2">Title</label>
             <div class="col-sm-10">
@@ -51,33 +52,27 @@
         <div id="note-content-group" class="form-group">
             <label for="note-content" class="col-sm-2">Content</label>
             <div class="col-sm-10">
-                <textarea class="form-control" placeholder="Note" content=""
-                      name="note-content" id="note-content" cols="10" rows="2"></textarea>
+                <textarea class="form-control" placeholder="Note" content="" name="note-content" id="note-content" cols="10" rows="1"></textarea>
             </div>
         </div>
-
-        <input type="text" hidden="hidden" name="video-id" id="video-id" value="${video.id}"/>
-        <input type="text" hidden="hidden" name="username" id="username" value="user"/>
 
         <div id="note-tags-group" class="form-group">
-            <div id="tags-list" style="margin:10px 0px"></div>
-            <label for="tags-input" class="col-sm-2">Tags</label>
+            <label for="tagsInput" class="col-sm-2">Tags</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="tags-input" name="tags-input"
-                       placeholder="Type tags separated by semicolon..."/>
-                <input type="text" hidden="hidden" name="tags" id="tags" value=""/>
+                <input type="text" class="form-control" id="tagsInput" name="tagsInput" placeholder="Type tags separated by comma..."/>
             </div>
+            <div class="col-sm-10 pull-right" id="tagsList" style="margin:10px 0px"></div>
         </div>
+        <input type="text" hidden="hidden" name="video-id" id="video-id" value="${video.id}"/>
+        <input type="text" hidden="hidden" name="username" id="username" value="user"/>
+        <input type="text" hidden="hidden" name="tags" id="tags" value=""/>
         <div id="saveNoteBtn" class="btn btn-danger">Save note</div>
     </form>
-
+    <script src="/public/js/add-tag.js"></script>
+    <script src="/public/js/socket.js"></script>
 </div>
 #{set 'moreStyles'} #{/set}
 
-<script src="/public/js/add-tag.js"></script>
-<script src="/public/js/timeline.js"></script>
-<script src="/public/js/socket.js"></script>
-<script src="/public/js/jquery.flip.min.js"></script>
 <script>
     $(function() {
         $(document).scrollTop( $("#header").offset().top );

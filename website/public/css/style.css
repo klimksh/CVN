@@ -65,11 +65,19 @@ nav.filter-oprions > .collapse {
     padding: 0px;
     height: 250px;
     position: relative;
-    background-color: #f8f8f8;
-    border: 1px solid #e7e7e7;
+    border: 1px solid darkgray;
     border-bottom: 0px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
+    background: #cccccc; /* Old browsers */
+    background: -moz-linear-gradient(top,  #cccccc 0%, #eeeeee 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cccccc), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #cccccc 0%,#eeeeee 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #cccccc 0%,#eeeeee 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #cccccc 0%,#eeeeee 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #cccccc 0%,#eeeeee 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
+
 }
 
 #timeline #pastNotes, #timeline #futureNotes {
@@ -99,7 +107,7 @@ nav.filter-oprions > .collapse {
 }
 
 #timeline #options {
-    width: 100px;
+    width: 110px;
     height: 100%;
     font-size: 30px;
     float: left;
@@ -119,19 +127,50 @@ nav.filter-oprions > .collapse {
 
 #timeline #options .btn {
     font-size: 70px;
+    height: 125px;
 }
 
 #timeline .note {
     width: 100px;
-    min-height: 65px;
+    min-height: 62px;
+    padding: 5px;
+    margin: 5px 5px 0 0;
     float: left;
     border: 1px solid black;
-    padding: 5px;
-    display: inline-block;
-    background-color: lightgray;
-    margin: 5px 5px 0 0;
+    border-radius: 5px;
+    text-align: center;
+
+    /* Gradient */
+    background: #eeeeee; /* Old browsers */
+    background: -moz-linear-gradient(top,  #eeeeee 0%, #cccccc 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #eeeeee 0%,#cccccc 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
 }
 
 .row iframe {
     margin: 0 auto;
+}
+
+#myFlippyBox {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+#myFlippyBox input, #myFlippyBox textarea {
+    background-color: transparent;
+    border: 0px;
+    border-bottom: 1px dashed black;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.0);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.0);
+}
+
+#slideHandler {
+    text-align: center;
+}
+
+.deleteTag:hover {
+    cursor: pointer;
 }

@@ -2,7 +2,16 @@ var delayTime = 10;
 var videoId = $('#video-id').val();
 var mainPanelFlipped = false;
 var allNotes = Array();
-var noNotesText = "<span class='noNotesText'>Currently there are no notes for this video. Feel free to add some, by clicking the <span style='color: #13987e'>+ New note</span> button on the top right.</span>";
+var noPastNotesText     = "<span class='noNotesText'>Currently there are no past notes for this video. If you progress in the video and pass some notes, they will appear here.</span>";
+var noCurrentNotesText  = "<span class='noNotesText'>Currently there are no current notes for this video. If you progress in the video and pass some notes, they will appear here. Feel free to add some, by clicking the <span style='color: #13987e'>+ New note</span> button on the top right.</span>";
+var noFutureNotesText   = "<span class='noNotesText'>Currently there are no future notes for this video. Feel free to add some, by clicking the <span style='color: #13987e'>+ New note</span> button on the top right.</span>";
+var newNoteFormContent  = ""
+
+// save the form content to avoid ID-conflicts
+$(function(){
+    newNoteFormContent = $('#newNoteForm').html();
+    $('#newNoteForm').remove();
+});
 
 /**
  * Flip between the "new Note"-Form and the current Notes
@@ -10,10 +19,10 @@ var noNotesText = "<span class='noNotesText'>Currently there are no notes for th
 function flipMainPanel() {
     if(mainPanelFlipped === false) {
         $("#myFlippyBox").flippy({
-            verso: $('#newNoteForm').html(),
+            verso: newNoteFormContent,
             direction:"TOP",
             duration:"500",
-            color_target:"#f8f8f8"
+            color_target:""
         });
         mainPanelFlipped = true;
     } else {
@@ -22,6 +31,7 @@ function flipMainPanel() {
     }
     $('#addNoteBtn').toggle();
     $('#revertFlip').toggle();
+    player.pauseVideo();
 }
 
 /**
@@ -53,14 +63,14 @@ function setTimelineBoxSizes(){
     var browserViewport = $('#content').width();
     var options = $('#options').width();
 
-    var mainBox = playerWidth-options-12; // 12px = padding
+    var mainBox = playerWidth-options-13; // 13px = padding
     var sideBox = (browserViewport-mainBox-75)/2;
 
     $('#mainPanel').css('width', mainBox);
     if (browserViewport-playerWidth > 450) {
         $('#pastNotes, #futureNotes').fadeIn();
         $('#pastNotes, #futureNotes').css('width', sideBox);
-        $('#timeline').css('width', sideBox*2+mainBox+options+14);  // 12px = padding
+        $('#timeline').css('width', sideBox*2+mainBox+options+14);  // 14px = padding
     } else {
         $('#pastNotes, #futureNotes').fadeOut();
         $('#timeline').css('width', playerWidth);
@@ -68,19 +78,29 @@ function setTimelineBoxSizes(){
 
     // positioning below video
     var leftOffset = $('iframe#player').offset().left;
-    if( $('#pastNotes').is(':visible') ) {
+    // second if is necessary because during fadeIn/Out the boxes are still visible and cause errors
+    if( $('#pastNotes').is(':visible') && $('#pastNotes').width() > 100 ) {
         leftOffset = leftOffset-40-$('#pastNotes').width();
     }
+
     $('#timeline').offset({ left: leftOffset });
 }
 /**
  * Move notes to their part of the timeline (past, current, future)
  * @param currentVideoTime
  */
+var lastVideoUpdate = 0;
 function updateTimeline(currentVideoTime) {
     if( !$('#autoslide').is(':checked') ) {
         return;
     }
+
+    // video has been rewinded
+    if( lastVideoUpdate > currentVideoTime) {
+        $('.note').remove();
+    }
+
+    lastVideoUpdate = currentVideoTime;
 
     // Filter notes
     allNotes.forEach(function(note) {
@@ -97,13 +117,13 @@ function updateTimeline(currentVideoTime) {
 
     // Set noNotes text if there are no notes for this period
     if( $('#pastNotes .note').length <= 0 ) {
-        $('#pastNotes').html(noNotesText);
+        $('#pastNotes').html(noPastNotesText);
     }
     if( $('#currentNotes .note').length <= 0 ) {
-        $('#currentNotes').html(noNotesText);
+        $('#currentNotes').html(noCurrentNotesText);
     }
     if( $('#futureNotes .note').length <= 0 ) {
-        $('#futureNotes').html(noNotesText);
+        $('#futureNotes').html(noFutureNotesText);
     }
 
     // Update Timer
