@@ -2,7 +2,6 @@
 #{set title: "${video.title}" /}
 #{stylesheet 'video-page.css'/}
 
-
 <h3 id="header">CVN - ${video.title}</h3>
 <div class="row">
     <div class="container wrap">
@@ -11,94 +10,80 @@
     </div>
 </div>
 
+<script src="/public/js/timeline.js"></script>
+<script src="/public/js/jquery.flip.min.js"></script>
 
 <div class="clearfix"></div>
 
-<div id="slideHandler">
-    <input id="autoslide" type="checkbox" checked="checked"/>
-    Automatically slide
+<div id="slideHandler" class="row">
+    <label for="autoslide">
+        <input id="autoslide" type="checkbox" checked="checked"/> Update notes during the video
+    </label>
 </div>
-<div id="timeline-wrapper">
-    <img src="/public/img/add-pointer.png" id="add-note-pointer" style="margin-bottom: -20px" type="button" data-toggle="modal"
-         data-target="#addNote"/>
-
+<div class="row">
     <div id="timeline">
-        <div id="noNotesAvailable" class="panel panel-default">
-            <div class="panel-body">
-                Currently there are no notes for this video. Feel free to add some,
-                by clicking the "<span style="color: #13987e">+ New note</span>"
-                button on the top right.
+        <div id="pastNotes"></div>
+        <div id="mainPanel" class="flipbox-container">
+            <div id="myFlippyBox">
+                <div id="currentNotes"></div>
             </div>
         </div>
+        <div id="options">
+            <div id="currentTime">
+                Time<br/>
+                <span id="currentVideoTime"></span>
+            </div>
+            <div id="addNoteBtn"  class="btn btn-danger btn-block" onclick="flipMainPanel()">+</div>
+            <div id="revertFlip" class="btn btn-danger btn-block" onclick="flipMainPanel()" style="display: none"><span class="glyphicon glyphicon-refresh"></span></div>
+        </div>
+        <div id="futureNotes"></div>
     </div>
 </div>
-<div class="modal fade" id="addNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+<div id="newNoteForm" style="display: none">
+    <form class="form-horizontal" style="margin-top: 10px;" role="form">
+        <div id="note-title-group" class="form-group">
+            <label for="note-title" class="col-sm-2">Title</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="note-title" name="note-title" placeholder="Note title..."/>
+            </div>
+        </div>
+
+        <div id="note-content-group" class="form-group">
+            <label for="note-content" class="col-sm-2">Content</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" placeholder="Note" content="" name="note-content" id="note-content" cols="10" rows="1"></textarea>
+            </div>
+        </div>
+
+        <div id="note-tags-group" class="form-group">
+            <label for="tagsInput" class="col-sm-2">Tags</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="tagsInput" name="tagsInput" placeholder="Type tags separated by comma..."/>
+            </div>
+            <div class="col-sm-10 pull-right" id="tagsList" style="margin:10px 0px"></div>
+        </div>
+        <input type="text" hidden="hidden" name="video-id" id="video-id" value="${video.id}"/>
+        <input type="text" hidden="hidden" name="username" id="username" value="user"/>
+        <input type="text" hidden="hidden" name="tags" id="tags" value=""/>
+        <div id="saveNoteBtn" class="btn btn-danger">Save note</div>
+    </form>
+    <script src="/public/js/add-tag.js"></script>
+    <script src="/public/js/socket.js"></script>
 </div>
 #{set 'moreStyles'} #{/set}
 
-<script type="text/javascript">
-
-    // var c_sh=document.body.scrollHeight;
-    // var c_sw=document.body.scrollWidth;
-    // var c_h = $(window).height();
-    // var c_w= $(window).width();
-    // document.getElementById('play*r').style.height=0.6*c_h+"px";
-    // $(function(){
-    //     $(window).resize(function(){
-    //         content_height = $(window).height()-110;
-    //         document.getElementById('play*r').style.height=c_h+"px";
-    //     });
-    // });
-
-    $(function() {
-        $(document).scrollTop( $("#header").offset().top );  
-    });
-</script>
-
-<script src="/public/js/timeline.js"></script>
 <script>
-
-    $(document).on("mousemove", ".note", function (e) {
-        var horizontal_position = e.pageX - this.offsetLeft;
-        if (horizontal_position > 100) {
-            if (this.offsetLeft - parseInt($("#add-note-pointer").css("marginLeft"), 10) > 100) {
-                move_add_pointer_right();
-            }
-        } else {
-            if (this.offsetLeft - parseInt($("#add-note-pointer").css("marginLeft"), 10) < 100)
-                move_add_pointer_left();
-        }
-
-    })
-
-    function move_add_pointer_right() {
-        console.log("move pointer");
-        var margin = parseInt($("#add-note-pointer").css("marginLeft"), 10) + 200;
-        $("#add-note-pointer").css("marginLeft", margin + "px");
-    }
-    function move_add_pointer_left() {
-        console.log("move pointer");
-        var margin = parseInt($("#add-note-pointer").css("marginLeft"), 10) - 200;
-        $("#add-note-pointer").css("marginLeft", margin + "px");
-    }
+    $(function() {
+        $(document).scrollTop( $("#header").offset().top );
+    });
 
     $('#note-content').autogrow();
 
-
+    initSockets();
     initializeTimeline(${video.id});
 
     var player;
-    $("#add-new-note").click(function () {
-        if (!$("#new-note").is(":visible")) {
-            $("#new-note").slideDown(200);
-            $(this).text("Close");
-        } else {
-            $("#new-note").slideUp(200);
-            $(this).text("+ New note");
-        }
-    })
-
-
 
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
@@ -109,29 +94,26 @@
                 'onStateChange': onPlayerStateChange
             }
         });
+        setTimelineBoxSizes();
     }
 
     function onPlayerStateChange(event) {
-        if (event.data === 1) {  //if the video is playing start catching events
+        if (event.data === 1) {  // if the video is playing start catching events
             checkTimePointsOnVideo();
         }
     }
 
-
-    /* !!!contains timer that runs slideTimeline */
+    // !!!contains timer that runs slideTimeline
     function checkTimePointsOnVideo() {
-        addTimeToPanel();
-        /* catches all timepoints on the video*/
-
         if (!player.getCurrentTime) {
-            return false;
+            return;
         }
 
         var interval = setInterval(function () {
-             player.getPlayerState() // -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5). 
+             player.getPlayerState() // Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
             if (player.getPlayerState() === 1) {
                 var played = Math.round(player.getCurrentTime());
-                slideTimeline(played);
+                updateTimeline(played);
             } else if (player.getPlayerState() === 0 || player.getPlayerState() === 2) {
                 clearInterval(interval);
             }
@@ -144,20 +126,8 @@
     $("#note-start").change(function () {
         var time = $(this).val().split(":");
         startSeekTime = parseInt(time[0]) * 60 + parseInt(time[1]);
-        //player.seekTo(seekTime, false );
 
         player.cueVideoById("${video.url}", startSeekTime, endSeekTime, "large");
         $("#note-start-int").val(startSeekTime);
-    })
-
-    $("#note-end").change(function () {
-        var time = $(this).val().split(":");
-        endSeekTime = parseInt(time[0]) * 60 + parseInt(time[1]);
-        //player.seekTo(seekTime, false );
-
-        player.cueVideoById("${video.url}", startSeekTime, endSeekTime, "large");
-        $("#note-end-int").val(endSeekTime);
-
-    })
+    });
 </script>
-
