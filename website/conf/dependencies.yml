@@ -3,5 +3,14 @@
 require:
     - play
     - play -> elasticsearch 0.4
+    - se.scalablesolutions.akka -> akka-amqp 1.1.2
+
+repositories:
+                
+    - akka:
+        type: iBiblio
+        root: "http://repo.typesafe.com/typesafe/akka-releases-cache/"
+        contains:
+            - se.scalablesolutions.akka -> *
     
    

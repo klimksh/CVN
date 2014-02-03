@@ -36,7 +36,6 @@ public class Note extends Model {
     public long visited; // number of visitors who have visited this note
     @Expose
     @ElasticSearchIgnore
-    //@ElasticSearchEmbedded(fields={"tagTitle"})
     @ManyToMany
     public List<Tag> noteTags;// tags of the note
     public Note(String title, String content, int startTime, /*int endTime,*/ Video video, User user, ArrayList<Tag> tags) {

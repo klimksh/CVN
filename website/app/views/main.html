@@ -33,9 +33,12 @@
         var login_url = #{jsAction @Application.login(':email',':id',':displayName' ) /};
         var logout_url = #{jsAction @Application.logout() /};
         var index_url = "@{VideoController.index()}";
+        var add_video_url = "@{VideoController.addVideo()}";
     </script>
     <script type="text/javascript" src="@{'public/js/google-plus-auth.js'}"></script>
     <script src="https://apis.google.com/js/client.js"></script>
+    
+    <script type="text/javascript" src="@{'/public/js/add-video.js'}"></script>
 </head>
 <body>
 
