@@ -57,7 +57,7 @@ public class NoteController extends Controller {
                     tagObj.save();
                     tags.add(tagObj);
                 }
-                note.tags = tags;
+                note.noteTags = tags;
                 video.tags = tags;
                 video.save();
                 note.save();

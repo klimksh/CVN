@@ -1,15 +1,16 @@
 Tag(tag1):
-    title: education
+    tagTitle: education
+    
     
 Tag(tag2):
-    title: university
+    tagTitle: university
 Tag(tag3):
-    title: seminar
+    tagTitle: seminar
 Tag(tag4):
-    title: practicum
+    tagTitle: practicum
 Tag(tag5):
-    title: TUM
+    tagTitle: TUM
 Tag(tag6):
-    title: student
+    tagTitle: student
 Tag(tag7):
-    title: professor 
+    tagTitle: professor 

@@ -13,13 +13,16 @@ GET     /video/add                              VideoController.addVideo
 POST    /video/save                             VideoController.saveVideo
 GET     /video/{id}                             VideoController.video
 GET     /notes/{id}                             NoteController.getNotes
-POST     /?{query}         						VideoController.search
+GET     /?{query}         						VideoController.search
 GET     /timeline                               Application.timeline
 
 
 GET     /public/                                staticDir:public
 GET     /data/                                  staticDir:public/data
+*     /                       module:elasticsearch
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
 *       /application/example/a                  Application.example(a: ArrayList<Object>)
+*       /admin/                                 module:crud
+*       /es-admin/                              module:elasticsearch-0.4

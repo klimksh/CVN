@@ -1,4 +1,10 @@
+import java.util.List;
+import java.util.Random;
+
+import models.Note;
+import models.Tag;
 import models.User;
+import models.Video;
 import play.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
@@ -14,11 +20,16 @@ public class Bootstrap extends Job {
 			 Logger.info("Users are loaded");
 			 Fixtures.loadModels("data-tags.yml");
 			 Logger.info("Tags are loaded");
-             Fixtures.loadModels("data-videos.yml");
+			  Fixtures.loadModels("data-notes.yml");
+				 Logger.info("Notes are loaded");
+			 Fixtures.loadModels("data-videos.yml");
              Logger.info("Videos are loaded");
-			 Fixtures.loadModels("data-notes.yml");
-			 Logger.info("Notes are loaded");
-		 }
+           
+          
+            
+			 
+		 }		
+		 
 	}
 
 }

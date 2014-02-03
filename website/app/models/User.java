@@ -1,26 +1,38 @@
 package models;
 
 import com.google.gson.annotations.Expose;
+
 import play.data.validation.Email;
 import play.data.validation.Unique;
 import play.db.jpa.Model;
+import play.modules.elasticsearch.annotations.ElasticSearchIgnore;
+import play.modules.elasticsearch.annotations.ElasticSearchable;
+
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
 import java.util.ArrayList;
 import java.util.List;
+@ElasticSearchable
 @Entity(name="Users")
 public class User extends Model{
     @Expose
     @Email
 	@Unique
 	public String email;
+    @ElasticSearchIgnore
 	public String password;
     @Expose
 	public String name;
 	public String googleUserId;
-	@ManyToMany
+	@ElasticSearchIgnore
+	@ManyToMany(mappedBy="whatchers")
 	public List<Video>watchedVideos;
+	@ElasticSearchIgnore
+	@OneToMany(mappedBy="noteWriter")
+	public List<Note>noteswrittenBy;
 
 	public User(@Email @Unique String  email, String password, String name) {
 		super();

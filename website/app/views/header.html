@@ -10,7 +10,7 @@
     </div>
     <div class="collapse navbar-collapse">
         
-        <form class="navbar-form navbar-left search-form" role="search" method="POST"  action="@{VideoController.search}" >
+        <form class="navbar-form navbar-left search-form" role="search" method="GET"  action="@{VideoController.search}" >
           <div class="form-group">
             <input type="text" id="query" value="${params.query}" name="query" class="form-control search" placeholder="Search">
           </div>

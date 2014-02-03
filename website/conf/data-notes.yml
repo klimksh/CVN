@@ -1,74 +1,74 @@
 Note(note1):
-  title:         note1
+  noteTitle:     note111111
   content:       content of note1 starts here
   startTime:     0
   noteWriter:    user1
-  video:         video1
+#  videoNote:     video1
   noteTags:      [tag1, tag2]
 Note(note2):
-  title:         note2
+  noteTitle:     note2
   content:       content of note1 starts here
   startTime:     5
   noteWriter:    user1
-  video:         video1
+#  videoNote:     video1
   noteTags:      [tag4, tag2]
 Note(note3):
-  title:         note3
+  noteTitle:     note3
   content:       content of note1 starts here
   startTime:     20
   noteWriter:    user1
-  video:         video1
+#  videoNote:     video1
   noteTags:      [tag4, tag5, tag1, tag2]
 Note(note4):
-  title:         Another note
+  noteTitle:     Another note
   content:       Lorem ipsum dolor sit amet, consetetur sadipscing elitr
   startTime:     30
   noteWriter:    user1
-  video:         video1
+#  videoNote:     video1
   noteTags:      [tag4, tag5, tag1, tag2]
 Note(note5):
-  title:         Some title
+  noteTitle:     Some noteTitle
   content:       sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat
   startTime:     35
   noteWriter:    user1
-  video:         video1
+#  videoNote:     video1
   noteTags:      [tag4, tag5, tag1, tag2]
 Note(note6):
-  title:         I am a note
+  noteTitle:     I am a note
   content:       Lorem ipsum dolor sit amet, consetetur sadipscing elitr
   startTime:     74
   noteWriter:    user1
-  video:         video1
+#  videoNote:     video1
   noteTags:      [tag4, tag5, tag1, tag2]
 Note(note7):
-  title:         This is important
+  noteTitle:     This is important
   content:       sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat
   startTime:     50
   noteWriter:    user1
-  video:         video1
+#  videoNote:     video1
   noteTags:      [tag4, tag5, tag1, tag2]
 
 
 Note(note8):
-  title:         Some title
+  noteTitle:     Some noteTitle
   content:       sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat
   startTime:     35
-  noteWriter:    user1
-  video:         video2
+  noteWriter:    user3
+#  videoNote:     video2
   noteTags:      [tag4, tag5, tag1, tag2]
 Note(note9):
-  title:         I am a note
+  noteTitle:     I am a note
   content:       Lorem ipsum dolor sit amet, consetetur sadipscing elitr
   startTime:     74
-  noteWriter:    user1
-  video:         video2
+  noteWriter:    user2
+#  videoNote:      video2
   noteTags:      [tag4, tag5, tag1, tag2]
 Note(note10):
-  title:         This is important
+  noteTitle:     This is important
   content:       sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat
   startTime:     50
   noteWriter:    user1
-  video:         video2
+#  videoNote:     video2
   noteTags:      [tag4, tag5, tag1, tag2]
 
   
