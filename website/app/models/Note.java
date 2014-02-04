@@ -14,6 +14,8 @@ import java.util.List;
 @Entity(name = "Notes")
 public class Note extends Model {
     @Expose
+    public long fakeId; // reference to the models id
+    @Expose
     public String title; // title of the note
     @Expose
     public String content; // content will be around 140 charac

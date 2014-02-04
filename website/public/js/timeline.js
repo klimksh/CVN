@@ -1,15 +1,20 @@
-var delayTime = 10;
-var videoId = $('#video-id').val();
+var delayTime        = 10;
+var videoId          = $('#video-id').val();
 var mainPanelFlipped = false;
-var allNotes = Array();
+var optionsFlipped   = false;
+var lastClickedNote  = null;
+var allNotes         = Array();
 var noPastNotesText     = "<span class='noNotesText'>Currently there are no past notes for this video. If you progress in the video and pass some notes, they will appear here.</span>";
 var noCurrentNotesText  = "<span class='noNotesText'>Currently there are no current notes for this video. If you progress in the video and pass some notes, they will appear here. Feel free to add some, by clicking the <span style='color: #13987e'>+ New note</span> button on the top right.</span>";
 var noFutureNotesText   = "<span class='noNotesText'>Currently there are no future notes for this video. Feel free to add some, by clicking the <span style='color: #13987e'>+ New note</span> button on the top right.</span>";
-var newNoteFormContent  = ""
+var newNoteFormContent  = "";
+var optionsContent      = "";
+var lastVideoUpdate     = 0;
 
-// save the form content to avoid ID-conflicts
+// save the form content and options content to avoid ID-conflicts
 $(function(){
-    newNoteFormContent = $('#newNoteForm').html();
+    newNoteFormContent  = $('#newNoteForm').html();
+    optionsContent      = $('#optionsPanel').html();
     $('#newNoteForm').remove();
 });
 
@@ -18,7 +23,7 @@ $(function(){
  */
 function flipMainPanel() {
     if(mainPanelFlipped === false) {
-        $("#myFlippyBox").flippy({
+        $("#mainFlipBox").flippy({
             verso: newNoteFormContent,
             direction:"TOP",
             duration:"500",
@@ -26,14 +31,81 @@ function flipMainPanel() {
         });
         mainPanelFlipped = true;
     } else {
-        $("#myFlippyBox").flippyReverse();
+        $("#mainFlipBox").flippyReverse();
         mainPanelFlipped = false;
     }
     $('#addNoteBtn').toggle();
     $('#revertFlip').toggle();
-    player.pauseVideo();
+    initNoteFlip();
 }
 
+/**
+ * Flip between the options/noteContent
+ */
+function initNoteFlip() {
+    $('.note').click(function(){
+        var note = $(this);
+
+        if( lastClickedNote == note.attr('id') ) {
+            revertOptionsFlip();
+        } else if(optionsFlipped === false || lastClickedNote != $(this).attr('id')) {
+            $('.noteHighlighted').removeClass('noteHighlighted');
+            title   = note.children('p').html();
+            content = note.data('content');
+            user    = note.data('user');
+            noteContent = prettifyNoteContent(title, content, user);
+
+            $("#optionsPanel").flippy({
+                verso: noteContent,
+                direction:"TOP",
+                duration:"500",
+                color_target:"",
+                onFinish:function(){
+                    // update LastClickedNote to the current note
+                    lastClickedNote = note.attr('id');
+
+                    // mark as current note
+                    note.addClass('noteHighlighted');
+
+                    // activate close-button on noteBlock
+                    $('#closeNoteBlock').click(function(){
+                        revertOptionsFlip();
+                    });
+                    // activate jump Button
+                    $('#jumpBtn').click(function(){
+                        var startTime = $('#'+lastClickedNote).data('start');
+                        player.seekTo(startTime);
+                        updateTimeline(startTime);
+                    });
+                }
+            });
+            optionsFlipped = true;
+        }
+    });
+}
+
+function revertOptionsFlip() {
+    $('.noteHighlighted').removeClass('noteHighlighted');
+    $("#optionsPanel").flippy({
+        verso: optionsContent,
+        direction:"TOP",
+        duration:"500",
+        color_target:"",
+        onFinish:function(){
+            setTimer();
+        }
+    });
+    optionsFlipped = false;
+
+}
+
+function prettifyNoteContent(title, content, user) {
+    return  '<div class="noteBlock panel panel-default">' +
+                '<div class="panel-heading">'+title+'<span id="closeNoteBlock" class="glyphicon glyphicon-remove pull-right"></span></div>' +
+                '<div class="panel-body">'+content+'</div>' +
+                '<div class="panel-footer">by '+user+' <span id="jumpBtn" class="label label-danger">Jump</span></div>' +
+            '</div>'
+}
 /**
  * Creates all notes and adds them to the timeline
  */
@@ -41,11 +113,19 @@ function initializeTimeline(videoId) {
     $.getJSON("/notes/"+videoId, function (data) {
         $.each(data.elements, function (index, note) {
             if (note.title !== "") {
-                allNotes.push(note);
+                addNoteToNoteCollection(note)
             }
         });
-        updateTimeline(0); // update Timeline for 0 sec
     });
+}
+
+/**
+ * Adds the note to the Array of all notes and updates the timeline
+ * @param note
+ */
+function addNoteToNoteCollection(note) {
+    allNotes.push(note);
+    updateTimeline(lastVideoUpdate);
 }
 
 /**
@@ -61,9 +141,9 @@ $( window ).resize(function(){
 function setTimelineBoxSizes(){
     var playerWidth = $('iframe#player').width();
     var browserViewport = $('#content').width();
-    var options = $('#options').width();
+    var options = $('#optionsPanel').width();
 
-    var mainBox = playerWidth-options-13; // 13px = padding
+    var mainBox = playerWidth-options-3; // 3px = padding and borders
     var sideBox = (browserViewport-mainBox-75)/2;
 
     $('#mainPanel').css('width', mainBox);
@@ -89,7 +169,6 @@ function setTimelineBoxSizes(){
  * Move notes to their part of the timeline (past, current, future)
  * @param currentVideoTime
  */
-var lastVideoUpdate = 0;
 function updateTimeline(currentVideoTime) {
     if( !$('#autoslide').is(':checked') ) {
         return;
@@ -106,10 +185,8 @@ function updateTimeline(currentVideoTime) {
     allNotes.forEach(function(note) {
         if(note.startTime+delayTime < currentVideoTime) {
             addNoteToTimeline('pastNotes', note);
-            $('#currentNotes #note'+note.startTime).remove();
         } else if (note.startTime+delayTime <= (currentVideoTime+30)) { // Timeframe of 30 seconds
             addNoteToTimeline('currentNotes', note);
-            $('#futureNotes #note'+note.startTime).remove();
         } else {
             addNoteToTimeline('futureNotes', note);
         }
@@ -126,8 +203,16 @@ function updateTimeline(currentVideoTime) {
         $('#futureNotes').html(noFutureNotesText);
     }
 
-    // Update Timer
-    $('#currentVideoTime').html(convertSecToTime(currentVideoTime));
+    setTimer();
+
+    initNoteFlip();
+}
+
+/**
+ * Update Timer
+ */
+function setTimer() {
+    $('#timer').html(convertSecToTime());
 }
 
 /**
@@ -136,6 +221,20 @@ function updateTimeline(currentVideoTime) {
  * @param note
  */
 function addNoteToTimeline(dom, note) {
+    if( $('#'+dom+' #note'+note.fakeId).length > 0 ) {
+        return;
+    }
+
+    switch(dom) {
+        case 'pastNotes':
+            $('#currentNotes #note'+note.fakeId).remove();
+            $('#futureNotes #note'+note.fakeId).remove();
+            break;
+        case 'currentNotes':
+            $('#futureNotes #note'+note.fakeId).remove();
+            break;
+    }
+
     $('#'+dom+' .noNotesText').hide();
     var prevNote = findPrevNote(dom, note.startTime);
     if (prevNote !== null) { // prevNote found, add after the prevNote
@@ -143,7 +242,7 @@ function addNoteToTimeline(dom, note) {
     } else { // no notes found, add at beginning of timeline
         $("#timeline #"+dom).prepend(createNote(note));
     }
-    $('#note'+note.startTime).fadeIn();
+    $('#note'+note.fakeId).fadeIn();
 }
 
 /**
@@ -158,8 +257,8 @@ function createNote(note) {
     } else {
         username = note.username;
     }
-    return "<div style='display:none' id='note"+note.startTime+"' class='note' data-start='" + note.startTime + "'>" +
-                "<p>" + note.title + " </p>" +
+    return "<div style='display:none' id='note"+note.fakeId+"' class='note' data-start='" + note.startTime + "' data-user='"+username+"' data-content='"+note.content+"'>" +
+                "<p>" + note.title + " </p>"
            "</div>";
 }
 
@@ -184,10 +283,10 @@ function findPrevNote(dom, startTime) {
  * Converts the formated time from new notes into seconds
  * @returns time in seconds
  */
-function convertSecToTime(time) {
-    var hours = Math.floor(time / 3600);
-    var minutes = Math.floor(time / 60);
-    var seconds = time - minutes * 60;
+function convertSecToTime() {
+    var hours = Math.floor(lastVideoUpdate / 3600);
+    var minutes = Math.floor(lastVideoUpdate / 60);
+    var seconds = lastVideoUpdate - minutes * 60;
 
     if(minutes<10) {
         minutes = "0"+minutes;

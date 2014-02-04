@@ -106,14 +106,17 @@ nav.filter-oprions > .collapse {
     border-right: 1px dashed darkgray;
 }
 
-#timeline #options {
-    width: 110px;
+#timeline #optionsPanel {
+    width: 200px;
     height: 100%;
-    font-size: 30px;
+    border-right: 1px dashed darkgray;
     float: left;
+}
+
+#timeline #options {
+    font-size: 30px;
     text-align: center;
     padding: 0 5px;
-    border-right: 1px dashed darkgray;
 }
 
 #timeline #options div {
@@ -126,8 +129,9 @@ nav.filter-oprions > .collapse {
 
 
 #timeline #options .btn {
-    font-size: 70px;
+    font-size: 35px;
     height: 125px;
+    line-height: 108px;
 }
 
 #timeline .note {
@@ -151,15 +155,19 @@ nav.filter-oprions > .collapse {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
 }
 
+#timeline .noteHighlighted {
+    border-color: #d9534f !important;
+}
+
 .row iframe {
     margin: 0 auto;
 }
 
-#myFlippyBox {
+#mainFlipBox, #optionsPanel {
     background-color: rgba(0, 0, 0, 0) !important;
 }
 
-#myFlippyBox input, #myFlippyBox textarea {
+#mainFlipBox input, #mainFlipBox textarea {
     background-color: transparent;
     border: 0px;
     border-bottom: 1px dashed black;
@@ -171,6 +179,16 @@ nav.filter-oprions > .collapse {
     text-align: center;
 }
 
-.deleteTag:hover {
+.deleteTag:hover, #closeNoteBlock:hover, #jumpBtn:hover, .note {
     cursor: pointer;
+}
+
+.noteBlock {
+    height: 100%;
+}
+
+.noteBlock .panel-footer {
+    position: absolute;
+    bottom: 0;
+    width: 99%;
 }
