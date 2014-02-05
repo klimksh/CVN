@@ -164,10 +164,11 @@
     })
 </script>
 <script type="text/javascript">
-
+    
+    
     // Create a socket
     var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
-    var socket = new WS('@@{LiveAnnotation.WebSocket.stream()}');
+    var socket = new WS('@@{LiveAnnotation.WebSocket.stream(video.id)}');
 
     $('#send').click(function (e) {
         $("#note-start-data").val(Math.round(player.getCurrentTime()));
