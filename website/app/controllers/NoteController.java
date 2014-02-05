@@ -14,14 +14,24 @@ import java.util.List;
 
 public class NoteController extends Controller {
 
-    public static void saveNote(){
+    public static void saveNote() {
         String title = request.params.get("note-title-data");
         String content = request.params.get("note-content-data");
         int startTime = Integer.parseInt(request.params.get("note-start-data"));
-        Video video = (Video) Video.find("byUrl", request.params.get("video-id-data")).fetch().get(1);
+        Video video = Video.findById(Long.parseLong(request.params.get("video-id-data")));
         /*change to actual user*/
-        User user = new User("email", "pass", "user");
-        user.save();
+        String userEmail = request.params.get("user-email-data");
+
+        User user = User.findByEmail(userEmail);
+        if (user == null) {
+            user = new User();
+            user.email = userEmail;
+            user.password = "";
+            user.name = request.params.get("user-name-data");
+            user.googleUserId = request.params.get("user-id-data");
+            user.save();
+            System.out.println(user);
+        }
 
         Note note = new Note(title, content, startTime, /*endTime,*/ video, user, null);
 
@@ -29,7 +39,7 @@ public class NoteController extends Controller {
         String[] tagsStringList = tagsString.split(";");
         ArrayList<Tag> tags = new ArrayList<Tag>();
 
-        for(String tag : tagsStringList){
+        for (String tag : tagsStringList) {
             Tag tagObj = new Tag(tag, note, video);
             tagObj.save();
             tags.add(tagObj);
@@ -43,7 +53,7 @@ public class NoteController extends Controller {
         System.out.println("///////////end//");
 
         redirect("/video/" + video.id);
-    	LiveAnnotation.liveStream.publish(note);
+        LiveAnnotation.liveStream.publish(note);
 //        try {
 //            ServerSocket serverSocket = new ServerSocket(8080);
 //            Socket clientSocket = serverSocket.accept();
@@ -96,10 +106,11 @@ public class NoteController extends Controller {
 //        }
     }
 
-    public static void addNote(){
+    public static void addNote() {
         render();
     }
-    public static void getNotes(String id){
+
+    public static void getNotes(String id) {
 
         Gson gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()

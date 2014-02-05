@@ -45,7 +45,7 @@ public class Note extends Model {
         this.video = video;
         this.noteWriter = user;
         this.visited = 0;
-        this.tags = tags;
+        if(tags!=null) this.tags.addAll(tags);
         //create();
 
     }

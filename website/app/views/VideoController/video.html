@@ -37,6 +37,8 @@
 </div>
 #{set 'moreStyles'} #{/set}
 
+
+
 <div id="test">
     <ul id="thread"></ul>
     <input type="text" class="form-control col-xs-4" id="note-title-data" name="note-title-data"
@@ -51,8 +53,10 @@
 
     <input type="text" hidden="hidden" name="note-start-data" id="note-start-data" value=""/>
     <input type="text" hidden="hidden" name="note-end-data" id="note-end-data" value=""/>
-    <input type="text" hidden="hidden" name="video-id-data" id="video-id-data" value="${video.url}"/>
-    <input type="text" hidden="hidden" name="user-data" id="user-data" value="${session.userEmail}"/>
+    <input type="text" hidden="hidden" name="video-id-data" id="video-id-data" value="${video.id}"/>
+    <input type="text" hidden="hidden" name="user-email-data" id="user-email-data" value="${session.userEmail}"/>
+    <input type="text" hidden="hidden" name="user-name-data" id="user-na,e-data" value="${session.userName}"/>
+    <input type="text" hidden="hidden" name="user-id-data" id="user-id-data" value="${session.googleUserId}"/>
     <textarea id="new_note"></textarea>
     <button id="send" class="btn btn-default">Send</button>
 </div>
@@ -74,12 +78,10 @@
     })
 
     function move_add_pointer_right() {
-        console.log("move pointer");
         var margin = parseInt($("#add-note-pointer").css("marginLeft"), 10) + 200;
         $("#add-note-pointer").css("marginLeft", margin + "px");
     }
     function move_add_pointer_left() {
-        console.log("move pointer");
         var margin = parseInt($("#add-note-pointer").css("marginLeft"), 10) - 200;
         $("#add-note-pointer").css("marginLeft", margin + "px");
     }
@@ -168,7 +170,6 @@
     var socket = new WS('@@{LiveAnnotation.WebSocket.stream()}');
 
     $('#send').click(function (e) {
-        console.log(Math.round(player.getCurrentTime()));
         $("#note-start-data").val(Math.round(player.getCurrentTime()));
         var data = $('#test :input').serialize();
         $.post('@{NoteController.saveNote()}', data);
@@ -186,7 +187,6 @@
 
     // Message received on the socket
     socket.onmessage = function (event) {
-        console.log("qqqqq");
         display(event.data);
     };
 

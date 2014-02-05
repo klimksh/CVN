@@ -64,6 +64,9 @@ public class User extends Model{
     	return this.email;
     }
 
+    public User() {
+    }
+
     public void inserUser(String email, String password, String name, String googleUserId)
     {
     	new User(email, password, name, googleUserId);

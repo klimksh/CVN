@@ -4,26 +4,35 @@
 <script type="text/javascript" src="@{'/public/js/video-info-retrieve.js'}"></script>
 <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Share new video</h4>
-      </div>
-      <div class="modal-body">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Share new video</h4>
+        </div>
+        <div class="modal-body">
         #{form @VideoController.saveVideo(), method:"POST"}
+
+            <input type="text" hidden="hidden" name="user-email-data" id="user-email-data"
+                   value="${session.userEmail}"/>
+            <input type="text" hidden="hidden" name="user-name-data" id="user-na,e-data" value="${session.userName}"/>
+            <input type="text" hidden="hidden" name="user-id-data" id="user-id-data" value="${session.googleUserId}"/>
+
             <div class="col-md-5 column">
                 <div id="video-link-group" class="form-group">
                     <label for="video-link">Link to the video on YouTube</label>
-                    <input type="text" class="form-control" id="video-link" name="video-link" placeholder="link to a video on YouTube..."/>
+                    <input type="text" class="form-control" id="video-link" name="video-link"
+                           placeholder="link to a video on YouTube..."/>
                 </div>
 
                 <div id="video-title-group" class="form-group">
                     <label for="video-title">Video title</label>
-                    <input type="text" disabled class="form-control" name="video-title" id="video-title" placeholder="video title..."/>
+                    <input type="text" disabled class="form-control" name="video-title" id="video-title"
+                           placeholder="video title..."/>
                 </div>
 
                 <div id="video-description-group" class="form-group">
                     <label for="video-description">Video description</label>
-                    <textarea rows="7" disabled class="form-control" id="video-description" name="video-description" placeholder="video description..."></textarea>
+                    <textarea rows="7" disabled class="form-control" id="video-description" name="video-description"
+                              placeholder="video description..."></textarea>
                 </div>
 
                 <input type="text" class="hidden" class="form-control" name="video-thumbnail" id="video-thumbnail"/>
@@ -42,10 +51,11 @@
                 <button id="video-save" type="submit" class="btn btn-danger ">Save</button>
             </span>
         #{/form}
-        
-      </div>
-      
-    </div><!-- /.modal-content -->
+
+        </div>
+
+    </div>
+    <!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 
 
