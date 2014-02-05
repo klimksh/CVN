@@ -15,13 +15,9 @@ import java.util.List;
 public class NoteController extends Controller {
 
     public static void saveNote(){
-//    	Note dataOfNotes = new Note(data, data);
-//        System.out.println(request.params.get("note-title-data"));
         String title = request.params.get("note-title-data");
         String content = request.params.get("note-content-data");
-        int startTime = Integer.parseInt("123");
-        //int endTime = Integer.parseInt(request.params.get("note-end-int"));
-//        System.out.println("-----"+request.params.get("video-id-data")+"-----------------------");
+        int startTime = Integer.parseInt(request.params.get("note-start-data"));
         Video video = (Video) Video.find("byUrl", request.params.get("video-id-data")).fetch().get(1);
         /*change to actual user*/
         User user = new User("email", "pass", "user");
