@@ -4,15 +4,49 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import models.Note;
+import models.Tag;
+import models.User;
 import models.Video;
 import play.mvc.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NoteController extends Controller {
 
-    public static void saveNote(String content){
-    	Note note = new Note(content, content);
+    public static void saveNote(){
+//    	Note dataOfNotes = new Note(data, data);
+//        System.out.println(request.params.get("note-title-data"));
+        String title = request.params.get("note-title-data");
+        String content = request.params.get("note-content-data");
+        int startTime = Integer.parseInt("123");
+        //int endTime = Integer.parseInt(request.params.get("note-end-int"));
+//        System.out.println("-----"+request.params.get("video-id-data")+"-----------------------");
+        Video video = (Video) Video.find("byUrl", request.params.get("video-id-data")).fetch().get(1);
+        /*change to actual user*/
+        User user = new User("email", "pass", "user");
+        user.save();
+
+        Note note = new Note(title, content, startTime, /*endTime,*/ video, user, null);
+
+        String tagsString = request.params.get("tags");
+        String[] tagsStringList = tagsString.split(";");
+        ArrayList<Tag> tags = new ArrayList<Tag>();
+
+        for(String tag : tagsStringList){
+            Tag tagObj = new Tag(tag, note, video);
+            tagObj.save();
+            tags.add(tagObj);
+        }
+        note.tags = tags;
+        video.tags = tags;
+        video.save();
+        note.save();
+
+
+        System.out.println("///////////end//");
+
+        redirect("/video/" + video.id);
     	LiveAnnotation.liveStream.publish(note);
 //        try {
 //            ServerSocket serverSocket = new ServerSocket(8080);

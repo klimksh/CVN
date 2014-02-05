@@ -19,7 +19,8 @@
     Automatically slide
 </div>
 <div id="timeline-wrapper">
-    <img src="/public/img/add-pointer.png" id="add-note-pointer" style="margin-bottom: -20px" type="button" data-toggle="modal"
+    <img src="/public/img/add-pointer.png" id="add-note-pointer" style="margin-bottom: -20px" type="button"
+         data-toggle="modal"
          data-target="#addNote"/>
 
     <div id="timeline">
@@ -36,78 +37,96 @@
 </div>
 #{set 'moreStyles'} #{/set}
 
-<div class=row>
-	<ul id="thread"></ul>
-	<textarea id="new_note"></textarea>
-	<button id="send" class="btn btn-default">Send</button>
+<div id="test">
+    <ul id="thread"></ul>
+    <input type="text"class="form-control col-xs-4" id="note-title-data" name="note-title-data" placeholder="Note title..."/>
+
+    <textarea class="form-control col-xs-4" placeholder="Note content..."  name="note-content-data" id="note-content-data" cols="10" rows="2"></textarea>
+
+    <input type="time" class="form-control col-xs-4" name="note-start-data" id="note-start-data" placeholder="00:00"/>
+
+    <input type="time" class="form-control col-xs-4" name="note-end-data" id="note-end-data" placeholder="00:00"/>
+
+    #{include 'add-tag.html'/} <span class="row" style="margin-top: 20px">
+
+    <input type="text" hidden="hidden" name="note-start-data" id="note-start-data" value=""/>
+    <input type="text" hidden="hidden" name="note-end-data" id="note-end-data" value=""/>
+    <input type="text" hidden="hidden" name="video-id-data" id="video-id-data" value="${video.url}"/>
+    <input type="text" hidden="hidden" name="user-data" id="user-data" value="${session.userEmail}"/>
+    <textarea id="new_note"></textarea>
+    <button id="send" class="btn btn-default">Send</button>
 </div>
 <script type="text/javascript">
 
-  // Create a socket
-  var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
-  var socket = new WS('@@{LiveAnnotation.WebSocket.stream()}');
-  $('#send').click(function (e) {
-      var message = $('#new_note').val()
-      $.post('@{NoteController.saveNote()}', message);
-      $('#new_note').val('')
-      
-  });
+    // Create a socket
+    var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
+    var socket = new WS('@@{LiveAnnotation.WebSocket.stream()}');
 
-//pressing 'Enter' instead of clicking
-  $('#new_note').keypress(function (e) {
-      if (e.charCode == 13 || e.keyCode == 13) {
-          $('#send').click()
-          e.preventDefault()
-      }
-  })
+    $('#send').click(function (e) {
 
-  // Message received on the socket
-  socket.onmessage = function(event) {
-      console.log("message came");
-  	display(event.data);
-  }
-  socket.onopen = function(evt) { 
-      console.log("connected");
-  }
+        var data = $('#test :input').serialize();
+        $.post('@{NoteController.saveNote()}', data);
+        $('#new_note').val('')
 
-  socket.onclose = function(evt) {
-      console.log("disconnected");
-  }
+    });
+
+    //pressing 'Enter' instead of clicking
+    $('#new_note').keypress(function (e) {
+        if (e.charCode == 13 || e.keyCode == 13) {
+            $('#send').click()
+            e.preventDefault()
+        }
+    });
+
+    // Message received on the socket
+    socket.onmessage = function (event) {
+        console.log("qqqqq");
+        display(event.data);
+    };
+
+    socket.onopen = function (evt) {
+        console.log("connected");
+    };
+
+    socket.onclose = function (evt) {
+        console.log("disconnected");
+    };
 
 
-  socket.onerror = function(evt) {
-      console.log("error: " + evt.data);
-  }
-	
+    socket.onerror = function (evt) {
+        console.log("error: " + evt.data);
+    };
 
-// Display a message
-var display = function(event) {
-	//document.write(event);
-	//(event);
-    $('#thread').append('<li>' + event + '</li>');
-}
-    
+
+    // Display a message
+    var display = function (event) {
+        //document.write(event);
+        //(event);
+        $('#thread').append('<li>' + event + '</li>');
+    }
+
 
 </script>
 
-// <script type="text/javascript">
+//
+<script type="text/javascript">
 
-//     // var c_sh=document.body.scrollHeight;
-//     // var c_sw=document.body.scrollWidth;
-//     // var c_h = $(window).height();
-//     // var c_w= $(window).width();
-//     // document.getElementById('play*r').style.height=0.6*c_h+"px";
-//     // $(function(){
-//     //     $(window).resize(function(){
-//     //         content_height = $(window).height()-110;
-//     //         document.getElementById('play*r').style.height=c_h+"px";
-//     //     });
-//     // });
+    //     // var c_sh=document.body.scrollHeight;
+    //     // var c_sw=document.body.scrollWidth;
+    //     // var c_h = $(window).height();
+    //     // var c_w= $(window).width();
+    //     // document.getElementById('play*r').style.height=0.6*c_h+"px";
+    //     // $(function(){
+    //     //     $(window).resize(function(){
+    //     //         content_height = $(window).height()-110;
+    //     //         document.getElementById('play*r').style.height=c_h+"px";
+    //     //     });
+    //     // });
 
-     $(function() {
-        $(document).scrollTop( $("#header").offset().top );  
+    $(function () {
+        $(document).scrollTop($("#header").offset().top);
     });
- </script>
+</script>
 
 <script src="/public/js/timeline.js"></script>
 <script>
@@ -153,7 +172,6 @@ var display = function(event) {
     })
 
 
-
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
             height: '430',
@@ -182,7 +200,7 @@ var display = function(event) {
         }
 
         var interval = setInterval(function () {
-             player.getPlayerState() // -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5). 
+            player.getPlayerState() // -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
             if (player.getPlayerState() === 1) {
                 var played = Math.round(player.getCurrentTime());
                 slideTimeline(played);

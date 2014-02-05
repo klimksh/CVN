@@ -2,7 +2,6 @@ package models;
 
 import com.google.gson.annotations.Expose;
 import play.db.jpa.Model;
-import play.modules.elasticsearch.annotations.ElasticSearchable;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -10,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
-@ElasticSearchable
+//@ElasticSearchable
 @Entity(name = "Notes")
 public class Note extends Model {
     @Expose
@@ -61,7 +60,6 @@ public class Note extends Model {
         this.noteWriter = user;
         this.visited = visited;
         this.tags = tags;
-        create();
     }
 
     public static List<Note> findAllByVideoId(Video video) {
