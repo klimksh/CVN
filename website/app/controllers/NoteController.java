@@ -19,23 +19,16 @@ public class NoteController extends Controller {
         String content = request.params.get("note-content-data");
         int startTime = Integer.parseInt(request.params.get("note-start-data"));
         Video video = Video.findById(Long.parseLong(request.params.get("video-id-data")));
-        /*change to actual user*/
+
         String userEmail = request.params.get("user-email-data");
 
         User user = User.findByEmail(userEmail);
         if (user == null) {
-            user = new User();
-            user.email = userEmail;
-            user.password = "";
-            user.name = request.params.get("user-name-data");
-            user.googleUserId = request.params.get("user-id-data");
-            user.save();
-            System.out.println(user);
+            new User(userEmail, "", request.params.get("user-name-data"), request.params.get("user-id-data")).save();
         }
+        Note note = new Note(title, content, startTime, video, user);
 
-        Note note = new Note(title, content, startTime, /*endTime,*/ video, user, null);
-
-        String tagsString = request.params.get("tags");
+        String tagsString = (request.params._contains("tags")) ? request.params.get("tags") : "";
         String[] tagsStringList = tagsString.split(";");
         ArrayList<Tag> tags = new ArrayList<Tag>();
 
@@ -44,66 +37,12 @@ public class NoteController extends Controller {
             tagObj.save();
             tags.add(tagObj);
         }
-        note.tags = tags;
-        video.tags = tags;
-        video.save();
+        note.tags.addAll(tags);
         note.save();
 
-
-        System.out.println("///////////end//");
-
-        redirect("/video/" + video.id);
+        System.out.println("Note saved");
         LiveAnnotation.liveStream.publish(note);
-//        try {
-//            ServerSocket serverSocket = new ServerSocket(8080);
-//            Socket clientSocket = serverSocket.accept();
-//            BufferedReader in = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()) );
-//            String noteString;
-//
-//            while ((noteString = in.readLine()) != null) {
-//                JsonArray jsonNote;
-//                JsonParser jsonParser = new JsonParser();
-//                jsonNote = jsonParser.parse(noteString).getAsJsonArray();
-//
-//                Video video = Video.findById(
-//                        Long.parseLong(
-//                                jsonNote.get(4).getAsString() // Video-ID
-//                        )
-//                );
-//
-//                /* TODO: change to actual user */
-//                User user = new User("email", "pass", "user");
-//                user.save();
-//
-//                Note note = new Note(
-//                        jsonNote.get(0).getAsString(), // Title
-//                        jsonNote.get(1).getAsString(), // Content
-//                        jsonNote.get(2).getAsInt(),    // Start-Time
-//                        video,
-//                        user,
-//                        null
-//                );
-//
-//                String tagsString = jsonNote.get(3).getAsString(); // Tags
-//                String[] tagsStringList = tagsString.split(";");
-//                ArrayList<Tag> tags = new ArrayList<Tag>();
-//
-//                for(String tag : tagsStringList){
-//                    Tag tagObj = new Tag(tag, note, video);
-//                    tagObj.save();
-//                    tags.add(tagObj);
-//                }
-//                note.tags = tags;
-//                video.tags = tags;
-//                video.save();
-//                note.save();
-//
-//                System.out.println("Note saved!");
-//            }
-//
-//        } catch (IOException e) {
-//            System.out.println("Socket-Connection crashed: "+e.getMessage().toString());
-//        }
+
     }
 
     public static void addNote() {

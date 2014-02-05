@@ -35,19 +35,16 @@ public class Note extends Model {
         this.title = title;
         this.content = content;
     }
-    
-    public Note(String title, String content, int startTime, /*int endTime,*/ Video video, User user, ArrayList<Tag> tags) {
+
+    public Note(String title, String content, int startTime, Video video, User user) {
         super();
         this.title = title;
         this.content = content;
         this.startTime = startTime;
-        /*this.endTime = endTime;*/
         this.video = video;
         this.noteWriter = user;
         this.visited = 0;
-        if(tags!=null) this.tags.addAll(tags);
-        //create();
-
+        this.tags = new ArrayList<Tag>();
     }
 
     public Note(String title, String content, int startTime, /*int endTime,*/ Video video, User user, ArrayList<Tag> tags, long visited) {
