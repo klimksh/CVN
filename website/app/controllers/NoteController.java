@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import models.Note;
 import models.Video;
 import play.mvc.Controller;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -22,8 +23,16 @@ public class NoteController extends Controller {
 
         Video video = Video.findById(Long.parseLong(id));
         List<Note> notes = Note.findAllByVideoId(video);
+        List<Note> editedNotes = new ArrayList<Note>();
 
-        JsonElement json = gson.toJsonTree(notes);
+        // make id visible in json
+        for (int i = 0; i < notes.size(); i++) {
+            Note note = notes.get(i);
+            note.fakeId = (Long)note.getId();
+            editedNotes.add(note);
+        }
+
+        JsonElement json = gson.toJsonTree(editedNotes);
         renderJSON(json);
     }
 }
