@@ -1,18 +1,12 @@
 package controllers;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import models.Note;
-import models.Tag;
-import models.User;
 import models.Video;
 import play.mvc.Controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 public class NoteController extends Controller {
