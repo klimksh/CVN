@@ -44,7 +44,7 @@ public class User extends Model{
         this.name = name;
         this.googleUserId = googleUserId;
         this.watchedVideos = new ArrayList<Video>();
-        create();
+
     }
 
     public static User findByEmail(String email) {
@@ -62,6 +62,9 @@ public class User extends Model{
     public String getEmail()
     {
     	return this.email;
+    }
+
+    public User() {
     }
 
     public void inserUser(String email, String password, String name, String googleUserId)

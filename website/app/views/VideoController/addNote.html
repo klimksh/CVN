@@ -1,0 +1,65 @@
+#{extends 'video.html' /}
+*{<div id="note-container">}*
+<div class="modal-content">
+    <div class="modal-body">
+    *{<div id="new-note">}*
+
+    #{form @NoteController.saveNote(), method:"POST", id:"noteForm"}
+        <div id="note-title-group" class="form-group">
+            <label for="note-title">Title</label> <input type="text"
+                                                         class="form-control" id="note-title"
+                                                         name="note-title"
+                                                         placeholder="Note title..."/>
+        </div>
+
+        <div id="note-content-group" class="form-group">
+            <label for="note-content">Content</label>
+            <textarea class="form-control" placeholder="Note" content=""
+                      name="note-content" id="note-content" cols="10" rows="1"></textarea>
+        </div>
+
+        <div id="note-content-group" class="form-group col-md-6">
+            <label for="note-start">Start time</label> <input type="time"
+                                                              class="form-control" name="note-start"
+                                                              id="note-start"
+                                                              placeholder="00:00"/>
+        </div>
+        <div id="note-content-group" class="form-group col-md-6">
+            <label for="note-end">End time</label> <input type="time"
+                                                          class="form-control" name="note-end" id="note-end"
+                                                          placeholder="00:00"/>
+        </div>
+
+
+        <input type="text" hidden="hidden" name="note-start-int" id="note-start-int" value=""/>
+        <input type="text" hidden="hidden" name="note-end-int" id="note-end-int" value=""/>
+        <input type="text" hidden="hidden" name="video-id" id="video-id" value=""/>
+        <input type="text" hidden="hidden" name="username" id="username" value="user"/>
+
+
+        #{include 'add-tag.html'/} <span class="row" style="margin-top: 20px">
+                    <button id="note-save" type="button"
+                            class="btn btn-success pull-right">Save note
+                    </button>
+                </span>
+        </form>
+    #{/form}
+    *{</div>}*
+    *{</div>}*
+    </div>
+</div>
+
+
+<script>
+
+
+
+    $('#note-save').click(function (e) {
+        $("input [name=video-id]").val(videoUrl);
+        var data = $("#noteForm").serialize();
+    *{$.post('@{NoteController.saveNote()}', data);}*
+        alert("!!!!");
+        $('#new_note').val('')
+
+    });
+</script>
