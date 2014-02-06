@@ -36,7 +36,9 @@
                     Time<br/>
                     <span id="timer"></span>
                 </div>
+            #{if session.userEmail}
                 <div id="addNoteBtn" class="btn btn-danger btn-block" onclick="flipMainPanel()">+Note</div>
+            #{/if}
                 <div id="revertFlip" class="btn btn-danger btn-block" onclick="flipMainPanel()" style="display: none">
                     <span class="glyphicon glyphicon-refresh"></span></div>
             </div>
@@ -82,13 +84,12 @@
         <input type="text" hidden="hidden" name="user-id-data" id="user-id-data" value="${session.googleUserId}"/>
         <input type="text" hidden="hidden" name="tags" id="tags" value=""/>
 
-        
 
         <button id="saveNoteBtn" class="btn btn-danger" type="button" onclick="sendNoteBySocket()">Save note</button>
         <div id="savePrivateNoteBtn" class="btn btn-default">Save as private note</div>
     </form>
 </div>
-<div id="test">   Notes:
+<div id="test"> Notes:
     <ul id="thread"></ul>
 
 </div>
@@ -176,25 +177,25 @@
     function createNoteObject(event) {
         console.log(event.title);
         var noteObj = new Object();
-        noteObj.title       = event.title;
-        noteObj.content     = event.content;
-        noteObj.startTime   = event.startTime;
-        noteObj.tags        = event.tags;
-        noteObj.username    = event.noteWriter.name;
+        noteObj.title = event.title;
+        noteObj.content = event.content;
+        noteObj.startTime = event.startTime;
+        noteObj.tags = event.tags;
+        noteObj.username = event.noteWriter.name;
 
         console.log(noteObj);
 
         return noteObj;
     }
-    
+
     // Display a message
     var display = function (event) {
         console.log(event);
 
         var obj = JSON.parse(event);
         console.log(obj);
-        obj = eval("("+obj+")");
-    	event = createNoteObject(obj);
+        obj = eval("(" + obj + ")");
+        event = createNoteObject(obj);
         addNoteToNoteCollection(event);
         $('#thread').append('<li>' + event + '</li>');
     }
