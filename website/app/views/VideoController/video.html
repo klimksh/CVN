@@ -189,10 +189,7 @@
     
     // Display a message
     var display = function (event) {
-        console.log(event);
-
         var obj = JSON.parse(event);
-        console.log(obj);
         obj = eval("("+obj+")");
     	event = createNoteObject(obj);
         addNoteToNoteCollection(event);
