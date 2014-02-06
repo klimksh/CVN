@@ -29,7 +29,7 @@ public class NoteController extends Controller {
         Note note = new Note(title, content, startTime, video, user);
 
         String tagsString = (request.params._contains("tags")) ? request.params.get("tags") : "";
-        String[] tagsStringList = tagsString.split(";");
+        String[] tagsStringList = tagsString.split(",");
         ArrayList<Tag> tags = new ArrayList<Tag>();
 
         for (String tag : tagsStringList) {
