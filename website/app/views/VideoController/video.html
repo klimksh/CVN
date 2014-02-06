@@ -76,18 +76,61 @@
     <script src="/public/js/socket.js"></script>
 </div>
 #{set 'moreStyles'} #{/set}
+<div id="test">
+    <ul id="thread"></ul>
+    <input type="text" class="form-control col-xs-4" id="note-title-data" name="note-title-data"
+           placeholder="Note title..."/>
 
+    <textarea class="form-control col-xs-4" placeholder="Note content..." name="note-content-data"
+              id="note-content-data" cols="10" rows="2"></textarea>
+
+    <input type="hidden" class="form-control col-xs-4" name="note-start-data" id="note-start-data" value=""/>
+
+*{#{include 'add-tag.html'/} <span class="row" style="margin-top: 20px"></span>}*
+
+    <input type="text" hidden="hidden" name="note-start-data" id="note-start-data" value=""/>
+    <input type="text" hidden="hidden" name="note-end-data" id="note-end-data" value=""/>
+    <input type="text" hidden="hidden" name="video-id-data" id="video-id-data" value="${video.id}"/>
+    <input type="text" hidden="hidden" name="user-email-data" id="user-email-data" value="${session.userEmail}"/>
+    <input type="text" hidden="hidden" name="user-name-data" id="user-na,e-data" value="${session.userName}"/>
+    <input type="text" hidden="hidden" name="user-id-data" id="user-id-data" value="${session.googleUserId}"/>
+    <textarea id="new_note"></textarea>
+    <button id="send" class="btn btn-default">Send</button>
+</div>
 <script>
     $(function() {
         $(document).scrollTop( $("#header").offset().top );
     });
 
+
+    $(document).on("mousemove", ".note", function (e) {
+        var horizontal_position = e.pageX - this.offsetLeft;
+        if (horizontal_position > 100) {
+            if (this.offsetLeft - parseInt($("#add-note-pointer").css("marginLeft"), 10) > 100) {
+                move_add_pointer_right();
+            }
+        } else {
+            if (this.offsetLeft - parseInt($("#add-note-pointer").css("marginLeft"), 10) < 100)
+                move_add_pointer_left();
+        }
+
+    })
+
+    function move_add_pointer_right() {
+        var margin = parseInt($("#add-note-pointer").css("marginLeft"), 10) + 200;
+        $("#add-note-pointer").css("marginLeft", margin + "px");
+    }
+    function move_add_pointer_left() {
+        var margin = parseInt($("#add-note-pointer").css("marginLeft"), 10) - 200;
+        $("#add-note-pointer").css("marginLeft", margin + "px");
+    }
+
     $('#note-content').autogrow();
 
-    initSockets();
     initializeTimeline(${video.id});
 
     var player;
+
 
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
@@ -114,7 +157,7 @@
         }
 
         var interval = setInterval(function () {
-             player.getPlayerState() // Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
+            player.getPlayerState() // -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
             if (player.getPlayerState() === 1) {
                 var played = Math.round(player.getCurrentTime());
                 updateTimeline(played);
@@ -133,5 +176,70 @@
 
         player.cueVideoById("${video.url}", startSeekTime, endSeekTime, "large");
         $("#note-start-int").val(startSeekTime);
-    });
+    })
+
+    $("#note-end").change(function () {
+        var time = $(this).val().split(":");
+        endSeekTime = parseInt(time[0]) * 60 + parseInt(time[1]);
+        //player.seekTo(seekTime, false );
+
+        player.cueVideoById("${video.url}", startSeekTime, endSeekTime, "large");
+        $("#note-end-int").val(endSeekTime);
+
+    })
 </script>
+<script type="text/javascript">
+    
+    
+    // Create a socket
+    var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
+    var socket = new WS('@@{LiveAnnotation.WebSocket.stream(video.id)}');
+
+    $('#send').click(function (e) {
+        $("#note-start-data").val(Math.round(player.getCurrentTime()));
+        var data = $('#test :input').serialize();
+        $.post('@{NoteController.saveNote()}', data);
+        $('#new_note').val('')
+
+    });
+
+    //pressing 'Enter' instead of clicking
+    $('#new_note').keypress(function (e) {
+        if (e.charCode == 13 || e.keyCode == 13) {
+            $('#send').click()
+            e.preventDefault()
+        }
+    });
+
+    // Message received on the socket
+    socket.onmessage = function (event) {
+        display(event.data);
+    };
+
+    socket.onopen = function (evt) {
+        console.log("connected");
+    };
+
+    socket.onclose = function (evt) {
+        console.log("disconnected");
+    };
+
+
+    socket.onerror = function (evt) {
+        console.log("error: " + evt.data);
+    };
+
+
+    // Display a message
+    var display = function (event) {
+        //document.write(event);
+        //(event);
+        $('#thread').append('<li>' + event + '</li>');
+    }
+
+
+</script>
+
+
+
+

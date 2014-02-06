@@ -192,3 +192,10 @@ nav.filter-oprions > .collapse {
     bottom: 0;
     width: 99%;
 }
+
+#test{
+    width: 40%;
+}
+#test input,#test textarea{
+    margin: 20px;
+}
