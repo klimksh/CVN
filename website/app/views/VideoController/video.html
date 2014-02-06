@@ -171,8 +171,25 @@
         console.log("error: " + evt.data);
     };
 
+    function createNoteObject(event) {
+        console.log(event.title);
+        var noteObj = new Object();
+        noteObj.title       = event.title;
+        noteObj.content     = event.content;
+        noteObj.startTime   = event.startTime;
+        noteObj.tags        = event.tags;
+        noteObj.username    = event.noteWriter.name;
+
+        console.log(noteObj);
+
+        return noteObj;
+    }
+    
     // Display a message
     var display = function (event) {
+        console.log(event);
+        var obj = $.parseJSON(event);
+    	event = createNoteObject(obj);
         addNoteToNoteCollection(event);
         $('#thread').append('<li>' + event + '</li>');
     }
