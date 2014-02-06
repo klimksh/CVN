@@ -82,6 +82,8 @@
         <input type="text" hidden="hidden" name="user-id-data" id="user-id-data" value="${session.googleUserId}"/>
         <input type="text" hidden="hidden" name="tags" id="tags" value=""/>
 
+        
+
         <button id="saveNoteBtn" class="btn btn-danger" type="button" onclick="sendNoteBySocket()">Save note</button>
         <div id="savePrivateNoteBtn" class="btn btn-default">Save as private note</div>
     </form>
@@ -188,7 +190,10 @@
     // Display a message
     var display = function (event) {
         console.log(event);
-        var obj = $.parseJSON(event);
+
+        var obj = JSON.parse(event);
+        console.log(obj);
+        obj = eval("("+obj+")");
     	event = createNoteObject(obj);
         addNoteToNoteCollection(event);
         $('#thread').append('<li>' + event + '</li>');
