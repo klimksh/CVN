@@ -121,10 +121,11 @@ public class Video extends Model {
     
     	for(int i=0;i<queryVideo.fetch().objects.size();i++)
     	{
-    		System.out.println("hello");
+            //video
     		System.out.println(queryVideo.fetch().objects.get(i).id+" "+queryVideo.fetch().objects.get(i).title +" "+queryVideo.fetch().objects.get(i).notes.size() );
-    		if(queryVideo.fetch().objects.get(i).tags.size()>-1)
-    			System.out.println("i am different");
+    		//notes of the video that contains the viedo
+    		List<Note> notes = Note.searchNotes(query, queryVideo.fetch().objects.get(i).id);
+//    		System.out.println(notes.size());
     		
     	}
     //	return list.objects;

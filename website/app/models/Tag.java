@@ -17,8 +17,8 @@ import java.util.List;
 public class Tag extends Model {
 
     // because of many to many relationship
-    
-	@ManyToMany(mappedBy="noteTags")//, fetch= FetchType.EAGER)
+    @ElasticSearchIgnore
+	@ManyToMany(mappedBy="noteTags")
     public List<Note> tagNotes;
 	@ElasticSearchIgnore
     @ManyToMany(mappedBy = "tags" )
