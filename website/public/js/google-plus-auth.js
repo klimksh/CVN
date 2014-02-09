@@ -7,6 +7,7 @@ function handleClientLoad() {
     window.setTimeout(checkAuth,1);
 }
 function checkAuth() {
+	console("i am checking here");
     gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
 }
 
@@ -18,13 +19,9 @@ function handleAuthResult(authResult) {
 function login()
     {
         gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-        $('#authOps').show('slow');
-        $('#gConnect').hide();
-        $('#userDetailss').show();
-        $('#logout').show();
-        $('#disconnect').hide();    
-        $('#Gphoto').show();
-        $('.dropdown').show(); 
+   
+        console.log("here");
+       
         return false;  
     }
 function logout()
@@ -68,6 +65,14 @@ function makeApiCall() {
             $.get(login_url({email: f, id: profile.id, displayName: profile.displayName}), function () {});
             document.cookie="photo_url="+profile.image.url+";"
             document.cookie="name_plus=\""+profile.displayName+"\";"
+            $('#authOps').show('slow');
+            $('#gConnect').hide();
+            $('#add-new-note').show();
+            $('#userDetailss').show();
+            $('#logout').show();
+            $('#disconnect').hide();    
+            $('#Gphoto').show();
+            $('.dropdown').show();
             $('#profile').empty();
             if (profile.error) {
                 $('#profile').prepend(profile.error);
@@ -102,6 +107,7 @@ window.onload=function(){
 if(exist  && isHeLogedON) {
     $('#authOps').show('slow');
     $('#gConnect').hide();
+    $('#add-new-note').show();
     $('#userDetailss').show();
     $('#logout').show();
     $('#disconnect').hide();    
@@ -115,9 +121,12 @@ if(exist  && isHeLogedON) {
         request.execute(function(profile) {
             $('#profile').empty();
            // $('#Gphoto').prepend($("<img src=\""+image_url+"\" style=\"width: 50px; margin-bottom: 5px\" class=\"img-circle\"/>"));
-            $('#personal_name').html(nameGPlus); 
-            $('#personal_image2').html($("<img src=\""+image_url+"\" style=\"width: 25px; margin-bottom: 0px\" class=\" img-circle\"/>"));
-            $('#personal_image').html($("<span class=\" glyphicon glyphicon-user\"/></span>"));
+            $('#personal_image').html($("<img src=\""+image_url+"\" style=\"width: 20px; margin-bottom: 0px\" class=\"glyphicon glyphicon-user\"/>"));
+            $('#personal_image2').html($("<img src=\""+image_url+"\" style=\"width: 25px; margin-bottom: 0px\" class=\"glyphicon glyphicon-user\"/>"));
+            $('#personal_name').html(nameGPlus);       
+        //    $('#personal_name').html(nameGPlus); 
+         //   $('#personal_image2').html($("<img src=\""+image_url+"\" style=\"width: 25px; margin-bottom: 0px\" class=\" img-circle\"/>"));
+         //   $('#personal_image').html($("<span class=\" glyphicon glyphicon-user\"/></span>"));
         });
     });
              
@@ -128,6 +137,7 @@ if(exist  && isHeLogedON) {
     	$('#gConnect').show();
     	$('#signPhoto').show();
     	$('.dropdown').hide();
+    	$('#add-new-note').hide();
      }
  }
 function imageURL(){
