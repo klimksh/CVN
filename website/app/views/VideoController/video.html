@@ -102,7 +102,6 @@
 
     $('#note-content').autogrow();
 
-    initializeTimeline(${video.id});
 
     var player;
 
@@ -112,9 +111,15 @@
             width: '780',
             videoId: '${video.url}',
             events: {
+                'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange
             }
         });
+        
+    }
+
+    function onPlayerReady(event) {
+        initializeTimeline(${video.id});
         setTimelineBoxSizes();
     }
 
