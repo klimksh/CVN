@@ -34,6 +34,7 @@
         var logout_url = #{jsAction @Application.logout() /};
         var index_url = "@{VideoController.index()}";
         var add_video_url = "@{VideoController.addVideo()}";
+        var google_auth_client_id = ${play.configuration.get("google_auth.client_id")}
     </script>
     <script type="text/javascript" src="@{'public/js/google-plus-auth.js'}"></script>
     <script src="https://apis.google.com/js/client.js"></script>

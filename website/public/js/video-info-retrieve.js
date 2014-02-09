@@ -1,11 +1,20 @@
 /**
  * Created by D Mak on 06.12.13.
  */
+function video_id_parser(link){
+    var match = link.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);   
+    if (match&&match[2].length==11){
+        return match[2];
+    }else{
+        return false;
+    }
+}
+
 $(document).ready(function () {
     $("#video-link").keyup(function () {
-        var link = $(this).val();
-        if (link.length>0){
-            link = link.match(/^(?:http:\/\/www.youtube.com\/watch\?v=|http:\/\/youtu.be\/)(\w{11})$/)[1];
+
+        var link = video_id_parser($(this).val());
+        if (link){
             var request_link = "https://gdata.youtube.com/feeds/api/videos/" + link + "?v=2";
             $("#video").append('<img src="/public/img/loading.gif"/>');
             $.ajax({

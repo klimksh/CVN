@@ -1,4 +1,6 @@
-var clientId = '564983320580-r29l8abnd6ldq9ugek8th5h4epk4u6al.apps.googleusercontent.com';
+// var clientId = '564983320580-r29l8abnd6ldq9ugek8th5h4epk4u6al.apps.googleusercontent.com';
+var clientId = google_auth_client_id;
+
 var apiKey = 'AIzaSyAdjHPT5Pb7Nu56WJ_nlrMGOAgUAtKjiPM';
 var scopes = "https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me";
 var image_url=imageURL();
