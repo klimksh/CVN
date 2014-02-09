@@ -3,17 +3,17 @@
 #{stylesheet 'video-page.css'/}
 #{set 'moreStyles'} #{/set}
 
-<h3 id="header">CVN - ${video.title}</h3>
+<h3 id="header">${video.title}</h3>
 <div class="row">
     <div class="container wrap">
-        <div id="player"></div>
-        <script src="https://www.youtube.com/iframe_api"></script>
+        <div id="main_player"></div>
+        <script src="@{'/public/js/iframe_api.js'}"></script>
     </div>
 </div>
 
-<script src="/public/js/timeline.js"></script>
-<script src="/public/js/add-tag.js"></script>
-<script src="/public/js/jquery.flip.min.js"></script>
+<script src="@{'/public/js/timeline.js'}"></script>
+<script src="@{'/public/js/add-tag.js'}"></script>
+<script src="@{'/public/js/jquery.flip.min.js'}"></script>
 
 <div class="clearfix"></div>
 
@@ -102,7 +102,7 @@
     var player;
 
     function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
+        player = new YT.Player('main_player', {
             height: '430',
             width: '780',
             videoId: '${video.url}',
@@ -156,10 +156,10 @@
         if (!player.getCurrentTime) {
             timeInSecs = 0;
         } else {
-            timeInSecs = convertTimeToSec( player.getCurrentTime() );
+            timeInSecs = player.getCurrentTime();
         }
 
-        $("#note-start-data").val(timeInSecs);
+        $("#note-start-data").val(~~timeInSecs); // gets integer part
         var data = $('#mainFlipBox :input').serialize();
         $.post('@{NoteController.saveNote()}', data);
         flipMainPanel();

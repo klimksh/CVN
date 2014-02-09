@@ -139,7 +139,7 @@ $( window ).resize(function(){
  * Set the width of all timeline boxes to fit the video-player
  */
 function setTimelineBoxSizes(){
-    var playerWidth = $('iframe#player').width();
+    var playerWidth = $('iframe#main_player').width();
     var browserViewport = $('#content').width();
     var options = $('#optionsPanel').width();
 
@@ -157,7 +157,7 @@ function setTimelineBoxSizes(){
     }
 
     // positioning below video
-    var leftOffset = $('iframe#player').offset().left;
+    var leftOffset = $('iframe#main_player').offset().left;
     // second if is necessary because during fadeIn/Out the boxes are still visible and cause errors
     if( $('#pastNotes').is(':visible') && $('#pastNotes').width() > 100 ) {
         leftOffset = leftOffset-40-$('#pastNotes').width();
