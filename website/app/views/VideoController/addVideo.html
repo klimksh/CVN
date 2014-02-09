@@ -17,10 +17,12 @@
             <input type="text" hidden="hidden" name="user-id-data" id="user-id-data" value="${session.googleUserId}"/>
 
             <div class="col-md-5 column">
-                <div id="video-link-group" class="form-group">
-                    <label for="video-link">Link to the video on YouTube</label>
+                <div id="video-link-group" class="form-group has-feedback">
+                    <label for="video-link" class="control-label">Link to the video on YouTube </label> <span id="parse_status" class="control-label glyphicon"></span>
+
                     <input type="text" class="form-control" id="video-link" name="video-link"
                            placeholder="link to a video on YouTube..."/>
+
                 </div>
 
                 <div id="video-title-group" class="form-group">
