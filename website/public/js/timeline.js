@@ -204,7 +204,6 @@ function updateTimeline(currentVideoTime) {
     }
 
     setTimer();
-
     initNoteFlip();
 }
 
@@ -237,6 +236,7 @@ function addNoteToTimeline(dom, note) {
 
     $('#'+dom+' .noNotesText').hide();
     var prevNote = findPrevNote(dom, note.startTime);
+
     if (prevNote !== null) { // prevNote found, add after the prevNote
         prevNote.after(createNote(note));
     } else { // no notes found, add at beginning of timeline
@@ -284,7 +284,7 @@ function findPrevNote(dom, startTime) {
  * @returns time in seconds
  */
 function convertSecToTime() {
-    var hours = Math.floor(lastVideoUpdate / 3600);
+    var hours   = Math.floor(lastVideoUpdate / 3600);
     var minutes = Math.floor(lastVideoUpdate / 60);
     var seconds = lastVideoUpdate - minutes * 60;
 
@@ -306,7 +306,7 @@ function convertSecToTime() {
  * @returns time in seconds
  */
 function convertTimeToSec() {
-    var time = $('#currentVideoTime').val();
+    var time = $('#timer').val();
     split = time.split(':');
     return parseInt(split[0])*60+parseInt(split[1]);
 }

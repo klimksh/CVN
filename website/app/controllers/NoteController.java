@@ -14,10 +14,10 @@ import java.util.List;
 public class NoteController extends Controller {
 
     public static void saveNote() {
-        String title = request.params.get("note-title-data");
+        String title   = request.params.get("note-title-data");
         String content = request.params.get("note-content-data");
-        int startTime = Integer.parseInt(request.params.get("note-start-data"));
-        Video video = Video.findById(Long.parseLong(request.params.get("video-id-data")));
+        int startTime  = Integer.parseInt(request.params.get("note-start-data"));
+        Video video    = Video.findById(Long.parseLong(request.params.get("video-id-data")));
 
         String userEmail = request.params.get("user-email-data");
 
@@ -42,7 +42,6 @@ public class NoteController extends Controller {
 
         System.out.println("Note saved");
         LiveAnnotation.getVideoStream(video.id).liveStream.publish(note);
-
     }
 
     public static void addNote() {
