@@ -2,48 +2,49 @@
     width: 1000px;
 }
 
-#video-info{
+#video-info {
     margin-left: 20px;
     /*background-image: url(../img/no-signal.gif);*/
-    width:480px;
+    width: 480px;
     height: 360px;
 }
 
 img.logo {
     height: 55px;
 }
+
 input.search {
-    width:519px;
+    width: 519px;
 }
 
-button.new-video{
+button.new-video {
     margin-left: 20px;
 }
 
-button.new-video>a{
+button.new-video > a {
     text-decoration: none;
     color: white;
 }
 
-
-form.search-form>button {
+form.search-form > button {
     vertical-align: top;
 }
 
-nav.filter-oprions{
+nav.filter-oprions {
     margin-top: -20px;
 }
 
-nav.navbar.navbar-default.filter-oprions{
+nav.navbar.navbar-default.filter-oprions {
     background: #F5F2F2;
 }
 
-.navbar-default.filter-oprions .navbar-nav>.open>a, 
-.navbar-default.filter-oprions .navbar-nav>.open>a:hover, 
-.navbar-default.filter-oprions .navbar-nav>.open>a:focus {
+.navbar-default.filter-oprions .navbar-nav > .open > a,
+.navbar-default.filter-oprions .navbar-nav > .open > a:hover,
+.navbar-default.filter-oprions .navbar-nav > .open > a:focus {
     background-color: #E9E3E3;
 }
-nav.filter-oprions>.collapse{
+
+nav.filter-oprions > .collapse {
     padding-left: 135px;
 }
 
@@ -52,53 +53,149 @@ nav.filter-oprions>.collapse{
     margin-right: 150px;
 }
 
+/**
+***********************
+*
+*  TIMELINE
+*
+***********************
+*/
+
 #timeline {
-    width: 100%;
-    background-color: lightgrey;
-    overflow-x: scroll;
-    white-space: nowrap;
-    margin: 50px 5px;
-    padding: 5px;
+    padding: 0px;
+    height: 250px;
+    position: relative;
+    border: 1px solid darkgray;
+    border-bottom: 0px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background: #cccccc; /* Old browsers */
+    background: -moz-linear-gradient(top,  #cccccc 0%, #eeeeee 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cccccc), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #cccccc 0%,#eeeeee 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #cccccc 0%,#eeeeee 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #cccccc 0%,#eeeeee 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #cccccc 0%,#eeeeee 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
+
+}
+
+#timeline #pastNotes, #timeline #futureNotes {
+    padding: 10px 20px;
+    height: 100%;
+    float: left;
+    opacity: 0.5;
+    overflow-y: scroll;
+}
+
+#timeline #pastNotes {
+    border-right: 1px dashed darkgray;
+}
+
+#timeline #currentNotes {
+    padding: 10px 20px;
+    height: 100%;
+    float: left;
+}
+
+#timeline #mainPanel {
+    padding: 0 5px;
+    min-width: 500px;
+    height: 100%;
+    float: left;
+    border-right: 1px dashed darkgray;
+}
+
+#timeline #optionsPanel {
+    width: 200px;
+    height: 100%;
+    border-right: 1px dashed darkgray;
+    float: left;
+}
+
+#timeline #options {
+    font-size: 30px;
+    text-align: center;
+    padding: 0 5px;
+}
+
+#timeline #options div {
+    height: 50%;
+}
+
+#timeline #options #currentTime {
+    padding-top: 10px;
+}
+
+
+#timeline #options .btn {
+    font-size: 35px;
+    height: 125px;
+    line-height: 108px;
 }
 
 #timeline .note {
-    width: 200px;
-    height: 280px;
-    border: 1px solid black;
+    width: 100px;
+    min-height: 62px;
     padding: 5px;
-    display: inline-block;
-    vertical-align: middle;
-    white-space: normal;
-    margin-bottom: 0px !important;
+    margin: 5px 5px 0 0;
+    float: left;
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: center;
+
+    /* Gradient */
+    background: #eeeeee; /* Old browsers */
+    background: -moz-linear-gradient(top,  #eeeeee 0%, #cccccc 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #eeeeee 0%,#cccccc 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
 }
 
-#timer, #buttons {
+#timeline .noteHighlighted {
+    border-color: #d9534f !important;
+}
+
+.row iframe {
     margin: 0 auto;
-    font-weight: bold;
+}
+
+#mainFlipBox, #optionsPanel {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+#mainFlipBox input, #mainFlipBox textarea {
+    background-color: transparent;
+    border: 0px;
+    border-bottom: 1px dashed black;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.0);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.0);
+}
+
+#slideHandler {
     text-align: center;
 }
 
-#timer {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    font-size: 25px;
-    border-bottom: 2px dotted darkgray ;
+.deleteTag:hover, #closeNoteBlock:hover, #jumpBtn:hover, .note {
+    cursor: pointer;
 }
 
-#buttons button {
-    font-size: 20px;
-
+.noteBlock {
+    height: 100%;
 }
 
-.panel-body {
-    min-height: 185px;
+.noteBlock .panel-footer {
+    position: absolute;
+    bottom: 0;
+    width: 99%;
 }
 
-.panel-default>.panel-heading {
-    max-height: 43px;
+#test{
+    width: 40%;
 }
-
-.dropdown-menu-details {
-	padding: 5px 10px 5px 20px;
+#test input,#test textarea{
+    margin: 20px;
 }

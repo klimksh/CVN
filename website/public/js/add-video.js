@@ -5,5 +5,4 @@ $(document).ready(function () {
   		show: false,
   		remote: add_video_url
 	});
-
 });

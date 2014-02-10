@@ -6,12 +6,7 @@ import play.data.validation.Equals;
 import play.data.validation.Required;
 import play.mvc.Controller;
 
-//import controllers.securesocial.SecureSocial;
-//import com.*;
-//import com.google.gdata.data.youtube.VideoEntry;
-
 public class Application extends Controller {
-	String id;
 
 	public static  boolean check()
 	{
@@ -19,64 +14,51 @@ public class Application extends Controller {
 	}
 	// creating a session
 	public static void connect(User user) {
-		session.put("logged", user.id);
+		session.put("logged", user.googleUserId);
 	}
 
 	public static void login(String email, String id, String displayName) {
-		User a;
-		if (User.findByEmail(email) == null)
-			a = new User(email, "randomPassword", displayName, id);
-		else
-			a = User.findByEmail(email);
-		session.put("id", a.id);
-		session.put("email", a.email);
-		// id = session.get("id");
+		User user = User.findByEmail(email);
+		if (user == null){
+			user = new User(email, "randomPassword", displayName, id);		
+		}
+		session.put("googleUserId", user.googleUserId);
+		session.put("userEmail", user.email);
+		session.put("userName", user.name);
 	}
 
 	public static void loginToken(String token) {
 		session.put("token", token);
 	}
 
-	// get the user which is logged ON
+	// get the user which is logged in
 	static User connectedUser() {
 		String userId = session.get("logged");
-		return userId == null ? null : (User) User.findById(Long
-				.parseLong(userId));
+		return userId == null ? null : (User) User.findById(Long.parseLong(userId));
 	}
 
-	// logout
+	
 	public static void logout() {
-
 		flash.success("You've been logged out");
-		session.remove("id");
-		session.remove("email");
-	   
-		renderTemplate("Application/frontpage.html");
-		// id = null;
-
+		session.remove("googleUserId");
+		session.remove("userEmail");
+	   	session.remove("userName");
 	}
 
 	public static int exist() {
-		if (session.get("id") == null)
+		if (session.get("googleUserId") == null)
 			return 0;
 		else
 			return 1;
 	}
 
 	public static void disconnectAccount() {
-
-		User usr = User.findByEmail(session.get("email"));
-		/*
-		 * should we delete account from the system or not
-		 */
-		// JPA.em().remove(usr);
-
+		User usr = User.findByEmail(session.get("userEmail"));
 	}
 
 	public static void frontpage() {
-		// String kk=session.get("id");
 		int isLoged = 3;
-		if (session.get("id") != null)
+		if (session.get("googleUserId") != null)
 			isLoged = 6;
 		render(isLoged);
 	}

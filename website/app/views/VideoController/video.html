@@ -1,143 +1,141 @@
 #{extends 'main.html' /}
 #{set title: "${video.title}" /}
 #{stylesheet 'video-page.css'/}
+#{set 'moreStyles'} #{/set}
 
-<h3 id="header">CVN - ${video.title}</h3>
+<h3 id="header">${video.title}</h3>
 <div class="row">
     <div class="container wrap">
-        <div id="player"></div>
+        <div id="main_player"></div>
+        <script src="@{'/public/js/iframe_api.js'}"></script>
     </div>
 </div>
-<div id="note-container">
-	<div id="new-note">
 
-		<form method="post">
-            <div id="note-title-group" class="form-group">
-                <label for="note-title">Title</label> <input type="text"
-                    class="form-control" id="note-title" name="note-title"
-                    placeholder="Note title..." />
-            </div>
-
-            <div id="note-content-group" class="form-group">
-                <label for="note-content">Content</label>
-                <textarea class="form-control" placeholder="Note" content=""
-                    name="note-content" id="note-content" cols="10" rows="1"></textarea>
-            </div>
-
-            <div id="note-content-group" class="form-group col-md-6">
-                <label for="note-start">Start time</label> <input type="time"
-                    class="form-control" name="note-start" id="note-start"
-                    placeholder="00:00" />
-            </div>
-            <div id="note-content-group" class="form-group col-md-6">
-                <label for="note-end">End time</label> <input type="time"
-                    class="form-control" name="note-end" id="note-end"
-                    placeholder="00:00" />
-            </div>
-
-            <input type="text" hidden="hidden" name="note-start-int" id="note-start-int" value="" />
-            <input type="text" hidden="hidden" name="note-end-int" id="note-end-int" value="" />
-            <input type="text" hidden="hidden" name="video-id" id="video-id" value="${video.id}" />
-            <input type="text" hidden="hidden" name="username" id="username" value="${user.name}" />
-
-            #{include 'add-tag.html'/} <span class="row" style="margin-top: 20px">
-                <button id="note-save" type="button" onclick="broadcastNote()"
-                    class="btn btn-success pull-right">Save note</button>
-            </span>
-        </form>
-	</div>
-</div>
+<script src="@{'/public/js/timeline.js'}"></script>
+<script src="@{'/public/js/add-tag.js'}"></script>
+<script src="@{'/public/js/jquery.flip.min.js'}"></script>
 
 <div class="clearfix"></div>
 
-<div id="slideHandler">
-	<input id="autoslide" type="checkbox" checked="checked" />
-	Automatically slide
+<div id="slideHandler" class="row">
+    <label for="autoslide">
+        <input id="autoslide" type="checkbox" checked="checked"/> Update notes during the video
+    </label>
 </div>
-<button id="add-new-note" type="submit" class="btn btn-success" hidden="true">+ New note</button>
-<div id="timeline">
-	<div id="noNotesAvailable" class="panel panel-default">
-		<div class="panel-body">
-			Currently there are no notes for this video. Feel free to add some,
-			by clicking the "<span style="color: #13987e">+ New note</span>"
-			button on the top right.
-		</div>
-	</div>
+<div class="row">
+    <div id="timeline">
+        <div id="pastNotes"></div>
+        <div id="mainPanel" class="flipbox-container">
+            <div id="mainFlipBox">
+                <div id="currentNotes"></div>
+            </div>
+        </div>
+        <div id="optionsPanel" class="flipbox-container">
+            <div id="options">
+                <div id="currentTime">
+                    Time<br/>
+                    <span id="timer"></span>
+                </div>
+                #{if session.userEmail}
+                    <div id="addNoteBtn" class="btn btn-danger btn-block" onclick="flipMainPanel()">+Note</div>
+                    <div id="revertFlip" class="btn btn-danger btn-block" onclick="flipMainPanel()" style="display: none">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </div>
+                #{/if}
+            </div>
+        </div>
+        <div id="futureNotes"></div>
+    </div>
 </div>
 
-#{set 'moreStyles'} #{/set}
+<div id="newNoteForm" style="display: none">
+    <form class="form-horizontal" style="margin-top: 10px;" role="form">
+        <div id="note-title-group" class="form-group">
+            <label for="note-title-data" class="col-sm-2">Title</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="note-title-data" name="note-title-data"
+                       placeholder="Note title..."/>
+            </div>
+        </div>
 
-<script type="text/javascript">
 
-var c_sh=document.body.scrollHeight;
-var c_sw=document.body.scrollWidth;
-var c_h = $(window).height();
-var c_w= $(window).width();
-document.getElementById('play*r').style.height=0.6*c_h+"px";
-$(function(){
-    $(window).resize(function(){
-        content_height = $(window).height()-110;
-        document.getElementById('play*r').style.height=c_h+"px";
-    });
-});
+        <div id="note-content-group" class="form-group">
+            <label for="note-content-data" class="col-sm-2">Content</label>
 
-</script>
+            <div class="col-sm-10">
+                <textarea class="form-control" placeholder="Note" name="note-content-data" id="note-content-data"
+                          cols="10" rows="1"></textarea>
+            </div>
+        </div>
+
+        <div id="note-tags-group" class="form-group">
+            <label for="tagsInput" class="col-sm-2">Tags</label>
+
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="tagsInput" name="tagsInput" onkeyup="addTag(event, $(this))"
+                       placeholder="Type tags separated by comma..."/>
+            </div>
+            <div class="col-sm-10 pull-right" id="tagsList" style="margin:10px 0px"></div>
+        </div>
+
+        <input type="text" hidden="hidden" name="note-start-data" id="note-start-data" value=""/>
+        <input type="text" hidden="hidden" name="video-id-data" id="video-id-data" value="${video.id}"/>
+        <input type="text" hidden="hidden" name="user-email-data" id="user-email-data" value="${session.userEmail}"/>
+        <input type="text" hidden="hidden" name="user-name-data" id="user-na,e-data" value="${session.userName}"/>
+        <input type="text" hidden="hidden" name="user-id-data" id="user-id-data" value="${session.googleUserId}"/>
+        <input type="text" hidden="hidden" name="tags" id="tags" value=""/>
+
+
+        <button id="saveNoteBtn" class="btn btn-danger" type="button" onclick="sendNoteBySocket()">Save note</button>
+        <div id="savePrivateNoteBtn" class="btn btn-default">Save as private note</div>
+    </form>
+</div>
 
 <script>
-    $(function() {
-        $(document).scrollTop( $("#header").offset().top );  
+    $(function () {
+        $(document).scrollTop($("#header").offset().top);
     });
-</script>
-<script src="/public/js/timeline.js"></script>
-<script>
-        $('#note-content').autogrow();
 
-    initializeTimeline(${video.id});
+    $('#note-content').autogrow();
+
 
     var player;
-    $("#add-new-note").click(function () {
-        if (!$("#new-note").is(":visible")) {
-            $("#new-note").slideDown(200);
-            $(this).text("Close");
-        } else {
-            $("#new-note").slideUp(200);
-            $(this).text("+ New note");
-        }
-    })
-
 
     function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
+        player = new YT.Player('main_player', {
             height: '430',
             width: '780',
             videoId: '${video.url}',
             events: {
+                'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange
             }
         });
+        
+    }
+
+    function onPlayerReady(event) {
+        initializeTimeline(${video.id});
+        setTimelineBoxSizes();
     }
 
     function onPlayerStateChange(event) {
-        if (event.data === 1) {  //if the video is playing start catching events
+        if (event.data === 1) {  // if the video is playing start catching events
             checkTimePointsOnVideo();
         }
     }
 
-
-    /* !!!contains timer that runs slideTimeline */
+    // !!!contains timer that runs slideTimeline
     function checkTimePointsOnVideo() {
-        addTimeToPanel();
-        /* catches all timepoints on the video*/
-
         if (!player.getCurrentTime) {
-            return false;
+            return;
         }
 
         var interval = setInterval(function () {
-             player.getPlayerState() // -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5). 
+            player.getPlayerState() // -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
             if (player.getPlayerState() === 1) {
                 var played = Math.round(player.getCurrentTime());
-                slideTimeline(played);
+                updateTimeline(played);
             } else if (player.getPlayerState() === 0 || player.getPlayerState() === 2) {
                 clearInterval(interval);
             }
@@ -147,23 +145,62 @@ $(function(){
     var startSeekTime = 0;
     var endSeekTime = 0;
 
-    $("#note-start").change(function () {
-        var time = $(this).val().split(":");
-        startSeekTime = parseInt(time[0]) * 60 + parseInt(time[1]);
-        //player.seekTo(seekTime, false );
-
-        player.cueVideoById("${video.url}", startSeekTime, endSeekTime, "large");
-        $("#note-start-int").val(startSeekTime);
-    })
-
-    $("#note-end").change(function () {
-        var time = $(this).val().split(":");
-        endSeekTime = parseInt(time[0]) * 60 + parseInt(time[1]);
-        //player.seekTo(seekTime, false );
-
-        player.cueVideoById("${video.url}", startSeekTime, endSeekTime, "large");
-        $("#note-end-int").val(endSeekTime);
-
-    })
 </script>
+<script type="text/javascript">
 
+    // Create a socket
+    var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
+    var socket = new WS('@@{LiveAnnotation.WebSocket.stream(video.id)}');
+
+    function sendNoteBySocket() {
+        if (!player.getCurrentTime) {
+            timeInSecs = 0;
+        } else {
+            timeInSecs = player.getCurrentTime();
+        }
+
+        $("#note-start-data").val(~~timeInSecs); // gets integer part
+        var data = $('#mainFlipBox :input').serialize();
+        $.post('@{NoteController.saveNote()}', data);
+        flipMainPanel();
+    }
+
+    // Message received on the socket
+    socket.onmessage = function (event) {
+        display(event.data);
+    };
+
+    socket.onopen = function (evt) {
+        console.log("connected");
+    };
+
+    socket.onclose = function (evt) {
+        console.log("disconnected");
+    };
+
+    socket.onerror = function (evt) {
+        console.log("error: " + evt.data);
+    };
+
+    function createNoteObject(event) {
+        console.log(event.title);
+        var noteObj = new Object();
+        noteObj.fakeId = Math.random().toString(36).substring(7);
+        noteObj.title = event.title;
+        noteObj.content = event.content;
+        noteObj.startTime = event.startTime;
+        noteObj.tags = event.tags;
+        noteObj.username = event.noteWriter.name;
+
+        return noteObj;
+    }
+
+    // Display a message
+    var display = function (event) {
+        var obj = JSON.parse(event);
+        obj = eval("(" + obj + ")");
+        event = createNoteObject(obj);
+        addNoteToNoteCollection(event);
+    }
+
+</script>

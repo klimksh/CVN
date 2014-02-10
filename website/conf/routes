@@ -12,8 +12,15 @@ POST    /                                       VideoController.index
 GET     /video/add                              VideoController.addVideo
 POST    /video/save                             VideoController.saveVideo
 GET     /video/{id}                             VideoController.video
+
+GET     /notes/add                              NoteController.addNote
 GET     /notes/{id}                             NoteController.getNotes
 GET     /?{query}         						VideoController.search
+
+WS      /liveannotation                         LiveAnnotation.WebSocket.stream
+
+POST    /?{query}         						VideoController.search
+
 GET     /timeline                               Application.timeline
 
 
