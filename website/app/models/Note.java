@@ -26,8 +26,6 @@ import java.util.List;
 @ElasticSearchable
 @Entity(name = "Notes")
 public class Note extends Model {
-	//public long parentVideoId;//videoID
-	
     @Expose
     public long fakeId; // reference to the models id
     @Expose
@@ -67,7 +65,6 @@ public class Note extends Model {
         this.noteWriter = user;
         this.visited = 0;
         this.tags = new ArrayList<Tag>();
-   //     this.parentVideoId=video.id;
     }
 
     public static List<Note> findAllByVideoId(Video video) {
