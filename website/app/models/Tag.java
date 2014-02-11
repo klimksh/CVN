@@ -13,13 +13,13 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
-//@ElasticSearchable
+@ElasticSearchable
 @Entity(name = "Tags")
 public class Tag extends Model {
 
     // because of many to many relationship
     @ElasticSearchIgnore
-	@ManyToMany(mappedBy="noteTags")
+	@ManyToMany(mappedBy="tags")
     public List<Note> tagNotes;
 	@ElasticSearchIgnore
     @ManyToMany(mappedBy = "tags" )

@@ -9,6 +9,7 @@ import play.modules.elasticsearch.annotations.ElasticSearchEmbedded;
 import play.modules.elasticsearch.annotations.ElasticSearchEmbedded.Mode;
 import play.modules.elasticsearch.annotations.ElasticSearchField;
 import play.modules.elasticsearch.annotations.ElasticSearchIgnore;
+import play.modules.elasticsearch.annotations.ElasticSearchable;
 import play.modules.elasticsearch.search.SearchResults;
 
 import javax.persistence.ElementCollection;
@@ -27,7 +28,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-//@ElasticSearchable
+@ElasticSearchable
 @Entity(name = "Videos")
 public class Video extends Model {
     @Required
@@ -112,7 +113,6 @@ public class Video extends Model {
     {
     	Query<Video> queryVideo=  play.modules.elasticsearch.ElasticSearch.query(QueryBuilders.queryString(query), Video.class);
     	queryVideo.hydrate(true);
-    	QueryBuilders.boolQuery().should(QueryBuilders.queryString(query)).should(QueryBuilders.queryString(query));
     
     	for(int i=0;i<queryVideo.fetch().objects.size();i++)
     	{

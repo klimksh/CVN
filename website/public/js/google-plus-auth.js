@@ -22,8 +22,8 @@ function handleAuthResult(authResult) {
 
 function login(){
     gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-    $('#login_btn').hide();
-    $('#profile_btn').show(); 
+   // $('#login_btn').hide();
+    //$('#profile_btn').show(); 
     return false;  
 }
 
@@ -64,7 +64,8 @@ function makeApiCall() {
             document.cookie="name_plus=\""+profile.displayName+"\";"
             $('#authOps').show('slow');
             $('#gConnect').hide();
-            $('#add-new-note').show();
+            $('#login_btn').hide();
+            $('#addNoteBtn').show();
             $('#userDetailss').show();
             $('#logout').show();
             $('#disconnect').hide();    
@@ -111,9 +112,10 @@ window.onload=function(){
                 'userId': 'me'
             });
             request.execute(function(profile) {
-                $('#personal_name').html(nameGPlus); 
-                $('#personal_image2').html($("<img src=\""+image_url+"\" style=\"width: 25px; margin-bottom: 0px\" class=\" img-circle\"/>"));
-                $('#personal_image').html($("<span class=\" glyphicon glyphicon-user\"/></span>"));
+               $('#personal_image').html($("<img src=\""+image_url+"\" style=\"width: 20px; margin-bottom: 0px\" class=\"glyphicon glyphicon-user\"/>"));
+               $('#personal_image2').html($("<img src=\""+image_url+"\" style=\"width: 25px; margin-bottom: 0px\" class=\"glyphicon glyphicon-user\"/>"));
+               $('#personal_name').html(nameGPlus); 
+               
             });
         });
              
