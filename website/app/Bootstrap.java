@@ -26,15 +26,8 @@ public class Bootstrap extends Job {
 			Video a = Video.findById(1L);
 			for (Note no : notes) {
 				no.video = a;
-				no.parentVideoId = a.id;
 				no.save();
 			}
-			List<Note> notes1 = Note.findAll();
-			for(Note no: notes1)
-			{
-				System.out.println(no.video.id);
-			}
-
 		}
 
 	}
