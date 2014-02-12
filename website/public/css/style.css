@@ -1,7 +1,23 @@
+/* footer */
+footer {
+    display: block;
+}
+
+.bs-footer {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    margin-top: 100px;
+    color: #777;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
+}
+
+/* modal */
 .modal-dialog {
     width: 1000px;
 }
 
+/* addVideo */
 #video-info {
     margin-left: 20px;
     /*background-image: url(../img/no-signal.gif);*/

@@ -9,18 +9,21 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
-@Entity(name="Users")
-public class User extends Model{
-    @Expose
-    @Email
+
+
+
+@Entity(name = "Users")
+public class User extends Model {
+	@Expose
+	@Email
 	@Unique
 	public String email;
 	public String password;
-    @Expose
+	@Expose
 	public String name;
 	public String googleUserId;
 	@ManyToMany
-	public List<Video>watchedVideos;
+	public List<Video> watchedVideos;
 
 	public User(@Email @Unique String email, String password, String name) {
 		super();
@@ -32,45 +35,41 @@ public class User extends Model{
 		create();
 	}
 
-	public void insertUser(String email, String password, String name)
-	{
+	public void insertUser(String email, String password, String name) {
 		new User(email, password, name);
 	}
 
-    public User(String email, String password, String name, String googleUserId) {
-        super();
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.googleUserId = googleUserId;
-        this.watchedVideos = new ArrayList<Video>();
+	public User(String email, String password, String name, String googleUserId) {
+		super();
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.googleUserId = googleUserId;
+		this.watchedVideos = new ArrayList<Video>();
+	}
 
-    }
+	public static User findByEmail(String email) {
+		return find("email", email).first();
+	}
 
-    public static User findByEmail(String email) {
-        return find("email", email).first();
-    }
+	public static User findByGoogleID(String googleUserId) {
+		return find("googleUserId", googleUserId).first();
+	}
 
-    public static User findByGoogleID(String googleUserId) {
-        return find("googleUserId", googleUserId).first();
-    }
+	public boolean checkPassword(String password) {
+		return this.password.equals(password);
+	}
 
-    public boolean checkPassword(String password) {
-        return this.password.equals(password);
-    }
+	public String getEmail() {
+		return this.email;
+	}
 
-    public String getEmail()
-    {
-    	return this.email;
-    }
+	public User() {
+	}
 
-    public User() {
-    }
+	public void inserUser(String email, String password, String name,
+			String googleUserId) {
+		new User(email, password, name, googleUserId);
+	}
 
-    public void inserUser(String email, String password, String name, String googleUserId)
-    {
-    	new User(email, password, name, googleUserId);
-    	
-    }
-   
 }
