@@ -7,9 +7,6 @@ import play.mvc.Controller;
 
 import java.util.*;
 
-/**
- * Created by Milya on 04.12.13.
- */
 public class VideoController extends Controller {
 
 	public static void index() {

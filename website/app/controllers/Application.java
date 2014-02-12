@@ -63,12 +63,6 @@ public class Application extends Controller {
 		render(isLoged);
 	}
 
-	public static void add_video() {
-		int tt = 10;
-
-		render(tt);
-	}
-
 	// checking if email and password are OK
 	public static void authenticate(String email, String password) {
 		User user = User.findByEmail(email);

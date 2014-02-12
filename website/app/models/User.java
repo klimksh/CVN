@@ -4,13 +4,15 @@ import com.google.gson.annotations.Expose;
 import play.data.validation.Email;
 import play.data.validation.Unique;
 import play.db.jpa.Model;
+import play.modules.elasticsearch.annotations.ElasticSearchIgnore;
+import play.modules.elasticsearch.annotations.ElasticSearchable;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@ElasticSearchable
 
 @Entity(name = "Users")
 public class User extends Model {
@@ -22,6 +24,7 @@ public class User extends Model {
 	@Expose
 	public String name;
 	public String googleUserId;
+	@ElasticSearchIgnore
 	@ManyToMany
 	public List<Video> watchedVideos;
 

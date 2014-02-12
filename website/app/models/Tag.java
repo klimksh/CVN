@@ -2,19 +2,23 @@ package models;
 
 import com.google.gson.annotations.Expose;
 import play.db.jpa.Model;
+import play.modules.elasticsearch.annotations.ElasticSearchIgnore;
+import play.modules.elasticsearch.annotations.ElasticSearchable;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-//@ElasticSearchable
+@ElasticSearchable
 @Entity(name = "Tags")
 public class Tag extends Model {
 
 	// because of many to many relationship
+	@ElasticSearchIgnore
 	@ManyToMany(mappedBy = "tags")
 	public List<Note> notes;
+	@ElasticSearchIgnore
 	@ManyToMany(mappedBy = "tags")
 	public List<Video> videos;
 	@Expose

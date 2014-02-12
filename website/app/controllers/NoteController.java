@@ -39,8 +39,6 @@ public class NoteController extends Controller {
         }
         note.tags.addAll(tags);
         note.save();
-
-        System.out.println("Note saved");
         LiveAnnotation.getVideoStream(video.id).liveStream.publish(note);
     }
 

@@ -3,7 +3,9 @@ package models;
 import org.elasticsearch.index.query.QueryBuilders;
 import play.data.validation.Required;
 import play.db.jpa.Model;
+import play.modules.elasticsearch.annotations.ElasticSearchEmbedded;
 import play.modules.elasticsearch.annotations.ElasticSearchIgnore;
+import play.modules.elasticsearch.annotations.ElasticSearchable;
 import play.modules.elasticsearch.search.SearchResults;
 
 import javax.persistence.*;
@@ -11,7 +13,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-//@ElasticSearchable
+
+
+@ElasticSearchable
 @Entity(name = "Videos")
 public class Video extends Model {
 	@Required
@@ -24,7 +28,7 @@ public class Video extends Model {
 	public String url;
 	@ElasticSearchIgnore
 	public Date uploadDate;
-	// @ElasticSearchEmbedded(fields={"title"})
+	@ElasticSearchEmbedded(fields={"title"})
 	@ManyToMany
 	public List<Tag> tags;
 	@ElasticSearchIgnore
