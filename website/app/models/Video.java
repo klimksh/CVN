@@ -7,6 +7,7 @@ import play.modules.elasticsearch.annotations.ElasticSearchEmbedded;
 import play.modules.elasticsearch.annotations.ElasticSearchIgnore;
 import play.modules.elasticsearch.annotations.ElasticSearchable;
 import play.modules.elasticsearch.search.SearchResults;
+import play.modules.elasticsearch.annotations.ElasticSearchEmbedded.Mode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,17 +30,18 @@ public class Video extends Model {
 	@ElasticSearchIgnore
 	public Date uploadDate;
 	@ElasticSearchEmbedded(fields={"title"})
-	@ManyToMany
+	@ManyToMany //(fetch=FetchType.EAGER)
 	public List<Tag> tags;
 	@ElasticSearchIgnore
 	@ManyToOne
 	public User owner;
-
+	@ElasticSearchIgnore
 	@ManyToMany(mappedBy = "watchedVideos")
 	List<User> whatchers;
-	// @ElasticSearchEmbedded(fields={"title","content"})
-	@OneToMany(mappedBy = "video")
-	List<Note> notes;
+	@ElasticSearchEmbedded (mode=Mode.embedded) 
+//	@OneToMany (mappedBy = "video")
+	@OneToMany 
+	public List<Note> notes;
 
 	public Video(String title, String description, String url, Date uploadDate,
 			ArrayList<Tag> tags, User owner) {
@@ -53,6 +55,12 @@ public class Video extends Model {
 	}
 
 	public static List<Video> searchQuery(String query) {
+		SearchResults<Video> list = play.modules.elasticsearch.ElasticSearch
+				.search(QueryBuilders.queryString(query), Video.class);
+		return list.objects;
+	}
+	
+	public static List<Video> searchQuery1(String query) {
 		SearchResults<Video> list = play.modules.elasticsearch.ElasticSearch
 				.search(QueryBuilders.queryString(query), Video.class);
 		return list.objects;

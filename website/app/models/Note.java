@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import play.db.jpa.Model;
 import play.modules.elasticsearch.Query;
 import play.modules.elasticsearch.annotations.ElasticSearchEmbedded;
+import play.modules.elasticsearch.annotations.ElasticSearchIgnore;
 import play.modules.elasticsearch.annotations.ElasticSearchable;
 
 import javax.persistence.Entity;
@@ -28,18 +29,18 @@ public class Note extends Model {
 	public String content;
 	@Expose
 	public int startTime;
-	@ElasticSearchEmbedded(fields = { "id" })
-	@ManyToOne(fetch = FetchType.EAGER)
+	 @ElasticSearchEmbedded(fields={"id"})
+	@ManyToOne (fetch = FetchType.EAGER)
 	public Video video;
 	@Expose
 	@ElasticSearchEmbedded(fields = { "name" })
-	@OneToOne
+	@ManyToOne
 	public User noteWriter;
 	@Expose
 	public long visited;
 	@Expose
 	@ElasticSearchEmbedded(fields = { "title" })
-	@ManyToMany
+	@ManyToMany (fetch=FetchType.EAGER)
 	public List<Tag> tags;
 
 	public Note(String title, String content, int startTime, Video video,
