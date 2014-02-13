@@ -153,13 +153,7 @@
     var socket = new WS('@@{LiveAnnotation.WebSocket.stream(video.id)}');
 
     function sendNoteBySocket() {
-        if (!player.getCurrentTime) {
-            timeInSecs = 0;
-        } else {
-            timeInSecs = player.getCurrentTime();
-        }
-
-        $("#note-start-data").val(~~timeInSecs); // gets integer part
+        $("#note-start-data").val(~~addNoteTime); // gets integer part
         var data = $('#mainFlipBox :input').serialize();
         $.post('@{NoteController.saveNote()}', data);
         flipMainPanel();
