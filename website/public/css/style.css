@@ -111,7 +111,22 @@ nav.filter-oprions > .collapse {
 #timeline #currentNotes {
     padding: 10px 20px;
     height: 100%;
+    width: 100%;
     float: left;
+    overflow-y: scroll;
+}
+
+#timeline #currentNotes .manualSlideButton {
+    position: absolute;
+    top: 185px;
+}
+
+#timeline #currentNotes .manualSlideButton#scrollRight {
+    right: 210px;
+}
+
+#timeline #currentNotes .manualSlideButton#scrollLeft {
+    left: 20px;
 }
 
 #timeline #mainPanel {

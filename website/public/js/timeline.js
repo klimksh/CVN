@@ -1,4 +1,5 @@
-var delayTime        = 10;
+var periodLength     = 60;
+var currentPeriodStart = 0;
 var videoId          = $('#video-id').val();
 var mainPanelFlipped = false;
 var optionsFlipped   = false;
@@ -11,6 +12,7 @@ var newNoteFormContent  = "";
 var optionsContent      = "";
 var lastVideoUpdate     = 0;
 var addNoteTime         = 0;
+var timelineIsSynced    = true;
 
 // save the form content and options content to avoid ID-conflicts
 $(function(){
@@ -174,7 +176,7 @@ function setTimelineBoxSizes(){
  * @param currentVideoTime
  */
 function updateTimeline(currentVideoTime) {
-    if( !$('#autoslide').is(':checked') ) {
+    if( !timelineIsSynced ) {
         return;
     }
 
@@ -184,17 +186,19 @@ function updateTimeline(currentVideoTime) {
     }
 
     lastVideoUpdate = currentVideoTime;
+    currentPeriodStart = lastVideoUpdate%periodLength;
 
     // Filter notes
     allNotes.forEach(function(note) {
-        if(note.startTime+delayTime < currentVideoTime) {
+        if(note.startTime+periodLength < currentVideoTime) {
             addNoteToTimeline('pastNotes', note);
-        } else if (note.startTime+delayTime <= (currentVideoTime+30)) { // Timeframe of 30 seconds
+        } else if (note.startTime+periodLength <= (currentVideoTime+periodLength)) {
             addNoteToTimeline('currentNotes', note);
         } else {
             addNoteToTimeline('futureNotes', note);
         }
     });
+    addManualSlideButtons();
 
     // Set noNotes text if there are no notes for this period
     if( $('#pastNotes .note').length <= 0 ) {
@@ -202,6 +206,90 @@ function updateTimeline(currentVideoTime) {
     }
     if( $('#currentNotes .note').length <= 0 ) {
         $('#currentNotes').html(noCurrentNotesText);
+        addManualSlideButtons();
+    }
+    if( $('#futureNotes .note').length <= 0 ) {
+        $('#futureNotes').html(noFutureNotesText);
+    }
+
+    setTimer();
+    initNoteFlip();
+}
+
+function addManualSlideButtons() {
+    if(currentPeriodStart > 0) {
+        if( $('#scrollLeft').length <= 0 ) {
+            var leftButton = '<div class="manualSlideButton btn btn-danger pull-left" id="scrollLeft">&laquo; Scroll Left</div>';
+            $('#currentNotes').append(leftButton);
+        }
+    } else {
+        $('#scrollLeft').remove();
+    }
+
+    if( currentPeriodStart+periodLength < player.getDuration() ) {
+        if( $('#scrollRight').length <= 0 ) {
+            var rightButton = '<div class="manualSlideButton btn btn-danger pull-right" id="scrollRight">Scroll Right &raquo;</div>';
+            $('#currentNotes').append(rightButton);
+        }
+    } else {
+        $('#scrollRight').remove();
+    }
+
+    initManualSlideButtons();
+}
+
+function initManualSlideButtons() {
+    $('#scrollLeft').click(function() {
+        checkSyncMode();
+        currentPeriodStart = Math.max(0, currentPeriodStart-periodLength);
+        asyncTimelineUpdate();
+    });
+
+    $('#scrollRight').click(function() {
+        checkSyncMode();
+        currentPeriodStart = Math.min(player.getDuration()-periodLength, currentPeriodStart+periodLength);
+        console.log(currentPeriodStart);
+        asyncTimelineUpdate();
+    });
+}
+
+function checkSyncMode() {
+    if( timelineIsSynced ) {
+        timelineIsSynced = false;
+        var syncButton = '<div class="btn btn-danger" id="syncButton">Sync with Video</div>';
+        $('#syncText').html("Timeline is asynchronous "+syncButton);
+
+        $('#syncButton').click(function(){
+            $('#syncText').html("Timeline is syncronized with the video");
+            timelineIsSynced = true;
+        });
+    }
+}
+
+
+function asyncTimelineUpdate() {
+    console.log('async update');
+    $('.note').remove();
+
+    // Filter notes
+    allNotes.forEach(function(note) {
+        if(note.startTime+periodLength < currentPeriodStart*60) {
+            addNoteToTimeline('pastNotes', note);
+        } else if (note.startTime+periodLength <= (currentPeriodStart+1)*60) {
+            addNoteToTimeline('currentNotes', note);
+        } else {
+            addNoteToTimeline('futureNotes', note);
+        }
+    });
+    addManualSlideButtons();
+
+    // Set noNotes text if there are no notes for this period
+    if( $('#pastNotes .note').length <= 0 ) {
+        $('#pastNotes').html(noPastNotesText);
+    }
+    if( $('#currentNotes .note').length <= 0 ) {
+        $('#currentNotes').html(noCurrentNotesText);
+        addManualSlideButtons();
     }
     if( $('#futureNotes .note').length <= 0 ) {
         $('#futureNotes').html(noFutureNotesText);

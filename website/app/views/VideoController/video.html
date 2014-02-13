@@ -18,9 +18,7 @@
 <div class="clearfix"></div>
 
 <div id="slideHandler" class="row">
-    <label for="autoslide">
-        <input id="autoslide" type="checkbox" checked="checked"/> Update notes during the video
-    </label>
+    <span id="syncText">Timeline is syncronized with the video</span>
 </div>
 <div class="row">
     <div id="timeline">
@@ -177,7 +175,6 @@
     };
 
     function createNoteObject(event) {
-        console.log(event.title);
         var noteObj = new Object();
         noteObj.fakeId = Math.random().toString(36).substring(7);
         noteObj.title = event.title;
