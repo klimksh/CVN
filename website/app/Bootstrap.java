@@ -12,8 +12,6 @@ import play.test.Fixtures;
 public class Bootstrap extends Job {
 	public void doJob()
 	{
-		 if(User.count()== 0)
-		 {
 			 Fixtures.loadModels("data-users.yml");
 				Logger.info("Users are loaded");
 				Fixtures.loadModels("data-tags.yml");
@@ -28,13 +26,8 @@ public class Bootstrap extends Job {
 					no.video = a;
 					no.save();
 				}
-				List<Note> notes1 = Note.findAll();
-				for(Note no: notes1)
-				{
-					System.out.println(no.video.id);
-				}
+				
 
-		 }
 		
 	}
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<testsuite failures="0" time="0.135" errors="0" skipped="0" tests="6" name="SearchTest">
+  <testcase classname="SearchTest" name="testmyVideos" time="0.008">
+      </testcase>
+  <testcase classname="SearchTest" name="testmyNotes" time="0.003">
+      </testcase>
+  <testcase classname="SearchTest" name="searchVideoQuery" time="0.093">
+      </testcase>
+  <testcase classname="SearchTest" name="testSearchNotesInAVideo" time="0.023">
+      </testcase>
+  <testcase classname="SearchTest" name="testWithNoNotes" time="0.004">
+      </testcase>
+  <testcase classname="SearchTest" name="testSearchOnlyNotes" time="0.004">
+      </testcase>
+</testsuite>

@@ -47,4 +47,9 @@ public class Tag extends Model {
 	public static Tag findByTitle(String title) {
 		return find("title", title).first();
 	}
+	public Tag(String title)
+	{
+		this.title=title;
+		
+	}
 }
