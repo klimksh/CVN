@@ -10,6 +10,7 @@ var noFutureNotesText   = "<span class='noNotesText'>Currently there are no futu
 var newNoteFormContent  = "";
 var optionsContent      = "";
 var lastVideoUpdate     = 0;
+var addNoteTime         = 0;
 
 // save the form content and options content to avoid ID-conflicts
 $(function(){
@@ -27,7 +28,10 @@ function flipMainPanel() {
             verso: newNoteFormContent,
             direction:"TOP",
             duration:"500",
-            color_target:""
+            color_target:"",
+            onStart:function(){
+                addNoteTime = lastVideoUpdate;
+            }
         });
         mainPanelFlipped = true;
     } else {
