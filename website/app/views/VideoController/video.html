@@ -2,18 +2,27 @@
 #{set title: "${video.title}" /}
 #{stylesheet 'video-page.css'/}
 #{set 'moreStyles'} #{/set}
+#{set 'moreScripts'} 
+    <script type="text/javascript">
+        var video_url = '${video.url}';
+        var video_id = ${video.id};
+        var socket_pipe = '@@{LiveAnnotation.WebSocket.stream(video.id)}';
+        var save_note_url = '@{NoteController.saveNote()}';
+    </script>
+    <script type="text/javascript" src="@{'/public/js/video-page.js'}"></script>
+    <script type="text/javascript" src="@{'/public/js/timeline.js'}"></script>
+    <script type="text/javascript" src="@{'/public/js/add-tag.js'}"></script>
+    <script type="text/javascript" src="@{'/public/js/jquery.flip.min.js'}"></script>
+#{/set}
 
 <h3 id="header">${video.title}</h3>
 <div class="row">
     <div class="container wrap">
         <div id="main_player"></div>
-        <script src="@{'/public/js/iframe_api.js'}"></script>
+        <script type="text/javascript" src="@{'/public/js/iframe_api.js'}"></script>
     </div>
 </div>
 
-<script src="@{'/public/js/timeline.js'}"></script>
-<script src="@{'/public/js/add-tag.js'}"></script>
-<script src="@{'/public/js/jquery.flip.min.js'}"></script>
 
 <div class="clearfix"></div>
 
@@ -88,113 +97,6 @@
         <div id="savePrivateNoteBtn" class="btn btn-default">Save as private note</div>
     </form>
 </div>
-
-<script>
-    $(function () {
-        $(document).scrollTop($("#header").offset().top);
-    });
-
-    $('#note-content').autogrow();
-
-
-    var player;
-
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('main_player', {
-            height: '430',
-            width: '780',
-            videoId: '${video.url}',
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
-        
-    }
-
-    function onPlayerReady(event) {
-        initializeTimeline(${video.id});
-        setTimelineBoxSizes();
-    }
-
-    function onPlayerStateChange(event) {
-        if (event.data === 1) {  // if the video is playing start catching events
-            checkTimePointsOnVideo();
-        }
-    }
-
-    // !!!contains timer that runs slideTimeline
-    function checkTimePointsOnVideo() {
-        if (!player.getCurrentTime) {
-            return;
-        }
-
-        var interval = setInterval(function () {
-            player.getPlayerState() // -- Possible values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
-            if (player.getPlayerState() === 1) {
-                var played = Math.round(player.getCurrentTime());
-                updateTimeline(played);
-            } else if (player.getPlayerState() === 0 || player.getPlayerState() === 2) {
-                clearInterval(interval);
-            }
-        }, 1000);
-    }
-
-    var startSeekTime = 0;
-    var endSeekTime = 0;
-
-</script>
-<script type="text/javascript">
-
-    // Create a socket
-    var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
-    var socket = new WS('@@{LiveAnnotation.WebSocket.stream(video.id)}');
-
-    function sendNoteBySocket() {
-        $("#note-start-data").val(~~addNoteTime); // gets integer part
-        var data = $('#mainFlipBox :input').serialize();
-        $.post('@{NoteController.saveNote()}', data);
-        flipMainPanel();
-    }
-
-    // Message received on the socket
-    socket.onmessage = function (event) {
-        display(event.data);
-    };
-
-    socket.onopen = function (evt) {
-        console.log("connected");
-    };
-
-    socket.onclose = function (evt) {
-        console.log("disconnected");
-    };
-
-    socket.onerror = function (evt) {
-        console.log("error: " + evt.data);
-    };
-
-    function createNoteObject(event) {
-        var noteObj = new Object();
-        noteObj.fakeId = Math.random().toString(36).substring(7);
-        noteObj.title = event.title;
-        noteObj.content = event.content;
-        noteObj.startTime = event.startTime;
-        noteObj.tags = event.tags;
-        noteObj.username = event.noteWriter.name;
-
-        return noteObj;
-    }
-
-    // Display a message
-    var display = function (event) {
-        var obj = JSON.parse(event);
-        obj = eval("(" + obj + ")");
-        event = createNoteObject(obj);
-        addNoteToNoteCollection(event);
-    }
-
-</script>
 
 
 
