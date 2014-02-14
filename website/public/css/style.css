@@ -1,3 +1,7 @@
+/* captions on the index page*/
+div.caption{
+    overflow: hidden;
+}
 /* footer */
 footer {
     display: block;
