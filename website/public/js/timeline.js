@@ -1,6 +1,5 @@
 var periodLength     = 60;
 var currentPeriodStart = 0;
-var videoId          = $('#video-id').val();
 var mainPanelFlipped = false;
 var optionsFlipped   = false;
 var lastClickedNote  = null;
@@ -32,7 +31,11 @@ function flipMainPanel() {
             duration:"500",
             color_target:"",
             onStart:function(){
-                addNoteTime = lastVideoUpdate;
+                if(timelineIsSynced) {
+                    addNoteTime = lastVideoUpdate;
+                } else {
+                    addNoteTime = currentPeriodStart;
+                }
             }
         });
         mainPanelFlipped = true;
@@ -186,7 +189,7 @@ function updateTimeline(currentVideoTime) {
     }
 
     lastVideoUpdate = currentVideoTime;
-    currentPeriodStart = lastVideoUpdate%periodLength;
+    currentPeriodStart = Math.floor(lastVideoUpdate-lastVideoUpdate%periodLength);
 
     // Filter notes
     allNotes.forEach(function(note) {
@@ -217,55 +220,88 @@ function updateTimeline(currentVideoTime) {
 }
 
 function addManualSlideButtons() {
-    if(currentPeriodStart > 0) {
-        if( $('#scrollLeft').length <= 0 ) {
-            var leftButton = '<div class="manualSlideButton btn btn-danger pull-left" id="scrollLeft">&laquo; Scroll Left</div>';
-            $('#currentNotes').append(leftButton);
-        }
-    } else {
-        $('#scrollLeft').remove();
+    var leftButton, rightButton, leftButtonDisabled = "", rightButtonDisabled = "";
+    $('#scrollLeft').remove();
+    $('#scrollRight').remove();
+    $('#currentNotes .clearfix').remove();
+
+    if(currentPeriodStart <= 0) {
+        leftButtonDisabled = 'disabled="disabled"';
+    }
+    if( currentPeriodStart+periodLength >= player.getDuration() ) {
+        rightButtonDisabled = 'disabled="disabled"';
     }
 
-    if( currentPeriodStart+periodLength < player.getDuration() ) {
-        if( $('#scrollRight').length <= 0 ) {
-            var rightButton = '<div class="manualSlideButton btn btn-danger pull-right" id="scrollRight">Scroll Right &raquo;</div>';
-            $('#currentNotes').append(rightButton);
-        }
-    } else {
-        $('#scrollRight').remove();
-    }
+    leftButton = '<div class="manualSlideButton btn btn-danger pull-left" id="scrollLeft" '+leftButtonDisabled+'>&laquo; Scroll Left</div>';
+    rightButton = '<div class="manualSlideButton btn btn-danger pull-right" id="scrollRight" '+rightButtonDisabled+'>Scroll Right &raquo;</div>';
+
+    $('#currentNotes').prepend("<div class='clearfix'></div>").prepend(rightButton).prepend(leftButton);
 
     initManualSlideButtons();
 }
 
 function initManualSlideButtons() {
     $('#scrollLeft').click(function() {
-        checkSyncMode();
-        currentPeriodStart = Math.max(0, currentPeriodStart-periodLength);
-        asyncTimelineUpdate();
+        if(currentPeriodStart-periodLength < lastVideoUpdate && currentPeriodStart > lastVideoUpdate) {
+            syncTimelineWithVideo();
+        } else {
+            checkSyncMode();
+            currentPeriodStart = Math.max(0, currentPeriodStart-periodLength);
+            asyncTimelineUpdate();
+            changeDisplayTimeToPeriod();
+        }
     });
 
     $('#scrollRight').click(function() {
-        checkSyncMode();
-        currentPeriodStart = Math.min(player.getDuration()-periodLength, currentPeriodStart+periodLength);
-        console.log(currentPeriodStart);
-        asyncTimelineUpdate();
+        if(currentPeriodStart+periodLength < lastVideoUpdate && currentPeriodStart+2*periodLength > lastVideoUpdate) {
+            syncTimelineWithVideo();
+        } else {
+            checkSyncMode();
+            currentPeriodStart = Math.min(
+                                    Math.floor(player.getDuration()-player.getDuration()%periodLength-periodLength),
+                                    currentPeriodStart+periodLength);
+            console.log(currentPeriodStart);
+            asyncTimelineUpdate();
+            changeDisplayTimeToPeriod();
+        }
     });
+}
+
+function changeDisplayTimeToPeriod() {
+    $('#timerText').html('Period');
+    var start = currentPeriodStart/periodLength;
+    if(start < 10)
+        start = "0"+start;
+
+    var end = currentPeriodStart/periodLength+1;
+    if(end < 10)
+        end = "0"+end;
+
+    $('#timer').html(start+":00-"+end+":00");
+}
+
+function changeDisplayPeriodToTime() {
+    $('#timerText').html('Time');
+    setTimer();
 }
 
 function checkSyncMode() {
     if( timelineIsSynced ) {
         timelineIsSynced = false;
-        var syncButton = '<div class="btn btn-danger" id="syncButton">Sync with Video</div>';
+        var syncButton = '<div class="btn btn-danger btn-xs" id="syncButton">Sync with Video</div>';
         $('#syncText').html("Timeline is asynchronous "+syncButton);
 
         $('#syncButton').click(function(){
-            $('#syncText').html("Timeline is syncronized with the video");
-            timelineIsSynced = true;
+            syncTimelineWithVideo();
         });
     }
 }
 
+function syncTimelineWithVideo() {
+    $('#syncText').html("Timeline is syncronized with the video");
+    timelineIsSynced = true;
+    changeDisplayPeriodToTime();
+}
 
 function asyncTimelineUpdate() {
     console.log('async update');
@@ -273,15 +309,14 @@ function asyncTimelineUpdate() {
 
     // Filter notes
     allNotes.forEach(function(note) {
-        if(note.startTime+periodLength < currentPeriodStart*60) {
+        if(note.startTime+periodLength < currentPeriodStart) {
             addNoteToTimeline('pastNotes', note);
-        } else if (note.startTime+periodLength <= (currentPeriodStart+1)*60) {
+        } else if (note.startTime+periodLength <= (currentPeriodStart+periodLength)) {
             addNoteToTimeline('currentNotes', note);
         } else {
             addNoteToTimeline('futureNotes', note);
         }
     });
-    addManualSlideButtons();
 
     // Set noNotes text if there are no notes for this period
     if( $('#pastNotes .note').length <= 0 ) {
@@ -294,6 +329,7 @@ function asyncTimelineUpdate() {
     if( $('#futureNotes .note').length <= 0 ) {
         $('#futureNotes').html(noFutureNotesText);
     }
+    addManualSlideButtons();
 
     setTimer();
     initNoteFlip();

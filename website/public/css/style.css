@@ -120,19 +120,6 @@ nav.filter-oprions > .collapse {
     overflow-y: scroll;
 }
 
-#timeline #currentNotes .manualSlideButton {
-    position: absolute;
-    top: 185px;
-}
-
-#timeline #currentNotes .manualSlideButton#scrollRight {
-    right: 210px;
-}
-
-#timeline #currentNotes .manualSlideButton#scrollLeft {
-    left: 20px;
-}
-
 #timeline #mainPanel {
     padding: 0 5px;
     min-width: 500px;
@@ -200,6 +187,7 @@ nav.filter-oprions > .collapse {
 
 #mainFlipBox, #optionsPanel {
     background-color: rgba(0, 0, 0, 0) !important;
+    height: 100%;
 }
 
 #mainFlipBox input, #mainFlipBox textarea {
@@ -208,6 +196,7 @@ nav.filter-oprions > .collapse {
     border-bottom: 1px dashed black;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.0);
     box-shadow: inset 0 1px 1px rgba(0,0,0,0.0);
+    height: 100%;
 }
 
 #slideHandler {
