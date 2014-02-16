@@ -1,5 +1,19 @@
+.thumbnail {
+    overflow: hidden;
+    padding: 0px;
+}
+
+div.thumbnail:hover a{
+    color: #d9534f;
+    text-decoration: underline;
+}
 /* captions on the index page*/
+div.thumbnail a{
+    color: black;
+}
+
 div.caption{
+    text-style: bold;
     overflow: hidden;
 }
 /* footer */

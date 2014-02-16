@@ -47,15 +47,12 @@
 			<div class="col-md-2">
 				<div class="thumbnail">
 					<a href="@{VideoController.video(video.id)}#header">
-						<img alt="300x200" src="http://img.youtube.com/vi/${video.url}/0.jpg">
+						<img alt="272x200" src="http://img.youtube.com/vi/${video.url}/0.jpg">
 					</a>
 					<div class="caption">
-						<p>
+						<a href="@{VideoController.video(video.id)}#header">
 							${video.title} 
-						</p>
-						<p>
-							<a class="btn btn-default btn-xs"  href="@{VideoController.video(video.id)}#header">Show</a>
-						</p>
+						</a>
 					</div>
 				</div>
 			</div>
