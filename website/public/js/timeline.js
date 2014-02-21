@@ -1,15 +1,17 @@
-var delayTime        = 10;
-var videoId          = $('#video-id').val();
+var periodLength     = 60;
+var currentPeriodStart = 0;
 var mainPanelFlipped = false;
 var optionsFlipped   = false;
 var lastClickedNote  = null;
 var allNotes         = Array();
 var noPastNotesText     = "<span class='noNotesText'>Currently there are no past notes for this video. If you progress in the video and pass some notes, they will appear here.</span>";
-var noCurrentNotesText  = "<span class='noNotesText'>Currently there are no current notes for this video. If you progress in the video and pass some notes, they will appear here. Feel free to add some, by clicking the <span style='color: #13987e'>+ New note</span> button on the top right.</span>";
-var noFutureNotesText   = "<span class='noNotesText'>Currently there are no future notes for this video. Feel free to add some, by clicking the <span style='color: #13987e'>+ New note</span> button on the top right.</span>";
+var noCurrentNotesText  = "<span class='noNotesText'>Currently there are no current notes for this video. If you progress in the video and pass some notes, they will appear here. Feel free to add some, by clicking the <span style='color: red'>+ New note</span> button</span>";
+var noFutureNotesText   = "<span class='noNotesText'>Currently there are no future notes for this video. Feel free to add some, by clicking the <span style='color:red'>+ New note</span> button</span>";
 var newNoteFormContent  = "";
 var optionsContent      = "";
 var lastVideoUpdate     = 0;
+var addNoteTime         = 0;
+var timelineIsSynced    = true;
 
 // save the form content and options content to avoid ID-conflicts
 $(function(){
@@ -27,7 +29,14 @@ function flipMainPanel() {
             verso: newNoteFormContent,
             direction:"TOP",
             duration:"500",
-            color_target:""
+            color_target:"",
+            onStart:function(){
+                if(timelineIsSynced) {
+                    addNoteTime = lastVideoUpdate;
+                } else {
+                    addNoteTime = currentPeriodStart;
+                }
+            }
         });
         mainPanelFlipped = true;
     } else {
@@ -170,7 +179,7 @@ function setTimelineBoxSizes(){
  * @param currentVideoTime
  */
 function updateTimeline(currentVideoTime) {
-    if( !$('#autoslide').is(':checked') ) {
+    if( !timelineIsSynced ) {
         return;
     }
 
@@ -180,12 +189,129 @@ function updateTimeline(currentVideoTime) {
     }
 
     lastVideoUpdate = currentVideoTime;
+    currentPeriodStart = Math.floor(lastVideoUpdate-lastVideoUpdate%periodLength);
 
     // Filter notes
     allNotes.forEach(function(note) {
-        if(note.startTime+delayTime < currentVideoTime) {
+        if(note.startTime+periodLength < currentVideoTime) {
             addNoteToTimeline('pastNotes', note);
-        } else if (note.startTime+delayTime <= (currentVideoTime+30)) { // Timeframe of 30 seconds
+        } else if (note.startTime+periodLength <= (currentVideoTime+periodLength)) {
+            addNoteToTimeline('currentNotes', note);
+        } else {
+            addNoteToTimeline('futureNotes', note);
+        }
+    });
+    addManualSlideButtons();
+
+    // Set noNotes text if there are no notes for this period
+    if( $('#pastNotes .note').length <= 0 ) {
+        $('#pastNotes').html(noPastNotesText);
+    }
+    if( $('#currentNotes .note').length <= 0 ) {
+        $('#currentNotes').html(noCurrentNotesText);
+        addManualSlideButtons();
+    }
+    if( $('#futureNotes .note').length <= 0 ) {
+        $('#futureNotes').html(noFutureNotesText);
+    }
+
+    setTimer();
+    initNoteFlip();
+}
+
+function addManualSlideButtons() {
+    var leftButton, rightButton, leftButtonDisabled = "", rightButtonDisabled = "";
+    $('#scrollLeft').remove();
+    $('#scrollRight').remove();
+    $('#currentNotes .clearfix').remove();
+
+    if(currentPeriodStart <= 0) {
+        leftButtonDisabled = 'disabled="disabled"';
+    }
+    if( currentPeriodStart+periodLength >= player.getDuration() ) {
+        rightButtonDisabled = 'disabled="disabled"';
+    }
+
+    leftButton = '<div class="manualSlideButton btn btn-danger pull-left" id="scrollLeft" '+leftButtonDisabled+'>&laquo; Scroll Left</div>';
+    rightButton = '<div class="manualSlideButton btn btn-danger pull-right" id="scrollRight" '+rightButtonDisabled+'>Scroll Right &raquo;</div>';
+
+    $('#currentNotes').prepend("<div class='clearfix'></div>").prepend(rightButton).prepend(leftButton);
+
+    initManualSlideButtons();
+}
+
+function initManualSlideButtons() {
+    $('#scrollLeft').click(function() {
+        if(currentPeriodStart-periodLength < lastVideoUpdate && currentPeriodStart > lastVideoUpdate) {
+            syncTimelineWithVideo();
+        } else {
+            checkSyncMode();
+            currentPeriodStart = Math.max(0, currentPeriodStart-periodLength);
+            asyncTimelineUpdate();
+            changeDisplayTimeToPeriod();
+        }
+    });
+
+    $('#scrollRight').click(function() {
+        if(currentPeriodStart+periodLength < lastVideoUpdate && currentPeriodStart+2*periodLength > lastVideoUpdate) {
+            syncTimelineWithVideo();
+        } else {
+            checkSyncMode();
+            currentPeriodStart = Math.min(
+                                    Math.floor(player.getDuration()-player.getDuration()%periodLength-periodLength),
+                                    currentPeriodStart+periodLength);
+            console.log(currentPeriodStart);
+            asyncTimelineUpdate();
+            changeDisplayTimeToPeriod();
+        }
+    });
+}
+
+function changeDisplayTimeToPeriod() {
+    $('#timerText').html('Period');
+    var start = currentPeriodStart/periodLength;
+    if(start < 10)
+        start = "0"+start;
+
+    var end = currentPeriodStart/periodLength+1;
+    if(end < 10)
+        end = "0"+end;
+
+    $('#timer').html(start+":00-"+end+":00");
+}
+
+function changeDisplayPeriodToTime() {
+    $('#timerText').html('Time');
+    setTimer();
+}
+
+function checkSyncMode() {
+    if( timelineIsSynced ) {
+        timelineIsSynced = false;
+        var syncButton = '<div class="btn btn-danger btn-xs" id="syncButton">Sync with Video</div>';
+        $('#syncText').html("Timeline is asynchronous "+syncButton);
+
+        $('#syncButton').click(function(){
+            syncTimelineWithVideo();
+        });
+    }
+}
+
+function syncTimelineWithVideo() {
+    $('#syncText').html("Timeline is syncronized with the video");
+    timelineIsSynced = true;
+    changeDisplayPeriodToTime();
+}
+
+function asyncTimelineUpdate() {
+    console.log('async update');
+    $('.note').remove();
+
+    // Filter notes
+    allNotes.forEach(function(note) {
+        if(note.startTime+periodLength < currentPeriodStart) {
+            addNoteToTimeline('pastNotes', note);
+        } else if (note.startTime+periodLength <= (currentPeriodStart+periodLength)) {
             addNoteToTimeline('currentNotes', note);
         } else {
             addNoteToTimeline('futureNotes', note);
@@ -198,10 +324,12 @@ function updateTimeline(currentVideoTime) {
     }
     if( $('#currentNotes .note').length <= 0 ) {
         $('#currentNotes').html(noCurrentNotesText);
+        addManualSlideButtons();
     }
     if( $('#futureNotes .note').length <= 0 ) {
         $('#futureNotes').html(noFutureNotesText);
     }
+    addManualSlideButtons();
 
     setTimer();
     initNoteFlip();
