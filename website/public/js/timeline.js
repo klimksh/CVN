@@ -121,7 +121,7 @@ function prettifyNoteContent(title, content, user) {
 function initializeTimeline(videoId) {
     $.getJSON("/notes/"+videoId, function (data) {
         $.each(data.elements, function (index, note) {
-            if (note.title !== "") {
+            if (note.title !== "" || note.content !== "") {
                 addNoteToNoteCollection(note)
             }
         });
@@ -257,8 +257,7 @@ function initManualSlideButtons() {
             syncTimelineWithVideo();
         } else {
             checkSyncMode();
-            currentPeriodStart = Math.min(
-                                    Math.floor(player.getDuration()-periodLength), currentPeriodStart+periodLength);
+            currentPeriodStart = Math.min(Math.floor(player.getDuration()-periodLength), currentPeriodStart+periodLength);
             console.log(currentPeriodStart);
             asyncTimelineUpdate();
             changeDisplayTimeToPeriod();
@@ -374,13 +373,27 @@ function addNoteToTimeline(dom, note) {
  */
 function createNote(note) {
     var username;
+    var title;
+    var content;
+
     if(note.noteWriter !== undefined) {
         username = note.noteWriter.name;
     } else {
         username = note.username;
     }
-    return "<div style='display:none' id='note"+note.fakeId+"' class='note' data-start='" + note.startTime + "' data-user='"+username+"' data-content='"+note.content+"'>" +
-                "<p>" + note.title + " </p>"
+    if(note.title == "") {
+        title = note.content.substr(0,Math.min(note.content.length,20))+"...";
+    } else {
+        title = note.title;
+    }
+    if(note.content == "") {
+        content = "This note does not have any content.";
+    } else {
+        content = note.content;
+    }
+
+    return "<div style='display:none' id='note"+note.fakeId+"' class='note' data-start='" + note.startTime + "' data-user='"+username+"' data-content='"+content+"'>" +
+                "<p>" + title + " </p>"
            "</div>";
 }
 
