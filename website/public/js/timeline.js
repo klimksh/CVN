@@ -121,7 +121,7 @@ function prettifyNoteContent(title, content, user) {
 function initializeTimeline(videoId) {
     $.getJSON("/notes/"+videoId, function (data) {
         $.each(data.elements, function (index, note) {
-            if (note.title !== "") {
+            if (note.title !== "" || note.content !== "") {
                 addNoteToNoteCollection(note)
             }
         });
@@ -189,7 +189,7 @@ function updateTimeline(currentVideoTime) {
     }
 
     lastVideoUpdate = currentVideoTime;
-    currentPeriodStart = Math.floor(lastVideoUpdate-lastVideoUpdate%periodLength);
+    currentPeriodStart = currentVideoTime;
 
     // Filter notes
     allNotes.forEach(function(note) {
@@ -257,9 +257,7 @@ function initManualSlideButtons() {
             syncTimelineWithVideo();
         } else {
             checkSyncMode();
-            currentPeriodStart = Math.min(
-                                    Math.floor(player.getDuration()-player.getDuration()%periodLength-periodLength),
-                                    currentPeriodStart+periodLength);
+            currentPeriodStart = Math.min(Math.floor(player.getDuration()-periodLength), currentPeriodStart+periodLength);
             console.log(currentPeriodStart);
             asyncTimelineUpdate();
             changeDisplayTimeToPeriod();
@@ -269,15 +267,10 @@ function initManualSlideButtons() {
 
 function changeDisplayTimeToPeriod() {
     $('#timerText').html('Period');
-    var start = currentPeriodStart/periodLength;
-    if(start < 10)
-        start = "0"+start;
+    var start = convertSecToTime(currentPeriodStart);
+    var end = convertSecToTime(currentPeriodStart+periodLength);
 
-    var end = currentPeriodStart/periodLength+1;
-    if(end < 10)
-        end = "0"+end;
-
-    $('#timer').html(start+":00-"+end+":00");
+    $('#timer').html(start+"-"+end);
 }
 
 function changeDisplayPeriodToTime() {
@@ -380,13 +373,27 @@ function addNoteToTimeline(dom, note) {
  */
 function createNote(note) {
     var username;
+    var title;
+    var content;
+
     if(note.noteWriter !== undefined) {
         username = note.noteWriter.name;
     } else {
         username = note.username;
     }
-    return "<div style='display:none' id='note"+note.fakeId+"' class='note' data-start='" + note.startTime + "' data-user='"+username+"' data-content='"+note.content+"'>" +
-                "<p>" + note.title + " </p>"
+    if(note.title == "") {
+        title = note.content.substr(0,Math.min(note.content.length,20))+"...";
+    } else {
+        title = note.title;
+    }
+    if(note.content == "") {
+        content = "This note does not have any content.";
+    } else {
+        content = note.content;
+    }
+
+    return "<div style='display:none' id='note"+note.fakeId+"' class='note' data-start='" + note.startTime + "' data-user='"+username+"' data-content='"+content+"'>" +
+                "<p>" + title + " </p>"
            "</div>";
 }
 
@@ -411,10 +418,14 @@ function findPrevNote(dom, startTime) {
  * Converts the formated time from new notes into seconds
  * @returns time in seconds
  */
-function convertSecToTime() {
-    var hours   = Math.floor(lastVideoUpdate / 3600);
-    var minutes = Math.floor(lastVideoUpdate / 60);
-    var seconds = lastVideoUpdate - minutes * 60;
+function convertSecToTime(timeInSeconds) {
+    if(timeInSeconds === undefined) {
+        timeInSeconds = lastVideoUpdate;
+    }
+
+    var hours   = Math.floor(timeInSeconds / 3600);
+    var minutes = Math.floor((timeInSeconds-hours*3600) / 60);
+    var seconds = timeInSeconds - minutes * 60 - hours * 3600;
 
     if(minutes<10) {
         minutes = "0"+minutes;

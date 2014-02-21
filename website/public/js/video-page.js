@@ -4,6 +4,9 @@
 
 $('#note-content').autogrow();
 
+function mustBeLoggedIn() {
+    $('#mustBeLoggedIn').modal('show');
+}
 
 var player;
 
@@ -56,11 +59,25 @@ var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
 var socket = new WS(socket_pipe);
 
 function sendNoteBySocket() {
-    $("#note-start-data").val(~~addNoteTime); // gets integer part
-    var data = $('#mainFlipBox :input').serialize();
-    $.post(save_note_url, data);
-    flipMainPanel();
+    var bool = validateForm();
+    if(bool === true) {
+        $("#note-start-data").val(~~addNoteTime); // gets integer part
+        var data = $('#mainFlipBox :input').serialize();
+        $.post(save_note_url, data);
+        flipMainPanel();
+    }
 }
+
+ function validateForm() {
+     var title   = $('#note-title-data').val();
+     var content = $('#note-content-data').val();
+     if(title == "" && content == "") {
+         $('#formValidateModal').modal('show');
+         return false;
+     }
+
+     return true;
+ }
 
 // Message received on the socket
 socket.onmessage = function (event) {

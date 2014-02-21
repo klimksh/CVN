@@ -43,12 +43,15 @@
                     <span id="timerText">Time</span><br/>
                     <span id="timer"></span>
                 </div>
-                #{if session.userEmail}
-                    <div id="addNoteBtn" class="btn btn-danger btn-block" onclick="flipMainPanel()">+Note</div>
-                    <div id="revertFlip" class="btn btn-danger btn-block" onclick="flipMainPanel()" style="display: none">
-                        <span class="glyphicon glyphicon-refresh"></span>
-                    </div>
-                #{/if}
+            #{if session.userEmail}
+                <div id="addNoteBtn" class="btn btn-danger btn-block" onclick="flipMainPanel()">+Note</div>
+                <div id="revertFlip" class="btn btn-danger btn-block" onclick="flipMainPanel()" style="display: none">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                </div>
+            #{/if}
+            #{if !session.userEmail}
+                <div id="addNoteBtn" class="btn btn-danger btn-block" onclick="mustBeLoggedIn()">+Note</div>
+            #{/if}
             </div>
         </div>
         <div id="futureNotes"></div>
@@ -98,8 +101,21 @@
     </form>
 </div>
 
-
-
-
-
-
+<div class="modal fade" id="formValidateModal" tabindex="-1" role="dialog" aria-labelledby="formValidateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Saving Note Failed</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Either the title or content field must contain content, otherwise you cannot save your note!
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

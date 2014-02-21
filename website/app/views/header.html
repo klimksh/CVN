@@ -38,6 +38,23 @@
 </nav>
 
 <!-- Modal -->
-<div class="modal fade" id="addVideo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-</div>
-<!-- /.modal -->
+<div class="modal fade" id="addVideo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<div class="modal fade" id="mustBeLoggedIn" tabindex="-1" role="dialog" aria-labelledby="mustBeLoggedInLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Register / Login</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    You must be logged in to use this Feature!<br/>
+                    You can register/login for free on the top right by clicking the <img height="34px" src="/public/img/g-auth-btn.png"> Button.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
