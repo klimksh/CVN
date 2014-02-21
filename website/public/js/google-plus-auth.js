@@ -110,8 +110,7 @@ window.onload=function(){
                 'userId': 'me'
             });
             request.execute(function(profile) {
-            	  $('#personal_image').html($("<img src=\""+image_url+"\" style=\"width: 20px; margin-bottom: 0px\" class=\"glyphicon glyphicon-user\"/>"));
-                  $('#personal_image2').html($("<img src=\""+image_url+"\" style=\"width: 25px; margin-bottom: 0px\" class=\"glyphicon glyphicon-user\"/>"));
+            	  $('#personal_image').html($("<img src=\""+image_url+"\" class=\"img-circle profileImage\"/>"));
                   $('#personal_name').html(nameGPlus); 
             });
         });

@@ -27,10 +27,10 @@
             <a href="javascript:void(0);" onclick="login()"><img height="34px" src="/public/img/g-auth-btn.png"/></a>
         </li>        
         <li class="dropdown" id="profile_btn">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="personal_image2"></span> <span id="personal_name">${session.userName}</span> <span class="caret"></span></a> 
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="personal_image"></span> <span id="personal_name">${session.userName}</span> <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="/"><span id="personal_image"></span> Profile details</span></a></li>
-                <li><a id="logout" onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                <li><a href="/"><span class="glyphicon glyphicon-cog"></span> Profile details</a></li>
+                <li><a href="javascript:;" id="logout" onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
             </ul>
         </li>
       </ul>
