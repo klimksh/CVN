@@ -5,4 +5,8 @@ $(document).ready(function () {
   		show: false,
   		remote: add_video_url
 	});
+
+    $('.datepicker').datepicker({
+        format: 'dd.mm.yyyy'
+    });
 });

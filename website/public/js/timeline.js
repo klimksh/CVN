@@ -1,17 +1,22 @@
-var periodLength     = 60;
-var currentPeriodStart = 0;
-var mainPanelFlipped = false;
-var optionsFlipped   = false;
-var lastClickedNote  = null;
-var allNotes         = Array();
+var allNotes            = Array();
+
+var periodLength        = 60;
+var currentPeriodStart  = 0;
+var lastVideoUpdate     = 0;
+var addNoteTime         = 0;
+
+var timelineIsSynced    = true;
+var mainPanelFlipped    = false;
+var optionsFlipped      = false;
+
+var lastClickedNote     = null;
+
 var noPastNotesText     = "<span class='noNotesText'>Currently there are no past notes for this video. If you progress in the video and pass some notes, they will appear here.</span>";
 var noCurrentNotesText  = "<span class='noNotesText'>Currently there are no current notes for this video. If you progress in the video and pass some notes, they will appear here. Feel free to add some, by clicking the <span style='color: red'>+ New note</span> button</span>";
 var noFutureNotesText   = "<span class='noNotesText'>Currently there are no future notes for this video. Feel free to add some, by clicking the <span style='color:red'>+ New note</span> button</span>";
+
 var newNoteFormContent  = "";
 var optionsContent      = "";
-var lastVideoUpdate     = 0;
-var addNoteTime         = 0;
-var timelineIsSynced    = true;
 
 // save the form content and options content to avoid ID-conflicts
 $(function(){
@@ -58,7 +63,7 @@ function initNoteFlip() {
         if( lastClickedNote == note.attr('id') ) {
             revertOptionsFlip();
         } else if(optionsFlipped === false || lastClickedNote != $(this).attr('id')) {
-            $('.noteHighlighted').removeClass('noteHighlighted');
+            $('.noteHighlighted').removeClass('animated swing noteHighlighted');
             title   = note.children('p').html();
             content = note.data('content');
             user    = note.data('user');
@@ -69,11 +74,15 @@ function initNoteFlip() {
                 direction:"TOP",
                 duration:"500",
                 color_target:"",
+                onStart:function(){
+                    // mark as current note
+                    note.addClass('animated swing');
+                },
                 onFinish:function(){
                     // update LastClickedNote to the current note
                     lastClickedNote = note.attr('id');
 
-                    // mark as current note
+                    //mark as current note
                     note.addClass('noteHighlighted');
 
                     // activate close-button on noteBlock
@@ -94,7 +103,7 @@ function initNoteFlip() {
 }
 
 function revertOptionsFlip() {
-    $('.noteHighlighted').removeClass('noteHighlighted');
+    $('.noteHighlighted').removeClass('animated swing noteHighlighted');
     $("#optionsPanel").flippy({
         verso: optionsContent,
         direction:"TOP",
@@ -126,6 +135,7 @@ function initializeTimeline(videoId) {
             }
         });
     });
+    updateTimeline(lastVideoUpdate);
 }
 
 /**
@@ -290,7 +300,6 @@ function checkSyncMode() {
 }
 
 function syncTimelineWithVideo() {
-    console.log('sync with video');
     $('#syncText').html("<div class='alert alert-success'><span class='glyphicon glyphicon-check'></span> Timeline is syncronized with the video</div>");
     timelineIsSynced = true;
     changeDisplayPeriodToTime();
@@ -371,9 +380,7 @@ function addNoteToTimeline(dom, note) {
  * @returns {string}
  */
 function createNote(note) {
-    var username;
-    var title;
-    var content;
+    var username, title, content;
 
     if(note.noteWriter !== undefined) {
         username = note.noteWriter.name;
