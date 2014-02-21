@@ -189,7 +189,7 @@ function updateTimeline(currentVideoTime) {
     }
 
     lastVideoUpdate = currentVideoTime;
-    currentPeriodStart = Math.floor(lastVideoUpdate-lastVideoUpdate%periodLength);
+    currentPeriodStart = currentVideoTime;
 
     // Filter notes
     allNotes.forEach(function(note) {
@@ -258,8 +258,7 @@ function initManualSlideButtons() {
         } else {
             checkSyncMode();
             currentPeriodStart = Math.min(
-                                    Math.floor(player.getDuration()-player.getDuration()%periodLength-periodLength),
-                                    currentPeriodStart+periodLength);
+                                    Math.floor(player.getDuration()-periodLength), currentPeriodStart+periodLength);
             console.log(currentPeriodStart);
             asyncTimelineUpdate();
             changeDisplayTimeToPeriod();
@@ -269,15 +268,10 @@ function initManualSlideButtons() {
 
 function changeDisplayTimeToPeriod() {
     $('#timerText').html('Period');
-    var start = currentPeriodStart/periodLength;
-    if(start < 10)
-        start = "0"+start;
+    var start = convertSecToTime(currentPeriodStart);
+    var end = convertSecToTime(currentPeriodStart+periodLength);
 
-    var end = currentPeriodStart/periodLength+1;
-    if(end < 10)
-        end = "0"+end;
-
-    $('#timer').html(start+":00-"+end+":00");
+    $('#timer').html(start+"-"+end);
 }
 
 function changeDisplayPeriodToTime() {
@@ -411,10 +405,14 @@ function findPrevNote(dom, startTime) {
  * Converts the formated time from new notes into seconds
  * @returns time in seconds
  */
-function convertSecToTime() {
-    var hours   = Math.floor(lastVideoUpdate / 3600);
-    var minutes = Math.floor(lastVideoUpdate / 60);
-    var seconds = lastVideoUpdate - minutes * 60;
+function convertSecToTime(timeInSeconds) {
+    if(timeInSeconds === undefined) {
+        timeInSeconds = lastVideoUpdate;
+    }
+
+    var hours   = Math.floor(timeInSeconds / 3600);
+    var minutes = Math.floor((timeInSeconds-hours*3600) / 60);
+    var seconds = timeInSeconds - minutes * 60 - hours * 3600;
 
     if(minutes<10) {
         minutes = "0"+minutes;
