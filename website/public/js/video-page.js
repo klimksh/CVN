@@ -81,7 +81,12 @@ function validateForm() {
 
 // Message received on the socket
 socket.onmessage = function (event) {
-    display(event.data);
+    var obj = JSON.parse(event.data);
+    obj = eval("(" + obj + ")");
+    var noteData = createNoteObject(obj);
+    console.log("newData");
+    console.log(noteData);
+    addNoteToNoteCollection(noteData);
 };
 
 socket.onopen = function (evt) {
@@ -106,12 +111,4 @@ function createNoteObject(event) {
     noteObj.username = event.noteWriter.name;
 
     return noteObj;
-}
-
-// Display a message
-var display = function (event) {
-    var obj = JSON.parse(event);
-    obj = eval("(" + obj + ")");
-    event = createNoteObject(obj);
-    addNoteToNoteCollection(event);
 }
