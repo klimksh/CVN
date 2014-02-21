@@ -114,6 +114,10 @@ nav.filter-oprions > .collapse {
 
 }
 
+#currentTime{
+    font-variant: small-caps;
+}
+
 /*Navigation buttons */
 div.manualSlideButton{
     position: absolute;
