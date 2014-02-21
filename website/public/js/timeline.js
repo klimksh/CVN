@@ -294,7 +294,7 @@ function checkSyncMode() {
     if( timelineIsSynced ) {
         timelineIsSynced = false;
         var syncButton = '<div class="btn btn-danger btn-xs" id="syncButton">Sync with Video</div>';
-        $('#syncText').html("<div class='alert-danger'><span class='glyphicon glyphicon-share'></span> Timeline is asynchronous "+syncButton+"</div>");
+        $('#syncText').html("<div class='alert alert-danger'><span class='glyphicon glyphicon-share'></span> Timeline is asynchronous "+syncButton+"</div>");
 
         $('#syncButton').click(function(){
             syncTimelineWithVideo();
@@ -303,7 +303,7 @@ function checkSyncMode() {
 }
 
 function syncTimelineWithVideo() {
-    $('#syncText').html("<div class='alert-success'><span class='glyphicon glyphicon-check'></span> Timeline is syncronized with the video</div>");
+    $('#syncText').html("<div class='alert alert-success'><span class='glyphicon glyphicon-check'></span> Timeline is syncronized with the video</div>");
     timelineIsSynced = true;
     changeDisplayPeriodToTime();
     $('.note').remove();
