@@ -41,6 +41,10 @@ function flipMainPanel() {
                 } else {
                     addNoteTime = currentPeriodStart;
                 }
+            },
+            onReverseFinish:function(){
+                initNoteFlip();
+                initManualSlideButtons();
             }
         });
         mainPanelFlipped = true;
@@ -114,7 +118,6 @@ function revertOptionsFlip() {
         }
     });
     optionsFlipped = false;
-
 }
 
 function prettifyNoteContent(title, content, user) {
@@ -303,6 +306,8 @@ function syncTimelineWithVideo() {
     $('#syncText').html("<div class='alert alert-success'><span class='glyphicon glyphicon-check'></span> Timeline is syncronized with the video</div>");
     timelineIsSynced = true;
     changeDisplayPeriodToTime();
+    $('.note').remove();
+    updateTimeline(lastVideoUpdate);
 }
 
 function asyncTimelineUpdate() {
