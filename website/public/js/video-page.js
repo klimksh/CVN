@@ -68,16 +68,16 @@ function sendNoteBySocket() {
     }
 }
 
- function validateForm() {
-     var title   = $('#note-title-data').val();
-     var content = $('#note-content-data').val();
-     if(title == "" && content == "") {
-         $('#formValidateModal').modal('show');
-         return false;
-     }
+function validateForm() {
+    var title   = $('#note-title-data').val();
+    var content = $('#note-content-data').val();
+    if(title == "" && content == "") {
+        $('#formValidateModal').modal('show');
+        return false;
+    }
 
-     return true;
- }
+    return true;
+}
 
 // Message received on the socket
 socket.onmessage = function (event) {
