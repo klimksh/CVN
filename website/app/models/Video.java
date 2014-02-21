@@ -7,39 +7,40 @@ import play.modules.elasticsearch.annotations.ElasticSearchEmbedded;
 import play.modules.elasticsearch.annotations.ElasticSearchIgnore;
 import play.modules.elasticsearch.annotations.ElasticSearchable;
 import play.modules.elasticsearch.search.SearchResults;
+import play.modules.elasticsearch.annotations.ElasticSearchEmbedded.Mode;
+import play.mvc.Scope.Session;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
-
 @ElasticSearchable
 @Entity(name = "Videos")
 public class Video extends Model {
 	@Required
 	public String title;
-
 	@Lob
 	public String description;
-
 	@Required
 	public String url;
 	@ElasticSearchIgnore
 	public Date uploadDate;
-	@ElasticSearchEmbedded(fields={"title"})
+	@ElasticSearchEmbedded(fields = { "title" })
 	@ManyToMany
+	// (fetch=FetchType.EAGER)
 	public List<Tag> tags;
 	@ElasticSearchIgnore
 	@ManyToOne
 	public User owner;
-
+	@ElasticSearchIgnore
 	@ManyToMany(mappedBy = "watchedVideos")
 	List<User> whatchers;
-	// @ElasticSearchEmbedded(fields={"title","content"})
-	@OneToMany(mappedBy = "video")
-	List<Note> notes;
+	@ElasticSearchEmbedded(mode = Mode.embedded)
+	@OneToMany
+	// (mappedBy = "video")
+	// @OneToMany
+	public List<Note> notes;
 
 	public Video(String title, String description, String url, Date uploadDate,
 			ArrayList<Tag> tags, User owner) {
@@ -53,8 +54,22 @@ public class Video extends Model {
 	}
 
 	public static List<Video> searchQuery(String query) {
+		myVideos();
+		SearchResults<Video> list = play.modules.elasticsearch.ElasticSearch
+				.searchAndHydrate(QueryBuilders.queryString(query), Video.class);
+		return list.objects;
+	}
+
+	public static List<Video> searchQuery1(String query) {
 		SearchResults<Video> list = play.modules.elasticsearch.ElasticSearch
 				.search(QueryBuilders.queryString(query), Video.class);
 		return list.objects;
 	}
+
+	public static List<Video> myVideos() {
+		String googleUserId = Session.current().get("googleUserId").toString();
+		User user = User.findByGoogleID(googleUserId);
+		return find("owner", user).fetch();
+	}
+
 }

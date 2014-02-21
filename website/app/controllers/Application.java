@@ -20,7 +20,8 @@ public class Application extends Controller {
 	public static void login(String email, String id, String displayName) {
 		User user = User.findByEmail(email);
 		if (user == null){
-			user = new User(email, "randomPassword", displayName, id);		
+			user = new User(email, "randomPassword", displayName, id);	
+			user.save();
 		}
 		session.put("googleUserId", user.googleUserId);
 		session.put("userEmail", user.email);

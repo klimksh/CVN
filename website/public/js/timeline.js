@@ -232,8 +232,8 @@ function addManualSlideButtons() {
         rightButtonDisabled = 'disabled="disabled"';
     }
 
-    leftButton = '<div class="manualSlideButton btn btn-danger pull-left" id="scrollLeft" '+leftButtonDisabled+'>&laquo; Scroll Left</div>';
-    rightButton = '<div class="manualSlideButton btn btn-danger pull-right" id="scrollRight" '+rightButtonDisabled+'>Scroll Right &raquo;</div>';
+    leftButton = '<div class="manualSlideButton btn btn-danger pull-left" id="scrollLeft" '+leftButtonDisabled+'>&laquo;</div>';
+    rightButton = '<div class="manualSlideButton btn btn-danger pull-right" id="scrollRight" '+rightButtonDisabled+'>&raquo;</div>';
 
     $('#currentNotes').prepend("<div class='clearfix'></div>").prepend(rightButton).prepend(leftButton);
 

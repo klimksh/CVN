@@ -4,7 +4,9 @@ import com.google.gson.annotations.Expose;
 import play.db.jpa.Model;
 import play.modules.elasticsearch.Query;
 import play.modules.elasticsearch.annotations.ElasticSearchEmbedded;
+import play.modules.elasticsearch.annotations.ElasticSearchIgnore;
 import play.modules.elasticsearch.annotations.ElasticSearchable;
+import play.mvc.Scope.Session;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,18 +30,18 @@ public class Note extends Model {
 	public String content;
 	@Expose
 	public int startTime;
-	@ElasticSearchEmbedded(fields = { "id" })
-	@ManyToOne(fetch = FetchType.EAGER)
+	 @ElasticSearchEmbedded(fields={"id"})
+	@ManyToOne (fetch = FetchType.EAGER)
 	public Video video;
 	@Expose
 	@ElasticSearchEmbedded(fields = { "name" })
-	@OneToOne
+	@ManyToOne
 	public User noteWriter;
 	@Expose
 	public long visited;
 	@Expose
 	@ElasticSearchEmbedded(fields = { "title" })
-	@ManyToMany
+	@ManyToMany (fetch=FetchType.EAGER)
 	public List<Tag> tags;
 
 	public Note(String title, String content, int startTime, Video video,
@@ -72,4 +74,18 @@ public class Note extends Model {
 		queryNote.hydrate(true);
 		return queryNote.fetch().objects;
 	}
+	public static List<Note> searchOnlyNotes(String query) {
+		Query<Note> queryNote = play.modules.elasticsearch.ElasticSearch.query(
+				QueryBuilders.boolQuery()
+						.must(QueryBuilders.queryString(query)), Note.class);
+		queryNote.hydrate(true);
+		return queryNote.fetch().objects;
+	}
+	public static List<Note> myNotes()
+	{
+		String a= Session.current().get("googleUserId").toString();
+		User usr=User.findByGoogleID(a);
+		 return find("noteWriter", usr).fetch();
+	}
+	
 }

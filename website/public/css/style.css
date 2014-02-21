@@ -101,8 +101,8 @@ nav.filter-oprions > .collapse {
     position: relative;
     border: 1px solid darkgray;
     border-bottom: 0px;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
     background: #cccccc; /* Old browsers */
     background: -moz-linear-gradient(top,  #cccccc 0%, #eeeeee 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cccccc), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
@@ -113,6 +113,23 @@ nav.filter-oprions > .collapse {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
 
 }
+
+/*Navigation buttons */
+div.manualSlideButton{
+    position: absolute;
+    height: 93%;
+    margin-top: 0px;
+    margin-left: -46px;
+    margin-right: 3px;
+    padding: 0px 5px;
+    overflow: overlay;
+    border-radius: 0px;
+    line-height: 217px;
+}
+div.manualSlideButton.pull-right{
+    margin-left: 474px;
+}
+/* Navigation buttons - end*/
 
 #timeline #pastNotes, #timeline #futureNotes {
     padding: 10px 20px;
@@ -127,7 +144,7 @@ nav.filter-oprions > .collapse {
 }
 
 #timeline #currentNotes {
-    padding: 10px 20px;
+    padding: 10px 50px;
     height: 100%;
     width: 100%;
     float: left;
@@ -177,7 +194,7 @@ nav.filter-oprions > .collapse {
     margin: 5px 5px 0 0;
     float: left;
     border: 1px solid black;
-    border-radius: 5px;
+    border-radius: 1px;
     text-align: center;
 
     /* Gradient */
