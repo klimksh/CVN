@@ -15,23 +15,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
-
 @ElasticSearchable
 @Entity(name = "Videos")
 public class Video extends Model {
 	@Required
 	public String title;
-
 	@Lob
 	public String description;
-
 	@Required
 	public String url;
 	@ElasticSearchIgnore
 	public Date uploadDate;
-	@ElasticSearchEmbedded(fields={"title"})
-	@ManyToMany //(fetch=FetchType.EAGER)
+	@ElasticSearchEmbedded(fields = { "title" })
+	@ManyToMany
+	// (fetch=FetchType.EAGER)
 	public List<Tag> tags;
 	@ElasticSearchIgnore
 	@ManyToOne
@@ -39,9 +36,10 @@ public class Video extends Model {
 	@ElasticSearchIgnore
 	@ManyToMany(mappedBy = "watchedVideos")
 	List<User> whatchers;
-	@ElasticSearchEmbedded (mode=Mode.embedded) 
-	@OneToMany //(mappedBy = "video")
-//	@OneToMany 
+	@ElasticSearchEmbedded(mode = Mode.embedded)
+	@OneToMany
+	// (mappedBy = "video")
+	// @OneToMany
 	public List<Note> notes;
 
 	public Video(String title, String description, String url, Date uploadDate,
@@ -61,20 +59,17 @@ public class Video extends Model {
 				.searchAndHydrate(QueryBuilders.queryString(query), Video.class);
 		return list.objects;
 	}
-	
+
 	public static List<Video> searchQuery1(String query) {
-		
-		//s
 		SearchResults<Video> list = play.modules.elasticsearch.ElasticSearch
 				.search(QueryBuilders.queryString(query), Video.class);
 		return list.objects;
 	}
-	public static List<Video>myVideos()
-	{
-		String a= Session.current().get("googleUserId").toString();
-		User usr=User.findByGoogleID(a);
-		 return find("owner", usr).fetch();
-		
+
+	public static List<Video> myVideos() {
+		String googleUserId = Session.current().get("googleUserId").toString();
+		User user = User.findByGoogleID(googleUserId);
+		return find("owner", user).fetch();
 	}
-	
+
 }

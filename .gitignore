@@ -20,7 +20,7 @@ website/target
 /website/.classpath
 /website/MasterLabProject09_2013.iml
 .metadata
-
+website/test-result
 *.iml
 website/Collaborative VideoNotes.ipr
 website/Collaborative VideoNotes.iws
