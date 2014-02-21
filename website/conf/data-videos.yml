@@ -69,3 +69,12 @@ Video(video8):
   videoTags:       [tag1, tag2, tag3]
   owner:           user2
   watchers:        [user1, user2, user3]
+
+Video(video9):
+  title:           Test video
+  description:     test description
+  url:             YLHyeSuBspI
+  uploadDate:      2013-12-12
+  videoTags:       [tag1, tag2, tag3]
+  owner:           user2
+  watchers:        [user1, user2, user3]
