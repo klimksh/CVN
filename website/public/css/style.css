@@ -115,8 +115,9 @@ nav.filter-oprions > .collapse {
 }
 
 #syncText>div.alert-success, #syncText>div.alert-danger {
-    background: white;
     padding: 7px;
+    width: 781px;
+    margin-bottom: 7px;
 } 
 
 #currentTime{
