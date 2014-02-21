@@ -135,6 +135,7 @@ function initializeTimeline(videoId) {
             }
         });
     });
+    updateTimeline(lastVideoUpdate);
 }
 
 /**
