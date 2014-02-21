@@ -242,7 +242,7 @@ function addManualSlideButtons() {
 
 function initManualSlideButtons() {
     $('#scrollLeft').click(function() {
-        if(currentPeriodStart-periodLength < lastVideoUpdate && currentPeriodStart > lastVideoUpdate) {
+        if(currentPeriodStart-periodLength <= lastVideoUpdate && currentPeriodStart > lastVideoUpdate) {
             syncTimelineWithVideo();
         } else {
             checkSyncMode();
@@ -253,12 +253,11 @@ function initManualSlideButtons() {
     });
 
     $('#scrollRight').click(function() {
-        if(currentPeriodStart+periodLength < lastVideoUpdate && currentPeriodStart+2*periodLength > lastVideoUpdate) {
+        if(currentPeriodStart+periodLength <= lastVideoUpdate && currentPeriodStart+2*periodLength > lastVideoUpdate) {
             syncTimelineWithVideo();
         } else {
             checkSyncMode();
             currentPeriodStart = Math.min(Math.floor(player.getDuration()-periodLength), currentPeriodStart+periodLength);
-            console.log(currentPeriodStart);
             asyncTimelineUpdate();
             changeDisplayTimeToPeriod();
         }
@@ -282,7 +281,7 @@ function checkSyncMode() {
     if( timelineIsSynced ) {
         timelineIsSynced = false;
         var syncButton = '<div class="btn btn-danger btn-xs" id="syncButton">Sync with Video</div>';
-        $('#syncText').html("Timeline is asynchronous "+syncButton);
+        $('#syncText').html("<div class='alert alert-danger'><span class='glyphicon glyphicon-share'></span> Timeline is asynchronous "+syncButton+"</div>");
 
         $('#syncButton').click(function(){
             syncTimelineWithVideo();
@@ -291,13 +290,13 @@ function checkSyncMode() {
 }
 
 function syncTimelineWithVideo() {
-    $('#syncText').html("Timeline is syncronized with the video");
+    console.log('sync with video');
+    $('#syncText').html("<div class='alert alert-success'><span class='glyphicon glyphicon-check'></span> Timeline is syncronized with the video</div>");
     timelineIsSynced = true;
     changeDisplayPeriodToTime();
 }
 
 function asyncTimelineUpdate() {
-    console.log('async update');
     $('.note').remove();
 
     // Filter notes
@@ -332,7 +331,7 @@ function asyncTimelineUpdate() {
  * Update Timer
  */
 function setTimer() {
-    $('#timer').html(convertSecToTime());
+    $('#timer').html(convertSecToTime(lastVideoUpdate));
 }
 
 /**
@@ -419,10 +418,6 @@ function findPrevNote(dom, startTime) {
  * @returns time in seconds
  */
 function convertSecToTime(timeInSeconds) {
-    if(timeInSeconds === undefined) {
-        timeInSeconds = lastVideoUpdate;
-    }
-
     var hours   = Math.floor(timeInSeconds / 3600);
     var minutes = Math.floor((timeInSeconds-hours*3600) / 60);
     var seconds = timeInSeconds - minutes * 60 - hours * 3600;
