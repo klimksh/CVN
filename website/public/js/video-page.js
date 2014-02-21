@@ -4,6 +4,9 @@
 
 $('#note-content').autogrow();
 
+function mustBeLoggedIn() {
+    $('#mustBeLoggedIn').modal('show');
+}
 
 var player;
 

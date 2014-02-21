@@ -43,12 +43,15 @@
                     <span id="timerText">Time</span><br/>
                     <span id="timer"></span>
                 </div>
-                #{if session.userEmail}
-                    <div id="addNoteBtn" class="btn btn-danger btn-block" onclick="flipMainPanel()">+Note</div>
-                    <div id="revertFlip" class="btn btn-danger btn-block" onclick="flipMainPanel()" style="display: none">
-                        <span class="glyphicon glyphicon-refresh"></span>
-                    </div>
-                #{/if}
+            #{if session.userEmail}
+                <div id="addNoteBtn" class="btn btn-danger btn-block" onclick="flipMainPanel()">+Note</div>
+                <div id="revertFlip" class="btn btn-danger btn-block" onclick="flipMainPanel()" style="display: none">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                </div>
+            #{/if}
+            #{if !session.userEmail}
+                <div id="addNoteBtn" class="btn btn-danger btn-block" onclick="mustBeLoggedIn()">+Note</div>
+            #{/if}
             </div>
         </div>
         <div id="futureNotes"></div>
