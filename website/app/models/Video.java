@@ -26,9 +26,9 @@ public class Video extends Model {
 	public String url;
 	@ElasticSearchIgnore
 	public Date uploadDate;
-	@ElasticSearchEmbedded(fields = { "title" })
-	@OneToMany
-	public List<Tag> tags;
+//	@ElasticSearchEmbedded(fields = { "title" })
+//	@OneToMany
+//	public List<Tag> tags;
 	@ElasticSearchIgnore
 	@ManyToOne
 	public User owner;
@@ -45,7 +45,7 @@ public class Video extends Model {
 		this.description = description;
 		this.url = url;
 		this.uploadDate = uploadDate;
-		this.tags = new ArrayList<Tag>();
+//		this.tags = new ArrayList<Tag>();
 		this.notes = new ArrayList<Note>();
 		this.owner = owner;
 	}
