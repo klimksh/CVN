@@ -27,7 +27,7 @@ public class Video extends Model {
 	@ElasticSearchIgnore
 	public Date uploadDate;
 	@ElasticSearchEmbedded(fields = { "title" })
-	@ManyToMany
+	@OneToMany
 	public List<Tag> tags;
 	@ElasticSearchIgnore
 	@ManyToOne

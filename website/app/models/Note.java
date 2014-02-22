@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -41,7 +42,7 @@ public class Note extends Model {
 	public long visited;
 	@Expose
 	@ElasticSearchEmbedded(fields = { "title" })
-	@ManyToMany (fetch=FetchType.EAGER)
+	@OneToMany (fetch=FetchType.EAGER)
 	public List<Tag> tags;
 
 	public Note(String title, String content, int startTime, Video video,
