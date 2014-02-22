@@ -1,6 +1,5 @@
 Tag(tag1):
     title: education
-    
 Tag(tag2):
     title: university
 Tag(tag3):

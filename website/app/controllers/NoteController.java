@@ -33,12 +33,11 @@ public class NoteController extends Controller {
         ArrayList<Tag> tags = new ArrayList<Tag>();
 
         for (String tag : tagsStringList) {
-            Tag tagObj = new Tag(tag, note, video);
+            Tag tagObj = new Tag(tag);
             tagObj.save();
             tags.add(tagObj);
         }
         note.tags.addAll(tags);
-              
         note.save();
         video.notes.add(note);
         video.save();

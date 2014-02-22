@@ -28,28 +28,25 @@ public class Video extends Model {
 	public Date uploadDate;
 	@ElasticSearchEmbedded(fields = { "title" })
 	@ManyToMany
-	// (fetch=FetchType.EAGER)
 	public List<Tag> tags;
 	@ElasticSearchIgnore
 	@ManyToOne
 	public User owner;
 	@ElasticSearchIgnore
 	@ManyToMany(mappedBy = "watchedVideos")
-	List<User> whatchers;
+	public List<User> whatchers;
 	@ElasticSearchEmbedded(mode = Mode.embedded)
 	@OneToMany
-	// (mappedBy = "video")
-	// @OneToMany
 	public List<Note> notes;
 
-	public Video(String title, String description, String url, Date uploadDate,
-			ArrayList<Tag> tags, User owner) {
+	public Video(String title, String description, String url, Date uploadDate, User owner) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.url = url;
 		this.uploadDate = uploadDate;
-		this.tags = tags;
+		this.tags = new ArrayList<Tag>();
+		this.notes = new ArrayList<Note>();
 		this.owner = owner;
 	}
 
