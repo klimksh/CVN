@@ -3,7 +3,7 @@ Video(video1):
   description:     Published on Oct 16, 2013 Dynamic Visualizations with AngularJS and D3  Jack Herrington will walk you through integrating cool D3 visualizations into your AngularJS project step-by-step. Now you can have the best of both worlds, a well structured AngularJS application, and amazing cutting edge D3 visuals. 
   url:             BvAeabvZ61o
   uploadDate:      2013-12-12
-  tags:       [tag1, tag2, tag3]
+  videoTags:       [tag1, tag2, tag3]
   owner:           user1
   watchers:        [user1, user2, user3]
   notes:           [note1, note2, note3 ,note4, note5, note6, note7, note8, note9, note10]
@@ -12,7 +12,7 @@ Video(video2):
   description:     Product Requirements Blueprint Video for Confluence Team Collaboration Software
   url:             I2vY6FKeXbs
   uploadDate:      2013-12-12
-  tags:       [tag1, tag2, tag3]
+  videoTags:       [tag1, tag2, tag3]
   owner:           user1
   watchers:        [user1, user2, user3]
   notes:           [note11] 
@@ -21,7 +21,7 @@ Video(video3):
   description:     Users like to keep their data in one place on the web where it's easily accessible. Whether it's YouTube videos, Google Drive files, Google contacts or one of many other types of data, users need a way to securely grant applications access to their data. OAuth is the key web standard for delegated data access and OAuth 2.0 is the next-generation version with additional security features.This session will cover the latest advances in how OAuth can be used for data access, but will also dive into how you can lower the barrier to entry for your application by allowing users to login using their Google accounts. You will learn, through an example written in Python, how to use OAuth 2.0 to incorporate user identity into your web application. Best practices for desktop applications, mobile applications and server-to-server use cases will also be discussed.
   url:             YLHyeSuBspI
   uploadDate:      2013-12-12
-  tags:       [tag1, tag2, tag3]
+  videoTags:       [tag1, tag2, tag3]
   owner:           user2
   watchers:        [user1, user2, user3]
 
@@ -30,7 +30,7 @@ Video(video4):
   description:     Users like to keep their data in one place on the web where it's easily accessible. Whether it's YouTube videos, Google Drive files, Google contacts or one of many other types of data, users need a way to securely grant applications access to their data. OAuth is the key web standard for delegated data access and OAuth 2.0 is the next-generation version with additional security features.This session will cover the latest advances in how OAuth can be used for data access, but will also dive into how you can lower the barrier to entry for your application by allowing users to login using their Google accounts. You will learn, through an example written in Python, how to use OAuth 2.0 to incorporate user identity into your web application. Best practices for desktop applications, mobile applications and server-to-server use cases will also be discussed.
   url:             YLHyeSuBspI
   uploadDate:      2013-12-12
-  tags:       [tag1, tag2, tag3]
+  videoTags:       [tag1, tag2, tag3]
   owner:           user2
   watchers:        [user1, user2, user3]
 
@@ -39,7 +39,7 @@ Video(video5):
   description:     Product Requirements Blueprint Video for Confluence Team Collaboration Software
   url:             I2vY6FKeXbs
   uploadDate:      2013-12-12
-  tags:       [tag1, tag2, tag3]
+  videoTags:       [tag1, tag2, tag3]
   owner:           user1
   watchers:        [user1, user2, user3]
 
@@ -48,7 +48,7 @@ Video(video6):
   description:     Users like to keep their data in one place on the web where it's easily accessible. Whether it's YouTube videos, Google Drive files, Google contacts or one of many other types of data, users need a way to securely grant applications access to their data. OAuth is the key web standard for delegated data access and OAuth 2.0 is the next-generation version with additional security features.This session will cover the latest advances in how OAuth can be used for data access, but will also dive into how you can lower the barrier to entry for your application by allowing users to login using their Google accounts. You will learn, through an example written in Python, how to use OAuth 2.0 to incorporate user identity into your web application. Best practices for desktop applications, mobile applications and server-to-server use cases will also be discussed.
   url:             YLHyeSuBspI
   uploadDate:      2013-12-12
-  tags:       [tag1, tag2, tag3]
+  videoTags:       [tag1, tag2, tag3]
   owner:           user2
   watchers:        [user1, user2, user3]
 
@@ -57,7 +57,7 @@ Video(video7):
   description:     Published on Oct 16, 2013 Dynamic Visualizations with AngularJS and D3  Jack Herrington will walk you through integrating cool D3 visualizations into your AngularJS project step-by-step. Now you can have the best of both worlds, a well structured AngularJS application, and amazing cutting edge D3 visuals. 
   url:             BvAeabvZ61o
   uploadDate:      2013-12-12
-  tags:       [tag1, tag2, tag3]
+  videoTags:       [tag1, tag2, tag3]
   owner:           user1
   watchers:        [user1, user2, user3]
 
@@ -66,7 +66,7 @@ Video(video8):
   description:     Users like to keep their data in one place on the web where it's easily accessible. Whether it's YouTube videos, Google Drive files, Google contacts or one of many other types of data, users need a way to securely grant applications access to their data. OAuth is the key web standard for delegated data access and OAuth 2.0 is the next-generation version with additional security features.This session will cover the latest advances in how OAuth can be used for data access, but will also dive into how you can lower the barrier to entry for your application by allowing users to login using their Google accounts. You will learn, through an example written in Python, how to use OAuth 2.0 to incorporate user identity into your web application. Best practices for desktop applications, mobile applications and server-to-server use cases will also be discussed.
   url:             YLHyeSuBspI
   uploadDate:      2013-12-12
-  tags:       [tag1, tag2, tag3]
+  videoTags:       [tag1, tag2, tag3]
   owner:           user2
   watchers:        [user1, user2, user3]
 
@@ -75,6 +75,6 @@ Video(video9):
   description:     test description
   url:             YLHyeSuBspI
   uploadDate:      2013-12-12
-  tags:       [tag1, tag2, tag3]
+  videoTags:       [tag1, tag2, tag3]
   owner:           user2
   watchers:        [user1, user2, user3]
