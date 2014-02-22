@@ -60,7 +60,7 @@ public class VideoController extends Controller {
 		Video video = new Video(title, desc, link, new Date(year, month, day), user);
 		video.save();
 
-		redirect("/video/" + video.id + "#header");
+		video(video.id.toString());
 	}
 
 	public static void video(String id) {

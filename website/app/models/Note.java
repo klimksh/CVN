@@ -31,7 +31,7 @@ public class Note extends Model {
 	public String content;
 	@Expose
 	public int startTime;
-	 @ElasticSearchEmbedded(fields={"id"})
+	@ElasticSearchEmbedded(fields={"id"})
 	@ManyToOne (fetch = FetchType.EAGER)
 	public Video video;
 	@Expose
@@ -42,7 +42,7 @@ public class Note extends Model {
 	public long visited;
 	@Expose
 	@ElasticSearchEmbedded(fields = { "title" })
-	@OneToMany (fetch=FetchType.EAGER)
+	@ManyToMany (fetch=FetchType.EAGER)
 	public List<Tag> tags;
 
 	public Note(String title, String content, int startTime, Video video,
