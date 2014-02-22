@@ -54,10 +54,10 @@ public class VideoTest extends UnitTest {
 		Video video = new Video(title, desc, link, currentDate, user);
 		System.out.println(video.title);
 		
-		video.tags.add(tag);
+//		video.tags.add(tag);
 		
 		video.save();
-		assertEquals("test", video.tags.get(0).title);
+//		assertEquals("test", video.tags.get(0).title);
 		note = new Note("TestNoteTitle", "NoteContent", 187, video, user);
 		note.save();
 		video.notes.add(note);
@@ -68,9 +68,9 @@ public class VideoTest extends UnitTest {
     public void saveVideoTest() {
 
 		Video video = new Video(title, desc, link, currentDate, user);
-		video.tags.add(tag);
+//		video.tags.add(tag);
 		video.save();
-		assertEquals("test", video.tags.get(0).title);
+//		assertEquals("test", video.tags.get(0).title);
 		note = new Note("TestNoteTitle", "NoteContent", 187, video, user);
 		video.notes.add(note);
 	}

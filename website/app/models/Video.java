@@ -36,7 +36,7 @@ public class Video extends Model {
 	@ManyToMany(mappedBy = "watchedVideos")
 	public List<User> whatchers;
 	@ElasticSearchEmbedded(mode = Mode.embedded)
-	@OneToMany
+	@ManyToMany
 	public List<Note> notes;
 
 	public Video(String title, String description, String url, Date uploadDate, User owner) {
