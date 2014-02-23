@@ -43,6 +43,7 @@ function flipMainPanel() {
                 }
             },
             onReverseFinish:function(){
+                updateTimeline(lastVideoUpdate);
                 initNoteFlip();
                 initManualSlideButtons();
             }
