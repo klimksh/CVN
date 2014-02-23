@@ -30,3 +30,6 @@ GET     /data/                                  staticDir:public/data
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
 *       /application/example/a                  Application.example(a: ArrayList<Object>)
+
+# Import CRUD routes
+*      /admin              module:crud

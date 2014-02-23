@@ -1,3 +1,19 @@
 # You can specialize this file for each language.
 # For example, for French create a messages.fr file
 #
+name=Name
+noteWriter=Author of the note
+content=Content
+startTime=Start time
+tags=Tags
+title=Title
+video=Video
+visited=Visited
+notes=Notes
+videos=Videos
+email=Email address
+name= Name of the user
+watchedVideos=Watched videos
+description= Video description
+owner= Added by
+uploadDate=Upload date
