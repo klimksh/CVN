@@ -20,7 +20,7 @@ function onYouTubeIframeAPIReady() {
             'onStateChange': onPlayerStateChange
         }
     });
-    
+    setTimelineBoxSizes();
 }
 
 function onPlayerReady(event) {
