@@ -1,5 +1,8 @@
 package controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import models.Tag;
 import models.User;
 import models.Video;
@@ -10,26 +13,16 @@ import java.util.*;
 public class VideoController extends Controller {
 
 	public static void index() {
-		List<Video> videos = Video.findAll();
-		LinkedList<LinkedList<Video>> chunks = new LinkedList<LinkedList<Video>>();
-		;
-		int counter = 0;
-		LinkedList<Video> chunk = new LinkedList<Video>();
-		for (Video video : videos) {
-			chunk.add(video);
-			counter++;
-			if (counter == 6) {
-				chunks.add(chunk);
-				chunk = new LinkedList<Video>();
-				counter = 0;
-			}
-		}
-		if (chunk.size() > 0) {
-			chunks.add(chunk);
-		}
 
-		render(chunks);
-	}
+        List<Video> videosList = Video.findAll();
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
+        JsonElement videos = gson.toJsonTree(videosList);
+//        System.out.println(videos);
+        render(videos);
+
+    }
 
 	public static void addVideo() {
 		if (session.get("id") != null)
@@ -61,12 +54,15 @@ public class VideoController extends Controller {
 				new ArrayList<Tag>(), user);
 		video.save();
 
-		redirect("/video/" + video.id + "#header");
+        System.out.println(video);
+        redirect("/video/" + video.id + "#header");
 	}
 
-	public static void video(String id) {
-		Video video = Video.findById(Long.parseLong(id));
-		if (video == null) {
+	public static void video(String url) {
+        List<Video> searchResult =  Video.find("url", url).fetch();
+        Video video = (searchResult.size() >0 )? (Video) searchResult.get(0) :null;
+
+        if (video == null) {
 			redirect("/");
 		}
 		render(video);

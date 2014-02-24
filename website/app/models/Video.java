@@ -1,13 +1,14 @@
 package models;
 
+import com.google.gson.annotations.Expose;
 import org.elasticsearch.index.query.QueryBuilders;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 import play.modules.elasticsearch.annotations.ElasticSearchEmbedded;
+import play.modules.elasticsearch.annotations.ElasticSearchEmbedded.Mode;
 import play.modules.elasticsearch.annotations.ElasticSearchIgnore;
 import play.modules.elasticsearch.annotations.ElasticSearchable;
 import play.modules.elasticsearch.search.SearchResults;
-import play.modules.elasticsearch.annotations.ElasticSearchEmbedded.Mode;
 import play.mvc.Scope.Session;
 
 import javax.persistence.*;
@@ -19,26 +20,32 @@ import java.util.List;
 @Entity(name = "Videos")
 public class Video extends Model {
 	@Required
+    @Expose
 	public String title;
 	@Lob
-	public String description;
+    @Expose
+    public String description;
 	@Required
-	public String url;
+    @Expose
+    public String url;
 	@ElasticSearchIgnore
-	public Date uploadDate;
+    @Expose
+    public Date uploadDate;
 	@ElasticSearchEmbedded(fields = { "title" })
 	@ManyToMany
 	// (fetch=FetchType.EAGER)
 	public List<Tag> tags;
 	@ElasticSearchIgnore
 	@ManyToOne
+    @Expose
 	public User owner;
 	@ElasticSearchIgnore
 	@ManyToMany(mappedBy = "watchedVideos")
 	List<User> whatchers;
 	@ElasticSearchEmbedded(mode = Mode.embedded)
 	@OneToMany
-	// (mappedBy = "video")
+    @Expose
+    // (mappedBy = "video")
 	// @OneToMany
 	public List<Note> notes;
 
@@ -52,6 +59,8 @@ public class Video extends Model {
 		this.tags = tags;
 		this.owner = owner;
 	}
+
+
 
 	public static List<Video> searchQuery(String query) {
 		myVideos();

@@ -1,27 +1,22 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
         <a class="hidden-xs" href="/"><img src="/public/img/logo.png" class="pull-left logo"/></a>
     </div>
     <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-left">
             <li>
-                <form class="navbar-form navbar-left search-form" role="search" method="POST"
-                      action="@{VideoController.search}">
+                *{<form class="navbar-form navbar-left search-form" role="search" method="POST"}*
+                      *{action="@{VideoController.search}">}*
                     <div class="form-group">
-                        <input type="text" id="query" value="${params.query}" name="query" class="form-control search"
-                               placeholder="Search ...">
+                        <input type="text" id="query" value="${params.query}" ng-model="search.title" name="query"
+                               class="form-control search" placeholder="Search">
+
                     </div>
                     <button type="submit" class="btn btn-default">Search</button>
                     <button class="btn btn-danger new-video" type="button" data-toggle="modal" data-target="#addVideo">
                         <span class="glyphicon glyphicon-plus"></span> Share new video
                     </button>
-                </form>
+                *{</form>}*
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -66,7 +61,9 @@
             <div class="modal-body">
                 <p>
                     You must be logged in to use this Feature!<br/>
-                    You can register/login for free on the top right by clicking the <img height="34px" src="/public/img/g-auth-btn.png"> Button.
+                    You can register/login for free on the top right by clicking the <img height="34px"
+                                                                                          src="/public/img/g-auth-btn.png">
+                    Button.
                 </p>
             </div>
             <div class="modal-footer">

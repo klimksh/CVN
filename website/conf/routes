@@ -11,7 +11,7 @@ GET     /                                       VideoController.index
 POST    /                                       VideoController.index
 GET     /video/add                              VideoController.addVideo
 POST    /video/save                             VideoController.saveVideo
-GET     /video/{id}                             VideoController.video
+GET     /video/{url}                             VideoController.video
 
 GET     /notes/add                              NoteController.addNote
 GET     /notes/{id}                             NoteController.getNotes

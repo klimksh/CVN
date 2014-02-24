@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html ng-app="App" ng-controller="AppController">
 <head>
     <title>#{get 'title' /}</title>
     <link rel="icon" type="image/ico" href="@{'public/cvn.ico'}">
@@ -46,6 +46,7 @@
 </head>
 <body>
 
+
 #{include 'header.html'/}
 
 #{get 'filterOptions'/}
@@ -57,9 +58,9 @@
 #{include 'user_tracker.html'/}
 
 <footer class="bs-footer">
-  <div class="container">
-    <p>© <a target="blank" href="https://wwwmatthes.in.tum.de/pages/t5ma0jrv6q7k">sebis</a> - 2014</p>
-  </div>
+    <div class="container">
+        <p>© <a target="blank" href="https://wwwmatthes.in.tum.de/pages/t5ma0jrv6q7k">sebis</a> - 2014</p>
+    </div>
 </footer>
 </body>
 

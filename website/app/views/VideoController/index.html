@@ -5,66 +5,281 @@
 #{/set}
 
 #{set 'moreScripts'}
-	<script type="text/javascript" src="@{'/public/js/iframe_api.js'}"></script>
-    <script type="text/javascript" src="@{'/public/js/video-info-retrieve.js'}"></script>
-#{/set}
+<script type="text/javascript" src="@{'/public/js/iframe_api.js'}"></script>
+<script type="text/javascript" src="@{'/public/js/video-info-retrieve.js'}"></script>
+<script src="http://code.angularjs.org/1.2.9/angular.min.js"></script>
 
+#{/set}
+<script>
+    *{$scope.videos = "${videos.asJsonArray}";}*
+</script>
+<style>
+    ul.nav li.dropdown *:hover ul.dropdown-menu {
+        display: block;
+        margin: 0;
+    }
+
+    a.menu:after, .dropdown-toggle:after {
+        content: none;
+    }
+</style>
 #{set 'filterOptions'}
-	<nav class="navbar navbar-default filter-oprions" role="navigation">
-	    <div class="collapse navbar-collapse">
-	    	<ul class="nav navbar-nav">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Notes&Videos <b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Notes</a></li>
-						<li><a href="#">Videos</a></li>
-					</ul>
-				</li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Date<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li>
-                            <div class="input-group date datepicker" id="datepicker" data-date="24.02.2014" data-date-format="dd.mm.yyyy">
-                                <input class="form-control" name="pickedDate" id="pickedDate" type="text" value="24.02.2014">
-                                <span class="input-group-addon">
-                                    <i class="glyphicon glyphicon-calendar"></i>
-                                </span>
-                            </div>
-						</li>
-					</ul>
-				</li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sort<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Rank</a></li>
-						<li><a href="#">Date</a></li>
-						<li><a href="#">Location</a></li>
-					</ul>
-				</li>
-				<li><a href="#"><span class="glyphicon glyphicon-star"></span> Stared</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-film	"></span> My videos</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-book"></span> My notes</a></li>
-		    </ul>
-	    </div>    
-	</nav>
+<nav class="navbar navbar-default filter-oprions" role="navigation">
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="#" id="select-all" class="dropdown-toggle" data-toggle="dropdown">Notes&Videos <b
+                        class="caret"></b></a>
+                <ul id="content-type" class="dropdown-menu">
+                    <li id="select-notes"><a href="#">Notes</a></li>
+                    <li id="select-videos"><a href="#">Videos</a></li>
+                </ul>
+            </li>
+        *{<li class="dropdown" id="content-date">}*
+        *{<a href="#" class="dropdown-toggle" data-toggle="dropdown">Date<b class="caret"></b></a>}*
+        *{<ul class="dropdown-menu">}*
+        *{<li>}*
+        *{<div class="input-group date datepicker" data-date-format="dd-mm-yyyy">}*
+        *{<input type="text" class="form-control"> <span class="input-group-addon"><i}*
+        *{class="glyphicon glyphicon-calendar"></i></span>}*
+
+        *{<div class="input-group date datepicker">}*
+        *{<input type="text" class="form-control"}*
+        *{ng-model="searchUploadDate"><span class="input-group-addon"><i}*
+        *{class="glyphicon glyphicon-th"></i></span>}*
+        *{</div>}*
+
+        *{</div>}*
+        *{</li>}*
+        *{</ul>}*
+        *{</li>}*
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sort<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                *{<li><a href="#" ng-click="predicate = 'age'; reverse=!reverse">Rank</a></li>}*
+                    <li><a href="#" ng-click="predicate = 'uploadDate'; reverse=!reverse">Date</a></li>
+                *{<li><a href="#" ng-click="predicate = 'age'; reverse=!reverse">Location</a></li>}*
+                </ul>
+            </li>
+        *{<li><a href="#"><span class="glyphicon glyphicon-star"></span> Stared</a></li>}*
+            <li id="my-videos"><a href="#"><span class="glyphicon glyphicon-film"></span> My videos </a></li>
+            <li id="my-notes"><a href="#"><span class="glyphicon glyphicon-book"></span> My notes </a></li>
+        </ul>
+    </div>
+</nav>
 #{/set}
-#{list items:chunks, as:'chunk'}
-	<div class="row">
-		#{list items:chunk, as:'video'}
-			<div class="col-md-2">
-				<div class="thumbnail">
-					<a href="@{VideoController.video(video.id)}#header">
-						<img alt="272x200" src="http://img.youtube.com/vi/${video.url}/0.jpg">
-					</a>
-					<div class="caption">
-						<a href="@{VideoController.video(video.id)}#header">
-							${video.title} 
-						</a>
-					</div>
-				</div>
-			</div>
-		#{/list}
-	</div>
-#{/list}
+
+<div class="row" id="searchObjResults">
+*{| nestedSearch:search}*
+    <div class="row" ng-repeat="video in videos |nestedSearch:search | orderBy:predicate:reverse">
+        <div class="col-md-2 select-item select-videos-item" style="margin:5px 10px; min-width: 80px;">
+            <div class="thumbnail">
+                <a href="/video/{{video.url}}#header">
+                    <img alt="300x200" src="http://img.youtube.com/vi/{{video.url}}/0.jpg">
+                </a>
+
+                <div class="caption">
+                    <p> {{video.title}} </p>
+
+                    <p><a class="btn btn-default btn-xs" href="/video/{{video.url}}#header">Show</a></p>
+                </div>
+            </div>
+
+        </div>
+
+        *{<div class="row">}*
+            <div class="col-md-2 select-item select-notes-item" ng-repeat="note in video.notes | filter:search">
+                <div class="thumbnail" style="background-color: #E5E5EE">
+
+                    <div class="caption">
+                        <p> {{note.title}} </p>
+
+                        <p><a class="btn btn-default btn-xs" href="/video/{{video.url}}#header">Show</a></p>
+                    </div>
+                </div>
+            </div>
+
+        *{</div>}*
+
+    </div>
 
 
+</div>
+
+
+<script>
+
+    'use strict';
+    var App = angular.module('App', []);
+
+
+    App.controller('AppController', function ($scope, $filter) {
+        $scope.videos = ${videos.raw()};
+        $scope.backupVideos = ${videos.raw()};
+
+
+        $("#my-videos").click(function () {
+            if (showVideos == ALL_VIDEOS) {
+                showVideos = MY_VIDEOS;
+                $scope.videos = $filter('filterVideoByOwner')($scope.videos);
+                $scope.$apply();
+                $("#my-videos").toggleClass("active");
+                $("#my-videos").find("a").append('<i class="glyphicon glyphicon-ok"></i>');
+
+
+            }
+            else {
+                showVideos = ALL_VIDEOS;
+                $scope.videos = $scope.backupVideos;
+                $scope.$apply();
+                $("#my-videos").toggleClass("active");
+                $("#my-videos").find("a>.glyphicon-ok").remove();
+            }
+        });
+
+        $("#my-notes").click(function () {
+            if (showNotes == ALL_NOTES) {
+                showNotes = MY_NOTES;
+                $scope.videos = $filter('filterNoteByOwner')($scope.videos);
+                $scope.$apply();
+                $("#my-notes").toggleClass("active");
+                $("#my-notes").find("a").append('<i class="glyphicon glyphicon-ok"></i>');
+
+
+            }
+            else {
+                showNotes = ALL_NOTES;
+                $scope.videos = $scope.backupVideos;
+                $scope.$apply();
+                $("#my-notes").toggleClass("active");
+                $("#my-notes").find("a>.glyphicon-ok").remove();
+            }
+        })
+
+
+    });
+
+    App.filter('nestedSearch', function ($filter) {
+        return function (items, search) {
+            var matchedVideos = [];
+            var matchedNotes = [];
+
+            matchedVideos = $filter('filter')(items, search);
+            angular.forEach(items, function (video) {
+                matchedNotes = $filter('filter')(video.notes, search);
+                if (matchedNotes.length > 0) {
+//                            console.log(video);
+                    if (matchedVideos.indexOf(video) < 0) matchedVideos.push(video);
+                }
+            });
+
+            return matchedVideos;
+        }
+    })
+
+    App.filter('filterVideoByOwner', function ($filter) {
+        return function (items) {
+            var matchedVideos = [];
+
+
+            angular.forEach(items, function (item) {
+
+                if (showVideos == MY_VIDEOS) {
+                    if (item.owner.email == "${session.userEmail}") {
+                        matchedVideos.push(item);
+                    }
+                } else {
+                    matchedVideos.push(item);
+                }
+            });
+
+            return matchedVideos;
+        }
+    })
+    App.filter('filterNoteByOwner', function ($filter) {
+        return function (items) {
+            var matchedVideos = [];
+            angular.forEach(items, function (item) {
+                var itemCopy = Object.create(item);
+                console.log(itemCopy);
+                itemCopy.notes = [];
+                angular.forEach(item.notes, function (note) {
+                    if (showNotes == MY_NOTES) {
+
+                        if (note.noteWriter.email == "${session.userEmail}") {
+                            console.log("3333");
+                            itemCopy.notes.push(note);
+                            if (matchedVideos.indexOf(itemCopy) < 0) matchedVideos.push(itemCopy);
+                        }
+                    }
+
+                    else {
+                        matchedVideos.push(item);
+                    }
+                });
+            })
+            console.log(matchedVideos);
+            return matchedVideos;
+        }
+    })
+
+
+    //    App.filter('filterByDate', function ($filter) {
+    //        return function (items, searchDate) {
+    //            var matchedVideos = [];
+    //            angular.forEach(items, function (video) {
+    //
+    //                if (video.uploadDate == searchDate) {
+    ////                            console.log(video);
+    //                    if (matchedVideos.indexOf(video) < 0) matchedVideos.push(video);
+    //                }
+    //            });
+    //
+    //            return matchedVideos;
+    //        }
+    //    })
+
+
+    $("#content-type>li").click(function () {
+        var id = $(this).attr("id");
+        $(".select-item").hide();
+        console.log("." + id + "-item");
+        $("." + id + "-item").show();
+
+    })
+
+    var MY_NOTES = 1;
+    var ALL_NOTES = 2;
+    var showNotes = ALL_NOTES;
+    var MY_VIDEOS = 1;
+    var ALL_VIDEOS = 2;
+    var showVideos = ALL_VIDEOS;
+
+    $("#select-all").click(function () {
+        $(".select-videos-item").show();
+        $(".select-notes-item").show();
+    })
+
+    $('.datepicker').datepicker({
+        autoclose: true
+    });
+
+
+    $(document).on('click', 'td.day, td.month, th.next, th.prev, th.switch, td.year', function (e) {
+        setTimeout(function () {
+        }, 1000);
+        e.stopPropagation();
+    });
+
+    $(".datepicker>input").change(function () {
+
+    });
+
+    $('#content-date').on("click", "ul li *", function (e) {
+        e.stopPropagation();
+    });
+
+    $(document).ready(function () {
+
+    })
+</script>
