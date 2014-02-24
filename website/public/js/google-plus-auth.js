@@ -1,146 +1,115 @@
-// var clientId = '564983320580-r29l8abnd6ldq9ugek8th5h4epk4u6al.apps.googleusercontent.com';
 var clientId = google_auth_client_id;
 
-var apiKey = 'AIzaSyAdjHPT5Pb7Nu56WJ_nlrMGOAgUAtKjiPM';
 var scopes = "https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me";
-var image_url=imageURL();
-var nameGPlus=getName().toString();
-
-function handleClientLoad() {
-    window.setTimeout(checkAuth,1);
-}
-
-function checkAuth() {
-    gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
-}
+var image_url = imageURL();
+var nameGPlus = getName().toString();
 
 function handleAuthResult(authResult) {
-    if (authResult && !authResult.error) 
-        makeApiCall();
+    if (authResult && !authResult.error) {
+        callAPI();
+    }
 }
 
-function login(){
+function login() {
     gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-   // $('#login_btn').hide();
-   // $('#profile_btn').show(); 
-    return false;  
 }
 
-function logout(){
+function logout() {
     document.cookie = "PLAY_SESSION=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     document.cookie = "photo_url=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     document.cookie = "name_plus=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     $.ajax({
-            type: "GET",
-            async: false,
-            url: logout_url()
-	})
-	.done(function( msg ) {
+        type: "GET",
+        async: false,
+        url: logout_url()
+    }).done(function () {
         gapi.auth.signOut();
-		redirect();
-	});
-       
+        window.location.reload();
+    });
 }
 
-function redirect(){
-    window.location.replace(index_url);
-}
-
-function handleAuthClick(event) {
-    gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-    return false;
-}
-
-function makeApiCall() {
-    gapi.client.load('plus', 'v1', function() {
+function callAPI() {
+    gapi.client.load('plus', 'v1', function () {
         var request = gapi.client.plus.people.get({
             'userId': 'me'
         });
-        request.execute(function(profile) {
-            var f = profile.emails[0].value;
-            $.get(login_url({email: f, id: profile.id, displayName: profile.displayName}), function () {});
-            document.cookie="photo_url="+profile.image.url+";"
-            document.cookie="name_plus=\""+profile.displayName+"\";"
-            $('#authOps').show('slow');
-            $('#gConnect').hide();
+        request.execute(function (profile) {
+            var profileEmail = profile.emails[0].value;
+            $.get(login_url({
+                email: profileEmail,
+                id: profile.id,
+                displayName: profile.displayName
+            }), function () {
+
+            });
+            document.cookie = "photo_url=" + profile.image.url + ";";
+            document.cookie = "name_plus=\"" + profile.displayName + "\";";
             $('#login_btn').hide();
-            $('#addNoteBtn').show();
-            $('#userDetailss').show();
-            $('#logout').show();
-            $('#disconnect').hide();    
-            $('#Gphoto').show();
-            $('.dropdown').show();
-            $('#profile').empty();
+            $('#profile_btn').show();
             if (profile.error) {
                 $('#profile').prepend(profile.error);
                 return false;
             }
-            $('#personal_image').html($("<img src=\""+profile.image.url+"\" style=\"width: 20px; margin-bottom: 0px\" class=\"glyphicon glyphicon-user\"/>"));
-            $('#personal_image2').html($("<img src=\""+profile.image.url+"\" style=\"width: 25px; margin-bottom: 0px\" class=\"glyphicon glyphicon-user\"/>"));
-            $('#personal_name').html(profile.displayName);           
+            $('#personal_image').html($("<img src=\"" + profile.image.url + "\" class=\"profileImage img-circle\"/>"));
+            $('#personal_name').html(profile.displayName);
         });
     });
 }
 
-window.onload=function(){
-    var exist=false;
-    var ss=document.cookie;
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-      var c = ca[i];
-      if (c.indexOf("PLAY")!=-1) 
-          if (c.indexOf("userEmail")!=-1) 
-             exist=true;
+window.onload = function () {
+    var userExist = false;
+    var cookieInformations = document.cookie.split(';');
+    for (var i = 0; i < cookieInformations.length; i++) {
+        var information = cookieInformations[i];
+        if (information.indexOf("PLAY") != -1)
+            if (information.indexOf("userEmail") != -1)
+                userExist = true;
     }
-    var isHeLogedON=true; 
-    sessionParams = { 'client_id': clientId,  'session_state': null};
-    gapi.auth.checkSessionState(sessionParams, function(stateMatched) { 
-        if (stateMatched == true) { 
-            isHeLogedON=false;
-              document.cookie = "PLAY_SESSION=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-              document.cookie = "photo_url=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-              document.cookie = "name_plus=; expires=Thu, 01 Jan 1970 00:00:00 GMT";                        
-        }   
+    var isLoggedIn = true;
+    sessionParams = { 'client_id': clientId, 'session_state': null};
+    gapi.auth.checkSessionState(sessionParams, function (stateMatched) {
+        if (stateMatched == true) {
+            isLoggedIn = false;
+            document.cookie = "PLAY_SESSION=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            document.cookie = "photo_url=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            document.cookie = "name_plus=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
     });
-    if(exist  && isHeLogedON) {
+    if (userExist && isLoggedIn) {
         $('#login_btn').hide();
-        $('#profile_btn').show();  
-        gapi.client.load('plus', 'v1', function() {
+        $('#profile_btn').show();
+        gapi.client.load('plus', 'v1', function () {
             var request = gapi.client.plus.people.get({
                 'userId': 'me'
             });
-            request.execute(function(profile) {
-            	  $('#personal_image').html($("<img src=\""+image_url+"\" style=\"width: 20px; margin-bottom: 0px\" class=\"glyphicon glyphicon-user\"/>"));
-                  $('#personal_image2').html($("<img src=\""+image_url+"\" style=\"width: 25px; margin-bottom: 0px\" class=\"glyphicon glyphicon-user\"/>"));
-                  $('#personal_name').html(nameGPlus); 
+            request.execute(function () {
+                $('#personal_image').html($("<img src=\"" + image_url + "\" class=\"img-circle profileImage\"/>"));
+                $('#personal_name').html(nameGPlus);
             });
         });
-             
-    }
-    else {
-    	$('#login_btn').show();
-    	$('#profile_btn').hide();
+
+    } else {
+        $('#login_btn').show();
+        $('#profile_btn').hide();
     }
 }
 
-function imageURL(){
-    var ss=document.cookie;
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        if (c.indexOf("photo_url")!=-1)
-             return c.substring(10,c.length);
+function imageURL() {
+    var cookieInformations = document.cookie.split(';');
+    for (var i = 0; i < cookieInformations.length; i++) {
+        var info = cookieInformations[i];
+        if (info.indexOf("photo_url") != -1)
+            return info.substring(10, info.length);
     }
-    return "";    
+    return "";
 }
 
-function getName(){
-    var ss=document.cookie;
+function getName() {
     var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        if (c.indexOf("name_plus")!=-1)
-             return c.substring(12,c.length-1);
+        if (c.indexOf("name_plus") != -1)
+            return c.substring(12, c.length - 1);
     }
     return "";
 }

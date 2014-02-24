@@ -264,3 +264,8 @@ div.manualSlideButton.pull-right{
 #test input,#test textarea{
     margin: 20px;
 }
+
+.profileImage {
+    width: 25px;
+    margin-bottom: 0px;
+}
