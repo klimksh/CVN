@@ -199,6 +199,7 @@ div.manualSlideButton.pull-right{
 
 #timeline .note {
     width: 100px;
+    overflow: hidden;
     min-height: 62px;
     padding: 5px;
     margin: 5px 5px 0 0;
@@ -250,6 +251,7 @@ div.manualSlideButton.pull-right{
 
 .noteBlock {
     height: 100%;
+    overflow: hidden;
 }
 
 .noteBlock .panel-footer {
@@ -268,4 +270,10 @@ div.manualSlideButton.pull-right{
 .profileImage {
     width: 25px;
     margin-bottom: 0px;
+}
+
+span.glyphicon#closeNoteBlock  {
+    position: absolute;
+    top: 5px;
+    right: 5px;   
 }

@@ -123,7 +123,7 @@ function revertOptionsFlip() {
 
 function prettifyNoteContent(title, content, user) {
     return  '<div class="noteBlock panel panel-default">' +
-                '<div class="panel-heading">'+title+'<span id="closeNoteBlock" class="glyphicon glyphicon-remove pull-right"></span></div>' +
+                '<div class="panel-heading">'+'<span id="closeNoteBlock" class="glyphicon glyphicon-remove pull-right"></span>'+title+'</div>'
                 '<div class="panel-body">'+content+'</div>' +
                 '<div class="panel-footer">by '+user+' <span id="jumpBtn" class="label label-danger">Jump</span></div>' +
             '</div>'
