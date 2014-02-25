@@ -36,7 +36,7 @@ public class LiveAnnotation extends Controller {
                     Gson gson = new GsonBuilder()
                             .excludeFieldsWithoutExposeAnnotation()
                             .create();
-                    outbound.sendJson(gson.toJson(event));
+                    outbound.send(gson.toJson(event));
 				}
 			}
 		}

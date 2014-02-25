@@ -81,8 +81,9 @@ function validateForm() {
 
 // Message received on the socket
 socket.onmessage = function (event) {
+    console.log(event);
     var obj = JSON.parse(event.data);
-    obj = eval("(" + obj + ")");
+    // obj = eval("(" + obj + ")");
     var noteData = createNoteObject(obj);
     console.log("newData");
     console.log(noteData);
