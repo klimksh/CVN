@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -30,7 +31,7 @@ public class Note extends Model {
 	public String content;
 	@Expose
 	public int startTime;
-	 @ElasticSearchEmbedded(fields={"id"})
+	@ElasticSearchEmbedded(fields={"id"})
 	@ManyToOne (fetch = FetchType.EAGER)
 	public Video video;
 	@Expose
@@ -54,10 +55,6 @@ public class Note extends Model {
 		this.noteWriter = user;
 		this.visited = 0;
 		this.tags = new ArrayList<Tag>();
-	}
-
-	public static List<Note> findAllByVideoId(Video video) {
-		return find("video = ? order by startTime desc", video).fetch();
 	}
 
 	public int compareTo(Note note) {
