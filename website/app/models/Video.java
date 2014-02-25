@@ -49,7 +49,7 @@ public class Video extends Model {
 		this.notes = new ArrayList<Note>();
 		this.owner = owner;
 	}
-
+	
 	public static List<Video> searchQuery(String query) {
 		myVideos();
 		SearchResults<Video> list = play.modules.elasticsearch.ElasticSearch

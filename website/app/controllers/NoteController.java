@@ -55,7 +55,7 @@ public class NoteController extends Controller {
                 .create();
 
         Video video = Video.findById(Long.parseLong(id));
-        List<Note> notes = Note.findAllByVideoId(video);
+        List<Note> notes = video.notes;
         List<Note> editedNotes = new ArrayList<Note>();
 
         // make id visible in json

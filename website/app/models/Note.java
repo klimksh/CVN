@@ -57,10 +57,6 @@ public class Note extends Model {
 		this.tags = new ArrayList<Tag>();
 	}
 
-	public static List<Note> findAllByVideoId(Video video) {
-		return find("video = ? order by startTime desc", video).fetch();
-	}
-
 	public int compareTo(Note note) {
 		int compareStart = ((Note) note).startTime;
 		// ascending order
