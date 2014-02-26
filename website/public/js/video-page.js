@@ -85,8 +85,6 @@ socket.onmessage = function (event) {
     var obj = JSON.parse(event.data);
     // obj = eval("(" + obj + ")");
     var noteData = createNoteObject(obj);
-    console.log("newData");
-    console.log(noteData);
     addNoteToNoteCollection(noteData);
 };
 

@@ -64,7 +64,6 @@ function flipMainPanel() {
 function initNoteFlip() {
     $('.note').click(function(){
         var note = $(this);
-
         if( lastClickedNote == note.attr('id') ) {
             revertOptionsFlip();
         } else if(optionsFlipped === false || lastClickedNote != $(this).attr('id')) {
@@ -72,7 +71,8 @@ function initNoteFlip() {
             title   = note.children('p').html();
             content = note.data('content');
             user    = note.data('user');
-            noteContent = prettifyNoteContent(title, content, user);
+            time = note.data("start");
+            noteContent = prettifyNoteContent(title, content, user, time);
 
             $("#optionsPanel").flippy({
                 verso: noteContent,
@@ -100,6 +100,11 @@ function initNoteFlip() {
                         player.seekTo(startTime);
                         updateTimeline(startTime);
                     });
+                    $('#timeJumpBtn').click(function(){
+                        var startTime = $('#'+lastClickedNote).data('start');
+                        player.seekTo(startTime);
+                        updateTimeline(startTime);
+                    });
                 }
             });
             optionsFlipped = true;
@@ -121,11 +126,15 @@ function revertOptionsFlip() {
     optionsFlipped = false;
 }
 
-function prettifyNoteContent(title, content, user) {
+function prettifyNoteContent(title, content, user, time) {
     return  '<div class="noteBlock panel panel-default">' +
-                '<div class="panel-heading">'+'<span id="closeNoteBlock" class="glyphicon glyphicon-remove pull-right"></span>'+title+'</div>'+
-                '<div class="panel-body">'+content+'</div>' +
-                '<div class="panel-footer">by '+user+' <span id="jumpBtn" class="label label-danger">Jump</span></div>' +
+                '<div class="panel-heading"><span id="closeNoteBlock" class="glyphicon glyphicon-remove pull-right"></span>'+
+                '<span class="note-title">'+title+'</span>'+
+                '<span class="note-time">by <a href="javascript:void(0);">'+ user +'</a> at <a href="javascript:void(0);" id="timeJumpBtn">'+convertSecToTime(time)+'</a></span>'+
+                '</div>'+
+                '<div class="panel-content">'+content+'</div>' +
+                '<div class="panel-footer"><div class="btn-group"><button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Options <span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#">Share</a></li><li><a href="#">Details</a></li><li class="divider"></li><li><a href="#">Delete</a></li></ul></div>'+
+                '<button class="btn btn-danger btn-xs" id="jumpBtn">Jump</button></div>' +
             '</div>'
 }
 /**
@@ -405,7 +414,7 @@ function createNote(note) {
     }
 
     return "<div style='display:none' id='note"+note.fakeId+"' class='note' data-start='" + note.startTime + "' data-user='"+username+"' data-content='"+content+"'>" +
-                "<p>" + title + " </p>"
+                "<p>" + title + " </p><span class='note-time'>"+ convertSecToTime(note.startTime)+"</span>"
            "</div>";
 }
 
@@ -457,3 +466,4 @@ function convertTimeToSec() {
     split = time.split(':');
     return parseInt(split[0])*60+parseInt(split[1]);
 }
+
