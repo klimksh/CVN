@@ -129,7 +129,7 @@ function revertOptionsFlip() {
 function prettifyNoteContent(title, content, user, time) {
     return  '<div class="noteBlock panel panel-default">' +
                 '<div class="panel-heading"><span id="closeNoteBlock" class="glyphicon glyphicon-remove pull-right"></span>'+
-                '<span class="note-title">'+title+'</span>'+
+                '<span class="note-title">'+title+'</span><span class="clearfix"></span>'+
                 '<span class="note-time">by <a href="javascript:void(0);">'+ user +'</a> at <a href="javascript:void(0);" id="timeJumpBtn">'+convertSecToTime(time)+'</a></span>'+
                 '</div>'+
                 '<div class="panel-content">'+content+'</div>' +
