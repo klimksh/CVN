@@ -282,7 +282,7 @@ function initManualSlideButtons() {
         // } else {
             checkSyncMode();
             // currentPeriodStart = Math.min(Math.floor(player.getDuration()-periodLength), currentPeriodStart+periodLength);
-            currentPeriodStart = Math.min(Math.floor(player.getDuration()-periodLength), currentPlayerTimeFlag?player.getCurrentTime():currentPeriodStart+periodLength);
+            currentPeriodStart = Math.min(Math.floor(player.getDuration()-periodLength), currentPlayerTimeFlag?Math.floor(player.getCurrentTime()):currentPeriodStart+periodLength);
             currentPlayerTimeFlag = false;
             asyncTimelineUpdate();
             changeDisplayTimeToPeriod();
