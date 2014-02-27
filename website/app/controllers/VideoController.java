@@ -49,7 +49,7 @@ public class VideoController extends Controller {
 
 		User user = User.findByEmail(userEmail);
 		if (user == null) {
-			new User(userEmail, "", request.params.get("user-name-data"),
+			new User(userEmail, request.params.get("user-name-data"),
 					request.params.get("user-id-data")).save();
 		}
 
