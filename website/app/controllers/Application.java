@@ -20,7 +20,7 @@ public class Application extends Controller {
 	public static void login(String email, String id, String displayName) {
 		User user = User.findByEmail(email);
 		if (user == null){
-			user = new User(email, "randomPassword", displayName, id);	
+			user = new User(email,displayName, id);	
 			user.save();
 		}
 		session.put("googleUserId", user.googleUserId);
@@ -64,41 +64,9 @@ public class Application extends Controller {
 		render(isLoged);
 	}
 
-	// checking if email and password are OK
-	public static void authenticate(String email, String password) {
-		User user = User.findByEmail(email);
-		if (user == null || !user.checkPassword(password)) {
-			flash.error("Bad email or bad password");
-			flash.put("email", email);
-			// redirect somewhere
-		}
-		connect(user);
-		flash.success("Welcome %s !", user.name);
-		// redirect somewhere
-	}
-
-	// register ( we have two password fields password and verify password
-	public static void register(@Required String name,
-			@Required @Email String email, @Required String password,
-			@Equals("password") String password2) {
-		if (validation.hasErrors() || User.findByEmail(email) != null) {
-			validation.keep();
-			params.flash();
-			String error = "";
-			if (User.findByEmail(email) != null) {
-				flash.error("This email allready exist in our database");
-			} else {
-				flash.error("passwords does not match");
-			}
-		} else {
-			User user = new User(email, password2, name);
-			user.save();
-			// redirect somewhere
-
-		}
-
-	}
-
+	
+	
+	
 	public static void timeline() {
 		render();
 	}

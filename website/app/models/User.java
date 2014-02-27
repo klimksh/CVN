@@ -20,7 +20,6 @@ public class User extends Model {
 	@Email
 	@Unique
 	public String email;
-	public String password;
 	@Expose
 	public String name;
 	public String googleUserId;
@@ -28,24 +27,9 @@ public class User extends Model {
 	@ManyToMany
 	public List<Video> watchedVideos;
 
-	public User(@Email @Unique String email, String password, String name) {
+	public User(String email, String name, String googleUserId) {
 		super();
 		this.email = email;
-		this.password = password;
-		this.name = name;
-		this.googleUserId = "";
-		this.watchedVideos = new ArrayList<Video>();
-		create();
-	}
-
-	public void insertUser(String email, String password, String name) {
-		new User(email, password, name);
-	}
-
-	public User(String email, String password, String name, String googleUserId) {
-		super();
-		this.email = email;
-		this.password = password;
 		this.name = name;
 		this.googleUserId = googleUserId;
 		this.watchedVideos = new ArrayList<Video>();
@@ -59,9 +43,6 @@ public class User extends Model {
 		return find("googleUserId", googleUserId).first();
 	}
 
-	public boolean checkPassword(String password) {
-		return this.password.equals(password);
-	}
 
 	public String getEmail() {
 		return this.email;
@@ -70,9 +51,9 @@ public class User extends Model {
 	public User() {
 	}
 
-	public void inserUser(String email, String password, String name,
+	public void inserUser(String email, String name,
 			String googleUserId) {
-		new User(email, password, name, googleUserId);
+		new User(email, name, googleUserId);
 	}
 
 }
