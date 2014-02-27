@@ -8,6 +8,7 @@ var addNoteTime         = 0;
 var timelineIsSynced    = true;
 var mainPanelFlipped    = false;
 var optionsFlipped      = false;
+var currentPlayerTimeFlag = true;
 
 var lastClickedNote     = null;
 
@@ -129,7 +130,7 @@ function revertOptionsFlip() {
 function prettifyNoteContent(title, content, user, time) {
     return  '<div class="noteBlock panel panel-default">' +
                 '<div class="panel-heading"><span id="closeNoteBlock" class="glyphicon glyphicon-remove pull-right"></span>'+
-                '<span class="note-title">'+title+'</span><span class="clearfix"></span>'+
+                '<span class="note-title">'+title+'</span>'+
                 '<span class="note-time">by <a href="javascript:void(0);">'+ user +'</a> at <a href="javascript:void(0);" id="timeJumpBtn">'+convertSecToTime(time)+'</a></span>'+
                 '</div>'+
                 '<div class="panel-content">'+content+'</div>' +
@@ -265,25 +266,27 @@ function addManualSlideButtons() {
 
 function initManualSlideButtons() {
     $('#scrollLeft').click(function() {
-        if(currentPeriodStart-periodLength <= lastVideoUpdate && currentPeriodStart > lastVideoUpdate) {
-            syncTimelineWithVideo();
-        } else {
+        // if(currentPeriodStart-periodLength <= lastVideoUpdate && currentPeriodStart > lastVideoUpdate) {
+        //     syncTimelineWithVideo();
+        // } else {
             checkSyncMode();
             currentPeriodStart = Math.max(0, currentPeriodStart-periodLength);
             asyncTimelineUpdate();
             changeDisplayTimeToPeriod();
-        }
+        // }
     });
 
     $('#scrollRight').click(function() {
-        if(currentPeriodStart+periodLength <= lastVideoUpdate && currentPeriodStart+2*periodLength > lastVideoUpdate) {
-            syncTimelineWithVideo();
-        } else {
+        // if(currentPeriodStart+periodLength <= lastVideoUpdate && currentPeriodStart+2*periodLength > lastVideoUpdate) {
+        //     syncTimelineWithVideo();
+        // } else {
             checkSyncMode();
-            currentPeriodStart = Math.min(Math.floor(player.getDuration()-periodLength), currentPeriodStart+periodLength);
+            // currentPeriodStart = Math.min(Math.floor(player.getDuration()-periodLength), currentPeriodStart+periodLength);
+            currentPeriodStart = Math.min(Math.floor(player.getDuration()-periodLength), currentPlayerTimeFlag?player.getCurrentTime():currentPeriodStart+periodLength);
+            currentPlayerTimeFlag = false;
             asyncTimelineUpdate();
             changeDisplayTimeToPeriod();
-        }
+        // }
     });
 }
 
@@ -315,6 +318,7 @@ function checkSyncMode() {
 function syncTimelineWithVideo() {
     $('#syncText').html("<div class='alert alert-success'><span class='glyphicon glyphicon-check'></span> Timeline is syncronized with the video</div>");
     timelineIsSynced = true;
+    currentPlayerTimeFlag = true;
     changeDisplayPeriodToTime();
     $('.note').remove();
     updateTimeline(lastVideoUpdate);
@@ -325,9 +329,9 @@ function asyncTimelineUpdate() {
 
     // Filter notes
     allNotes.forEach(function(note) {
-        if(note.startTime+periodLength < currentPeriodStart) {
+        if(note.startTime < currentPeriodStart) {
             addNoteToTimeline('pastNotes', note);
-        } else if (note.startTime+periodLength <= (currentPeriodStart+periodLength)) {
+        } else if ((note.startTime >= currentPeriodStart)&&(note.startTime <= (currentPeriodStart+periodLength))) {
             addNoteToTimeline('currentNotes', note);
         } else {
             addNoteToTimeline('futureNotes', note);
