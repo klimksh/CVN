@@ -56,7 +56,7 @@ public class Video extends Model {
 				.searchAndHydrate(QueryBuilders.queryString(query), Video.class);
 		return list.objects;
 	}
-
+   //it is duplicate
 	public static List<Video> searchQuery1(String query) {
 		SearchResults<Video> list = play.modules.elasticsearch.ElasticSearch
 				.search(QueryBuilders.queryString(query), Video.class);

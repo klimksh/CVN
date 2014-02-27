@@ -62,7 +62,7 @@ public class Note extends Model {
 		// ascending order
 		return this.startTime - compareStart;
 	}
-
+     //notes  of a video with id=id and containds string query
 	public static List<Note> searchNotes(String query, long id) {
 		Query<Note> queryNote = play.modules.elasticsearch.ElasticSearch.query(
 				QueryBuilders.boolQuery()

@@ -34,7 +34,7 @@ public class VideoTest extends UnitTest {
 
 		user = User.findByEmail(userEmail);
 		if (user == null) {
-			new User(userEmail, "", "userName", "userId").save();
+			new User(userEmail,"userName", "userId").save();
 		}
 		
 		tag = new Tag("test");

@@ -23,7 +23,7 @@ public class NoteController extends Controller {
 
         User user = User.findByEmail(userEmail);
         if (user == null) {
-            new User(userEmail, "", request.params.get("user-name-data"), request.params.get("user-id-data")).save();
+            new User(userEmail, request.params.get("user-name-data"), request.params.get("user-id-data")).save();
             user = User.findByEmail(userEmail);
         }
         Note note = new Note(title, content, startTime, video, user);
